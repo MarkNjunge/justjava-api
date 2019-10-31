@@ -1,0 +1,20 @@
+name: Deploy develop workflow
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: pre-deploy actions
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H '178.128.46.40' >> ~/.ssh/known_hosts
+      - name: Deploy
+        run: git push dokku@178.128.46.40:dev-justjava HEAD:master
