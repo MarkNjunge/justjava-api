@@ -8,13 +8,11 @@ import {
   NestFastifyApplication,
 } from "@nestjs/platform-fastify";
 import { initializeWinston } from "../src/common/CustomLogger";
-import { UserDto } from "../src/app/dto/user.dto";
 
 describe("AppController (e2e)", () => {
   let app: INestApplication;
   const appService = {
-    getHello: () => "Hello World!",
-    createUser: (userDto: UserDto) => userDto,
+    getHello: () => "justjava",
   };
   let server: HttpServer;
 
@@ -50,17 +48,6 @@ describe("AppController (e2e)", () => {
       .get("/")
       .expect(200)
       .expect(appService.getHello());
-  });
-
-  it("POST /", () => {
-    const userDto = new UserDto();
-    userDto.username = "Mark";
-
-    return request(server)
-      .post("/")
-      .send(userDto)
-      .expect(201)
-      .expect(JSON.stringify(userDto));
   });
 
   afterAll(async () => {
