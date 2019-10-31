@@ -1,8 +1,8 @@
 {
-  "name": "nest-starter",
+  "name": "justjava-api",
   "version": "0.1.0",
-  "description": "",
-  "author": "",
+  "description": "Backend for JustJava, a sample food delivery application for a coffee shop.",
+  "author": "Mark Njung'e",
   "license": "MIT",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
