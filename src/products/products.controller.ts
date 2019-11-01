@@ -1,8 +1,9 @@
-import { Controller, Post, Body, Get, Param } from "@nestjs/common";
+import { Controller, Post, Body, Get, Param, UseGuards } from "@nestjs/common";
 import { CreateProductDto } from "./dto/CreateProduct.dto";
 import { ProductsService } from "./products.service";
 import { ProductDto } from "./dto/Product.dto";
-import { ApiOperation, ApiResponse } from "@nestjs/swagger";
+import { ApiOperation, ApiResponse, ApiImplicitHeader } from "@nestjs/swagger";
+import { AdminGuard } from "../common/guards/admin.guard";
 
 @Controller("products")
 export class ProductsController {
@@ -23,6 +24,8 @@ export class ProductsController {
   }
 
   @Post()
+  @ApiImplicitHeader({ name: "admin-key" })
+  @UseGuards(AdminGuard)
   @ApiOperation({ title: "Create a new product" })
   @ApiResponse({ status: 201, type: ProductDto })
   async create(@Body() dto: CreateProductDto): Promise<ProductDto> {
