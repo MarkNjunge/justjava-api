@@ -14,7 +14,7 @@ import { ProductEntity } from "./products/entities/Product.entity";
     TypeOrmModule.forRoot({
       type: "postgres",
       url: config.db.url,
-      entities: [__dirname + "/**/*.entity.ts"],
+      entities: [__dirname + "/**/*.entity{.ts,.js}"],
       synchronize: true,
       extra: {
         ssl: config.db.ssl,
