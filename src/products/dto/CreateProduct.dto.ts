@@ -1,5 +1,5 @@
 import { ApiModelProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsPositive, IsEnum } from "class-validator";
+import { IsNotEmpty, IsPositive, IsEnum, Min } from "class-validator";
 import { ProductType, ProductStatus } from "./Product.dto";
 
 export class CreateProductDto {
@@ -12,7 +12,7 @@ export class CreateProductDto {
   description: string;
 
   @IsNotEmpty()
-  @IsPositive({ message: "Products can't sell for a negative amount" })
+  @Min(0, { message: "Products can't sell for a less than 0" })
   @ApiModelProperty()
   price: number;
 
