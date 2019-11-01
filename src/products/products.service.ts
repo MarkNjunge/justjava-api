@@ -5,7 +5,7 @@ import { ProductEntity } from "./entities/Product.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ProductDto } from "./dto/Product.dto";
-import { ApiException } from "src/common/ApiException";
+import { ApiException } from "../common/ApiException";
 
 @Injectable()
 export class ProductsService {

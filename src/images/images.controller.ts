@@ -9,7 +9,7 @@ import { UploadImageDto } from "./dto/UploadImage.dto";
 import { ApiImplicitFormData } from "../common/decorators/api-imlicit-form-data.decorator";
 import { ImagesService } from "./images.service";
 import { CloudinaryInfoDto } from "./dto/CloudinaryInfo.dto";
-import { AdminGuard } from "src/common/guards/admin.guard";
+import { AdminGuard } from "../common/guards/admin.guard";
 
 @Controller("images")
 @UseGuards(AdminGuard)
