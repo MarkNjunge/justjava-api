@@ -14,5 +14,9 @@
     "cloudName": "cloudinary_cloud_name",
     "apiKey": "cloudinary_api_key",
     "apiSecret": "cloudinary_api_secret"
+  },
+  "db": {
+    "url": "postgres://username:password@host:port/database",
+    "ssl": false
   }
 }
