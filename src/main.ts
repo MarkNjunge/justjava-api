@@ -11,13 +11,17 @@ import {
   NestFastifyApplication,
 } from "@nestjs/platform-fastify";
 import * as fastifyRateLimit from "fastify-rate-limit";
+import * as fileUpload from "fastify-file-upload";
 
 async function bootstrap() {
   initializeWinston();
 
+  const fastifyAdapter = new FastifyAdapter();
+  fastifyAdapter.register(fileUpload);
+
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter(),
+    fastifyAdapter,
     {
       logger: new CustomLogger("NestApplication"),
     },
