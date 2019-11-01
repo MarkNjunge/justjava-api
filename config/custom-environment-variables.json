@@ -1,4 +1,14 @@
 {
   "env": "NODE_ENV",
-  "port": "PORT"
+  "port": "PORT",
+  "adminKey": "ADMIN_KEY",
+  "cloudinary": {
+    "cloudName": "CLOUDINARY_CLOUD_NAME",
+    "apiKey": "CLOUDINARY_API_KEY",
+    "apiSecret": "CLOUDINARY_API_SECRET"
+  },
+  "db": {
+    "url": "DB_URL",
+    "ssl": "DB_SSL"
+  }
 }

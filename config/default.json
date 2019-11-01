@@ -8,5 +8,15 @@
   "corsMethods": "*",
   "corsHeaders": "*",
   "validatorForbidUnknown": true,
-  "loggerTimestampFormat": "YYYY-MM-DD HH:mm:ss.SSS"
+  "loggerTimestampFormat": "YYYY-MM-DD HH:mm:ss.SSS",
+  "adminKey": "admin_key",
+  "cloudinary": {
+    "cloudName": "cloudinary_cloud_name",
+    "apiKey": "cloudinary_api_key",
+    "apiSecret": "cloudinary_api_secret"
+  },
+  "db": {
+    "url": "postgres://username:password@host:port/database",
+    "ssl": false
+  }
 }

@@ -13,6 +13,20 @@ export interface Config {
   corsHeaders: string;
   validatorForbidUnknown: boolean;
   loggerTimestampFormat: string;
+  adminKey: string;
+  cloudinary: CloudinaryConfig;
+  db: DbConfig;
+}
+
+interface CloudinaryConfig {
+  cloudName: string;
+  apiKey: string;
+  apiSecret: string;
+}
+
+interface DbConfig {
+  url: string;
+  ssl: boolean;
 }
 
 export const config: Config = configPackage;
