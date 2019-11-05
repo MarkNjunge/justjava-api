@@ -1,9 +1,17 @@
-import { Entity, Column, Index, PrimaryColumn, Generated } from "typeorm";
+import slugify from "slugify";
+import {
+  Entity,
+  Column,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { ProductChoiceEntity } from "./ProductChoice.entity";
+import { CreateProductDto } from "../dto/CreateProduct.dto";
 
 @Entity({ name: "products" })
 export class ProductEntity {
-  @PrimaryColumn()
-  @Generated("uuid")
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
@@ -31,23 +39,24 @@ export class ProductEntity {
   @Column({ type: "bigint", name: "created_at" })
   createdAt: number;
 
-  constructor(
-    name: string,
-    slug: string,
-    description: string,
-    price: number,
-    image: string,
-    type: string,
-    status: string,
-    createdAt: number,
-  ) {
-    this.name = name;
-    this.slug = slug;
-    this.description = description;
-    this.price = price;
-    this.image = image;
-    this.type = type;
-    this.status = status;
-    this.createdAt = createdAt;
+  @OneToMany(type => ProductChoiceEntity, choice => choice.product, {
+    eager: true,
+    cascade: true,
+  })
+  choices: ProductChoiceEntity[];
+
+  static fromDto(dto: CreateProductDto): ProductEntity {
+    const product = new ProductEntity();
+    product.name = dto.name;
+    product.slug = slugify(dto.name, { lower: true });
+    product.description = dto.description;
+    product.price = dto.price;
+    product.image = dto.image;
+    product.type = dto.type;
+    product.status = dto.status;
+    product.createdAt = Math.floor(Date.now() / 1000);
+    product.choices = dto.choices.map(c => ProductChoiceEntity.fromDto(c));
+
+    return product;
   }
 }

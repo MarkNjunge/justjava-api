@@ -36,17 +36,7 @@ export class ProductsService {
     if (existing) {
       return existing;
     } else {
-      const createdAt = Math.floor(Date.now() / 1000);
-      const entity = new ProductEntity(
-        dto.name,
-        slug,
-        dto.description,
-        dto.price,
-        dto.image,
-        dto.type,
-        dto.status,
-        createdAt,
-      );
+      const entity = ProductEntity.fromDto(dto);
       return this.productsRepository.save(entity);
     }
   }

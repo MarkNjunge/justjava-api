@@ -1,6 +1,14 @@
 import { ApiModelProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsPositive, IsEnum, Min } from "class-validator";
+import {
+  IsNotEmpty,
+  IsEnum,
+  Min,
+  ValidateNested,
+  IsOptional,
+} from "class-validator";
 import { ProductType, ProductStatus } from "./Product.dto";
+import { CreateProductChoiceDto } from "./CreateProductChoice.dto";
+import { Type } from "class-transformer";
 
 export class CreateProductDto {
   @IsNotEmpty()
@@ -29,4 +37,10 @@ export class CreateProductDto {
   @IsEnum(ProductStatus)
   @ApiModelProperty({ enum: ProductStatus })
   status: string;
+
+  @IsOptional()
+  @ApiModelProperty({ type: [CreateProductChoiceDto] })
+  @ValidateNested({ each: true })
+  @Type(() => CreateProductChoiceDto)
+  choices: CreateProductChoiceDto[];
 }
