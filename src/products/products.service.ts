@@ -34,7 +34,10 @@ export class ProductsService {
     const slug = slugify(dto.name, { lower: true });
     const existing = await this.productsRepository.findOne({ where: { slug } });
     if (existing) {
-      return existing;
+      throw new ApiException(
+        HttpStatus.CONFLICT,
+        `Product with name ${dto.name} (${slug}) already exists`,
+      );
     } else {
       const entity = ProductEntity.fromDto(dto);
       return this.productsRepository.save(entity);
