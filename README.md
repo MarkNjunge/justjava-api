@@ -6,6 +6,7 @@
 Backend API for [JustJava-Android](https://github.com/MarkNjunge/JustJava-Android).
 
 Live develop branch: https://api-dev.justjava.marknjunge.com/
+
 Live master branch: https://api.justjava.marknjunge.com/
 
 ## Installation
@@ -26,6 +27,10 @@ $ yarn run start:dev
 # production mode
 $ yarn run start:prod
 ```
+
+5. Go to `/docs` to view routes documentation.
+
+http://localhost:3000/docs
 
 ## Testing
 
