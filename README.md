@@ -9,6 +9,8 @@ Live develop branch: https://api-dev.justjava.marknjunge.com/
 
 Live master branch: https://api.justjava.marknjunge.com/
 
+**[See `develop` branch for latest changes](https://github.com/MarkNjunge/justjava-api/tree/develop)**
+
 ## Installation
 
 ```bash
