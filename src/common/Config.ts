@@ -16,6 +16,8 @@ export interface Config {
   adminKey: string;
   cloudinary: CloudinaryConfig;
   db: DbConfig;
+  google: Google;
+  redis: Redis;
 }
 
 interface CloudinaryConfig {
@@ -27,6 +29,16 @@ interface CloudinaryConfig {
 interface DbConfig {
   url: string;
   ssl: boolean;
+}
+
+interface Google {
+  clientId: string;
+}
+
+interface Redis {
+  host: string;
+  port: number;
+  password: string;
 }
 
 export const config: Config = configPackage;

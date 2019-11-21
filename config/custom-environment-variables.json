@@ -10,5 +10,13 @@
   "db": {
     "url": "DB_URL",
     "ssl": "DB_SSL"
+  },
+  "google": {
+    "clientId": "GOOGLE_CLIENT_ID"
+  },
+  "redis": {
+    "host": "REDIS_HOST",
+    "port": "REDIS_PORT",
+    "password": "REDIS_PASSWORD"
   }
 }
