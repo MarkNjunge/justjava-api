@@ -11,6 +11,35 @@ Live master branch: https://api.justjava.marknjunge.com/
 
 **[See `develop` branch for latest changes](https://github.com/MarkNjunge/justjava-api/tree/develop)**
 
+## Prerequisites
+
+### PostgreSQL
+
+Used to store the API's data.
+
+1. Create a PostgreSQL database and get the url in the form `postgres://username:password@host:port/database`;
+
+### Redis
+
+Used to store sessions.
+
+1. Create a Redis instance and get the url in the form `redis://:password@host:port/0`
+
+### GCP Project (optional)
+
+Used for Google Sign In.
+
+1. Create an project on [GCP](https://console.cloud.google.com/projectcreate).
+2. Create [OAuth client ID credentials](https://console.cloud.google.com/apis/credentials) with "Web Application" as the application type.
+3. Take not of the client ID.
+
+### Cloudinary (optional)
+
+Used for image upload.
+
+1. Create a [Cloudinary Account](https://cloudinary.com/users/register/free).
+2. Get the "Cloud name", "API Key" and "API Secret" from the [console](https://cloudinary.com/console).
+
 ## Installation
 
 1. Clone the repository
