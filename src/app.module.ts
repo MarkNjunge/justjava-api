@@ -8,6 +8,10 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { config } from "./common/Config";
 import { ProductsService } from "./products/products.service";
 import { ProductEntity } from "./products/entities/Product.entity";
+import { AuthController } from "./auth/auth.controller";
+import { AuthService } from "./auth/auth.service";
+import { UserEntity } from "./auth/entities/User.entity";
+import { RedisService } from "./redis/redis.service";
 
 @Module({
   imports: [
@@ -20,9 +24,14 @@ import { ProductEntity } from "./products/entities/Product.entity";
         ssl: config.db.ssl,
       },
     }),
-    TypeOrmModule.forFeature([ProductEntity]),
+    TypeOrmModule.forFeature([ProductEntity, UserEntity]),
   ],
-  controllers: [AppController, ImagesController, ProductsController],
-  providers: [AppService, ImagesService, ProductsService],
+  controllers: [
+    AppController,
+    ImagesController,
+    ProductsController,
+    AuthController,
+  ],
+  providers: [AppService, ImagesService, ProductsService, AuthService, RedisService],
 })
 export class AppModule {}

@@ -18,5 +18,11 @@
   "db": {
     "url": "postgres://username:password@host:port/database",
     "ssl": false
+  },
+  "google": {
+    "clientId": "google_client_id"
+  },
+  "redis": {
+    "url": "redis://:password@host:port/0"
   }
 }
