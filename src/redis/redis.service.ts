@@ -16,10 +16,7 @@ export class RedisService {
   }
 
   async connect() {
-    this.redis = new IoRedis({
-      host: config.redis.host,
-      port: config.redis.port,
-      password: config.redis.password,
+    this.redis = new IoRedis(config.redis.url, {
       retryStrategy() {
         return false;
       },

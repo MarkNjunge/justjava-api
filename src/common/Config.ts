@@ -36,9 +36,7 @@ interface Google {
 }
 
 interface Redis {
-  host: string;
-  port: number;
-  password: string;
+  url: string;
 }
 
 export const config: Config = configPackage;

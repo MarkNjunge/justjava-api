@@ -23,8 +23,6 @@
     "clientId": "google_client_id"
   },
   "redis": {
-    "host": "127.0.0.1",
-    "port": 6379,
-    "password": "redis"
+    "url": "redis://:password@host:port/0"
   }
 }
