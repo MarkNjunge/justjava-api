@@ -12,6 +12,7 @@ import {
 } from "@nestjs/platform-fastify";
 import * as fastifyRateLimit from "fastify-rate-limit";
 import * as fileUpload from "fastify-file-upload";
+import { RedisService } from "./redis/redis.service";
 
 async function bootstrap() {
   initializeWinston();
@@ -43,6 +44,9 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalInterceptors(new LoggingInterceptor());
   app.useGlobalPipes(new ValidationPipe());
+
+  const redis = await app.get<RedisService>(RedisService);
+  redis.connect();
 
   await app.listen(config.port, "0.0.0.0").then(() => {
     new CustomLogger("Application").log(
