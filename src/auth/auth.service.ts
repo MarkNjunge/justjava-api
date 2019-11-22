@@ -12,6 +12,9 @@ import { RedisService } from "../redis/redis.service";
 import * as crypto from "crypto";
 import { SessionDto } from "./dto/Session.dto";
 import { LoginResponseDto } from "./dto/LoginResponse.dto";
+import { SignUpDto } from "./dto/SignUp.dto";
+import { PasswordHash } from "../common/PasswordHash";
+import { SignInDto } from "./dto/SignIn.dto";
 
 @Injectable()
 export class AuthService {
@@ -41,7 +44,7 @@ export class AuthService {
     });
 
     const userDto = existing
-      ? (existing as unknown) as UserDto
+      ? ((existing as unknown) as UserDto)
       : await this.createGoogleUser(payload);
 
     const sessionDto = new SessionDto(
@@ -82,6 +85,87 @@ export class AuthService {
 
     // Must first assert to unknown then to DTO due to 'lacking sufficient overlap'
     return (saved as unknown) as UserDto;
+  }
+
+  async signUp(dto: SignUpDto): Promise<LoginResponseDto> {
+    // Check for existing user
+    const existing = await this.usersRepository.findOne({
+      where: { email: dto.email },
+    });
+    if (existing) {
+      const msg =
+        existing.signInMethod === SignInMethod.GOOGLE
+          ? "Email aleady is use using Google Sign In."
+          : "Email aleady is use.";
+
+      throw new ApiException(HttpStatus.CONFLICT, msg);
+    }
+
+    // Create user db entity
+    const user = new UserEntity();
+    user.firstName = dto.firstName;
+    user.lastName = dto.lastName;
+    user.email = dto.email;
+    user.mobileNumber = dto.mobileNumber;
+    user.password = PasswordHash.hash(dto.password);
+    user.signInMethod = SignInMethod.PASSWORD;
+    user.createdAt = Math.floor(Date.now() / 1000);
+
+    // Save entity and remove password from object
+    const saved = await this.usersRepository.save(user);
+    delete saved.password;
+
+    // Create and save session
+    const sessionDto = new SessionDto(
+      saved.id,
+      this.generateSession(),
+      Math.floor(Date.now() / 1000),
+    );
+    await this.redisService.saveSession(sessionDto);
+
+    return { user: saved, session: sessionDto };
+  }
+
+  async signIn(dto: SignInDto): Promise<LoginResponseDto> {
+    // Select all columns, specifically password
+    const columns = this.usersRepository.metadata.ownColumns.map(
+      column => `user.${column.propertyName}`,
+    );
+    const user = await this.usersRepository
+      .createQueryBuilder("user")
+      .select(columns)
+      .where("user.email = :email", { email: dto.email })
+      .getOne();
+
+    // Check if user exists
+    if (!user) {
+      throw new ApiException(HttpStatus.NOT_FOUND, "Email address not in use");
+    }
+
+    // Check if user uses Google Sign in
+    if (user.signInMethod === SignInMethod.GOOGLE) {
+      throw new ApiException(
+        HttpStatus.FORBIDDEN,
+        "Email address uses Google Sign In",
+      );
+    }
+
+    // Compare password
+    const valid = PasswordHash.validate(dto.password, user.password);
+    if (!valid) {
+      throw new ApiException(HttpStatus.FORBIDDEN, "Incorrect password");
+    }
+    delete user.password; // Remove password for response
+
+    // Create and save session
+    const sessionDto = new SessionDto(
+      user.id,
+      this.generateSession(),
+      Math.floor(Date.now() / 1000),
+    );
+    await this.redisService.saveSession(sessionDto);
+
+    return { user, session: sessionDto };
   }
 
   private generateSession() {
