@@ -13,7 +13,7 @@ import { FastifyReply } from "fastify";
 import { ServerResponse } from "http";
 import { LoginResponseDto } from "./dto/LoginResponse.dto";
 import { SignUpDto } from "./dto/SignUp.dto";
-import { ApiResponseDto } from "src/common/dto/ApiResponse.dto";
+import { ApiResponseDto } from "../common/dto/ApiResponse.dto";
 import { SignInDto } from "./dto/SignIn.dto";
 
 @Controller("auth")
