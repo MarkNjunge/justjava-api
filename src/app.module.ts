@@ -10,8 +10,11 @@ import { ProductsService } from "./products/products.service";
 import { ProductEntity } from "./products/entities/Product.entity";
 import { AuthController } from "./auth/auth.controller";
 import { AuthService } from "./auth/auth.service";
-import { UserEntity } from "./auth/entities/User.entity";
+import { UserEntity } from "./users/entities/User.entity";
 import { RedisService } from "./redis/redis.service";
+import { UsersController } from "./users/users.controller";
+import { UsersService } from "./users/users.service";
+import { AddressEntity } from "./users/entities/Address.entity";
 
 @Module({
   imports: [
@@ -24,14 +27,22 @@ import { RedisService } from "./redis/redis.service";
         ssl: config.db.ssl,
       },
     }),
-    TypeOrmModule.forFeature([ProductEntity, UserEntity]),
+    TypeOrmModule.forFeature([ProductEntity, UserEntity, AddressEntity]),
   ],
   controllers: [
     AppController,
     ImagesController,
     ProductsController,
     AuthController,
+    UsersController,
   ],
-  providers: [AppService, ImagesService, ProductsService, AuthService, RedisService],
+  providers: [
+    AppService,
+    ImagesService,
+    ProductsService,
+    AuthService,
+    RedisService,
+    UsersService,
+  ],
 })
 export class AppModule {}

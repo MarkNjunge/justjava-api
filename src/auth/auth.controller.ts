@@ -36,7 +36,7 @@ export class AuthController {
     const sessionExpiry = new Date(Date.now() + 1000 * 60 * 60 * 24 * 365); // 1 year
     res.header(
       "Set-Cookie",
-      `sessionId=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`,
+      `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`,
     );
 
     res.send(response);
@@ -59,7 +59,7 @@ export class AuthController {
     const sessionExpiry = new Date(Date.now() + 1000 * 60 * 60 * 24 * 365); // 1 year
     res.header(
       "Set-Cookie",
-      `sessionId=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`,
+      `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`,
     );
 
     res.send(response);
@@ -87,7 +87,7 @@ export class AuthController {
     const sessionExpiry = new Date(Date.now() + 1000 * 60 * 60 * 24 * 365); // 1 year
     res.header(
       "Set-Cookie",
-      `sessionId=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`,
+      `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`,
     );
 
     res.status(200).send(response);

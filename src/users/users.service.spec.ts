@@ -1,34 +1,33 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { AuthController } from "./auth.controller";
-import { AuthService } from "./auth.service";
+import { UsersService } from "./users.service";
+import { AddressEntity } from "./entities/Address.entity";
 import { getRepositoryToken } from "@nestjs/typeorm";
-import { UserEntity } from "../users/entities/User.entity";
+import { UserEntity } from "./entities/User.entity";
 import { Repository } from "typeorm";
 import { RedisService } from "../redis/redis.service";
 
-describe("Auth Controller", () => {
-  let controller: AuthController;
+describe("UsersService", () => {
+  let service: UsersService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [AuthController],
       providers: [
-        AuthService,
+        UsersService,
         {
           provide: getRepositoryToken(UserEntity),
           useClass: Repository,
         },
         {
-          provide: RedisService,
-          useClass: jest.fn(),
+          provide: getRepositoryToken(AddressEntity),
+          useClass: Repository,
         },
       ],
     }).compile();
 
-    controller = module.get<AuthController>(AuthController);
+    service = module.get<UsersService>(UsersService);
   });
 
   it("should be defined", () => {
-    expect(controller).toBeDefined();
+    expect(service).toBeDefined();
   });
 });

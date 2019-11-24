@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { AuthService } from "./auth.service";
 import { RedisService } from "../redis/redis.service";
-import { UserEntity } from "./entities/User.entity";
+import { UserEntity } from "../users/entities/User.entity";
 import { Repository } from "typeorm";
 import { getRepositoryToken } from "@nestjs/typeorm";
 

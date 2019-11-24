@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { AddressEntity } from "./Address.entity";
 
 @Entity({ name: "users" })
 export class UserEntity {
@@ -25,4 +26,10 @@ export class UserEntity {
 
   @Column({ type: "bigint", name: "created_at" })
   createdAt: number;
+
+  @OneToMany(type => AddressEntity, address => address.user, {
+    eager: true,
+    cascade: true,
+  })
+  addresses: AddressEntity[];
 }
