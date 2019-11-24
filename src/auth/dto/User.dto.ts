@@ -3,7 +3,7 @@ import { SignInMethod } from "../models/SignInMethod";
 
 export class UserDto {
   @ApiModelProperty()
-  id: string;
+  id: number;
 
   @ApiModelProperty()
   firstName: string;

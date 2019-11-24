@@ -13,7 +13,7 @@ export enum ProductStatus {
 
 export class ProductDto {
   @ApiModelProperty()
-  id: string;
+  id: number;
 
   @ApiModelProperty()
   name: string;

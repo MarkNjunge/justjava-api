@@ -11,8 +11,8 @@ import { CreateProductDto } from "../dto/CreateProduct.dto";
 
 @Entity({ name: "products" })
 export class ProductEntity {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
+  @PrimaryGeneratedColumn("increment")
+  id: number;
 
   @Column()
   name: string;

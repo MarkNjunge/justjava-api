@@ -13,7 +13,7 @@ import { CreateProductChoiceDto } from "../dto/CreateProductChoice.dto";
 @Entity({ name: "product_choices" })
 export class ProductChoiceEntity {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column()
   name: string;

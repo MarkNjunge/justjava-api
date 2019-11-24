@@ -2,7 +2,7 @@ import { ApiModelProperty } from "@nestjs/swagger";
 
 export class SessionDto {
   @ApiModelProperty()
-  userId: string;
+  userId: number;
 
   @ApiModelProperty()
   sessionId: string;
@@ -10,7 +10,7 @@ export class SessionDto {
   @ApiModelProperty()
   lastUseDate: number;
 
-  constructor(userId: string, sessionId: string, lastUseDate: number) {
+  constructor(userId: number, sessionId: string, lastUseDate: number) {
     this.userId = userId;
     this.sessionId = sessionId;
     this.lastUseDate = lastUseDate;
