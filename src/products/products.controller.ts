@@ -2,10 +2,16 @@ import { Controller, Post, Body, Get, Param, UseGuards } from "@nestjs/common";
 import { CreateProductDto } from "./dto/CreateProduct.dto";
 import { ProductsService } from "./products.service";
 import { ProductDto } from "./dto/Product.dto";
-import { ApiOperation, ApiResponse, ApiImplicitHeader } from "@nestjs/swagger";
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiImplicitHeader,
+  ApiUseTags,
+} from "@nestjs/swagger";
 import { AdminGuard } from "../common/guards/admin.guard";
 
 @Controller("products")
+@ApiUseTags("products")
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 

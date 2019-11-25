@@ -7,7 +7,7 @@ import {
   HttpStatus,
 } from "@nestjs/common";
 import { LoginGoogleDto } from "./dto/LoginGoogle.dto";
-import { ApiOperation, ApiResponse } from "@nestjs/swagger";
+import { ApiOperation, ApiResponse, ApiUseTags } from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
 import { FastifyReply } from "fastify";
 import { ServerResponse } from "http";
@@ -17,6 +17,7 @@ import { ApiResponseDto } from "../common/dto/ApiResponse.dto";
 import { SignInDto } from "./dto/SignIn.dto";
 
 @Controller("auth")
+@ApiUseTags("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
