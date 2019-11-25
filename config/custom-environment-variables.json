@@ -1,6 +1,11 @@
 {
   "env": "NODE_ENV",
   "port": "PORT",
+  "rateLimit": {
+    "enabled": "RATE_LIMIT_ENABLED",
+    "max": "RATE_LIMIT_MAX",
+    "timeWindow": "RATE_LIMIT_TIME_WINDOW"
+  },
   "adminKey": "ADMIN_KEY",
   "cloudinary": {
     "cloudName": "CLOUDINARY_CLOUD_NAME",

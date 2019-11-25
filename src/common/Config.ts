@@ -6,8 +6,7 @@ export interface Config {
   env: string;
   port: number;
   swaggerEndpoint: string;
-  rateLimitMax: number;
-  rateLimitTimeWindow: string;
+  rateLimit: RateLimit;
   corsOrigin: string;
   corsMethods: string;
   corsHeaders: string;
@@ -18,6 +17,12 @@ export interface Config {
   db: DbConfig;
   google: Google;
   redis: Redis;
+}
+
+interface RateLimit {
+  enabled: boolean;
+  max: number;
+  timeWindow: string;
 }
 
 interface CloudinaryConfig {
