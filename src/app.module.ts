@@ -15,6 +15,8 @@ import { RedisService } from "./redis/redis.service";
 import { UsersController } from "./users/users.controller";
 import { UsersService } from "./users/users.service";
 import { AddressEntity } from "./users/entities/Address.entity";
+import { OrdersController } from "./orders/orders.controller";
+import { OrdersService } from "./orders/orders.service";
 
 @Module({
   imports: [
@@ -35,6 +37,7 @@ import { AddressEntity } from "./users/entities/Address.entity";
     ProductsController,
     AuthController,
     UsersController,
+    OrdersController,
   ],
   providers: [
     AppService,
@@ -43,6 +46,7 @@ import { AddressEntity } from "./users/entities/Address.entity";
     AuthService,
     RedisService,
     UsersService,
+    OrdersService,
   ],
 })
 export class AppModule {}
