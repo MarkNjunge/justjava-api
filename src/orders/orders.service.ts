@@ -24,6 +24,16 @@ export class OrdersService {
     private readonly usersRepository: Repository<UserEntity>,
   ) {}
 
+  async query(userId?: string): Promise<OrderDto> {
+    if (userId) {
+      return (this.ordersRepository.find({
+        where: { user: userId },
+      }) as unknown) as OrderDto;
+    } else {
+      return (this.ordersRepository.find() as unknown) as OrderDto;
+    }
+  }
+
   async verifyOrderItems(dto: VerifyOrderDto): Promise<OrderValidationError[]> {
     const errors: OrderValidationError[] = [];
 
