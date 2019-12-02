@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, HttpStatus } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { ProductEntity } from "../products/entities/Product.entity";
@@ -6,12 +6,21 @@ import { OrderValidationError } from "./dto/OrderValidationError.dto";
 import { OrderValidationErrorModel } from "./dto/OrderValidationErrorModel.dto";
 import { OrderValidationErrorType } from "./dto/OrderValidationErrorType.dto";
 import { VerifyOrderDto } from "./dto/VerifyOrder.dto";
+import { PlaceOrderDto } from "./dto/PlaceOrder.dto";
+import { SessionDto } from "../auth/dto/Session.dto";
+import { UserEntity } from "../users/entities/User.entity";
+import { ApiException } from "../common/ApiException";
+import { OrderEntity } from "./entities/Order.entity";
 
 @Injectable()
 export class OrdersService {
   constructor(
+    @InjectRepository(OrderEntity)
+    private readonly ordersRepository: Repository<OrderEntity>,
     @InjectRepository(ProductEntity)
     private readonly productsRepository: Repository<ProductEntity>,
+    @InjectRepository(UserEntity)
+    private readonly usersRepository: Repository<UserEntity>,
   ) {}
 
   async verifyOrderItems(dto: VerifyOrderDto): Promise<OrderValidationError[]> {
@@ -99,5 +108,24 @@ export class OrdersService {
     }
 
     return errors;
+  }
+
+  async placeOrder(session: SessionDto, dto: PlaceOrderDto) {
+    const user = await this.usersRepository.findOne({
+      where: { id: session.userId },
+    });
+    if (!user) {
+      throw new ApiException(HttpStatus.NOT_FOUND, `User does not exist`);
+    }
+    const address = user.addresses.filter(a => a.id === dto.addressId)[0];
+    if (!address) {
+      throw new ApiException(HttpStatus.NOT_FOUND, `Address does not exist`);
+    }
+
+    const productIds = dto.items.map(i => i.productId);
+    const products = await this.productsRepository.findByIds(productIds);
+    const orderEntity = OrderEntity.fromDto(dto, products, user, address);
+
+    return this.ordersRepository.save(orderEntity);
   }
 }

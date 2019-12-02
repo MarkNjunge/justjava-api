@@ -17,6 +17,7 @@ import { UsersService } from "./users/users.service";
 import { AddressEntity } from "./users/entities/Address.entity";
 import { OrdersController } from "./orders/orders.controller";
 import { OrdersService } from "./orders/orders.service";
+import { OrderEntity } from "./orders/entities/Order.entity";
 
 @Module({
   imports: [
@@ -29,7 +30,12 @@ import { OrdersService } from "./orders/orders.service";
         ssl: config.db.ssl,
       },
     }),
-    TypeOrmModule.forFeature([ProductEntity, UserEntity, AddressEntity]),
+    TypeOrmModule.forFeature([
+      ProductEntity,
+      UserEntity,
+      AddressEntity,
+      OrderEntity,
+    ]),
   ],
   controllers: [
     AppController,
