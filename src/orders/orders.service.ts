@@ -11,6 +11,7 @@ import { SessionDto } from "../auth/dto/Session.dto";
 import { UserEntity } from "../users/entities/User.entity";
 import { ApiException } from "../common/ApiException";
 import { OrderEntity } from "./entities/Order.entity";
+import { OrderDto } from "./dto/Order.dto";
 
 @Injectable()
 export class OrdersService {
@@ -110,7 +111,7 @@ export class OrdersService {
     return errors;
   }
 
-  async placeOrder(session: SessionDto, dto: PlaceOrderDto) {
+  async placeOrder(session: SessionDto, dto: PlaceOrderDto): Promise<OrderDto> {
     const user = await this.usersRepository.findOne({
       where: { id: session.userId },
     });
@@ -126,6 +127,6 @@ export class OrdersService {
     const products = await this.productsRepository.findByIds(productIds);
     const orderEntity = OrderEntity.fromDto(dto, products, user, address);
 
-    return this.ordersRepository.save(orderEntity);
+    return (this.ordersRepository.save(orderEntity) as unknown) as OrderDto;
   }
 }

@@ -19,6 +19,7 @@ import { OrderValidationError } from "./dto/OrderValidationError.dto";
 import { VerifyOrderDto } from "./dto/VerifyOrder.dto";
 import { AuthGuard } from "../common/guards/auth.guard";
 import { PlaceOrderDto } from "./dto/PlaceOrder.dto";
+import { OrderDto } from "./dto/Order.dto";
 
 @Controller("orders")
 @ApiUseTags("orders")
@@ -38,8 +39,11 @@ export class OrdersController {
   @HttpCode(HttpStatus.CREATED)
   @ApiImplicitHeader({ name: "session-id" })
   @ApiOperation({ title: "Place an order" })
-  @ApiCreatedResponse({ type: OrderValidationError, isArray: true })
-  async placeOrder(@Param("session") s, @Body() dto: PlaceOrderDto) {
+  @ApiCreatedResponse({ type: OrderDto, isArray: true })
+  async placeOrder(
+    @Param("session") s,
+    @Body() dto: PlaceOrderDto,
+  ): Promise<OrderDto> {
     return this.ordersService.placeOrder(s, dto);
   }
 }
