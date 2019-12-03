@@ -2,6 +2,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { UsersController } from "./users.controller";
 import { RedisService } from "../redis/redis.service";
 import { UsersService } from "./users.service";
+import { OrdersService } from "../orders/orders.service";
 
 describe("Users Controller", () => {
   let controller: UsersController;
@@ -16,6 +17,10 @@ describe("Users Controller", () => {
         },
         {
           provide: UsersService,
+          useClass: jest.fn(),
+        },
+        {
+          provide: OrdersService,
           useClass: jest.fn(),
         },
       ],

@@ -16,6 +16,7 @@ import {
   ApiResponse,
   ApiOperation,
   ApiUseTags,
+  ApiOkResponse,
 } from "@nestjs/swagger";
 import { UserDto } from "./dto/User.dto";
 import { AuthGuard } from "../common/guards/auth.guard";
@@ -24,11 +25,16 @@ import { AddressDto } from "./dto/Address.dto";
 import { SaveAddressDto } from "./dto/SaveAddress.dto";
 import { UsersService } from "./users.service";
 import { SessionDto } from "../auth/dto/Session.dto";
+import { OrderDto } from "../orders/dto/Order.dto";
+import { OrdersService } from "../orders/orders.service";
 
 @Controller("users")
 @ApiUseTags("users")
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly ordersService: OrdersService,
+  ) {}
 
   @Get("")
   @UseGuards(AdminGuard)
@@ -94,5 +100,14 @@ export class UsersController {
   @ApiResponse({ status: 404, type: ApiResponseDto })
   async deleteAddress(@Param("id") id: number, @Param("session") session) {
     return this.usersService.deleteAddress(id, session);
+  }
+
+  @Get("/current/orders")
+  @UseGuards(AuthGuard)
+  @ApiOperation({ title: "Query for orders" })
+  @ApiImplicitHeader({ name: "session-id", required: true })
+  @ApiOkResponse({ type: OrderDto, isArray: true })
+  async query(@Param("session") session): Promise<OrderDto> {
+    return this.ordersService.query(session.userId);
   }
 }
