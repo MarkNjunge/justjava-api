@@ -27,7 +27,7 @@ export class OrderDto {
   @ApiModelProperty({ enum: PaymentStatus })
   paymentStatus: string;
 
-  @ApiModelProperty()
+  @ApiModelProperty({ nullable: true })
   userId: number;
 
   @ApiModelProperty()

@@ -39,7 +39,7 @@ export class OrderEntity {
   paymentStatus: string;
 
   @ManyToOne(type => UserEntity, user => user.orders, {
-    onDelete: "NO ACTION",
+    onDelete: "SET NULL",
   })
   @JoinColumn({ name: "user_id" })
   user: UserEntity;
@@ -47,7 +47,7 @@ export class OrderEntity {
   @RelationId((order: OrderEntity) => order.user)
   userId: number;
 
-  @ManyToOne(type => AddressEntity, { onDelete: "NO ACTION" })
+  @ManyToOne(type => AddressEntity, { onDelete: "SET NULL" })
   @JoinColumn({ name: "user_address_id" })
   address: AddressEntity;
 

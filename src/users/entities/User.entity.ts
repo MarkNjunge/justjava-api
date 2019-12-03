@@ -36,7 +36,7 @@ export class UserEntity {
 
   @OneToMany(type => OrderEntity, order => order.user, {
     eager: false,
-    cascade: true,
+    cascade: false,
   })
   orders: OrderEntity[];
 }

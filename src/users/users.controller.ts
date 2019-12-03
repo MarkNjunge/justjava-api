@@ -78,6 +78,16 @@ export class UsersController {
     return this.usersService.updateUser(session, dto);
   }
 
+  @Delete("current")
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ title: "Delete a user" })
+  @ApiImplicitHeader({ name: "session-id" })
+  @ApiResponse({ status: 204 })
+  async deleteUser(@Param("session") session) {
+    return this.usersService.deleteUser(session);
+  }
+
   @Post("/current/addresses")
   @UseGuards(AuthGuard)
   @ApiOperation({ title: "Save a new address" })

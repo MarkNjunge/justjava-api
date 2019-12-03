@@ -36,6 +36,10 @@ export class UsersService {
     return this.usersRepository.update({ id: session.userId }, dto);
   }
 
+  async deleteUser(session: SessionDto) {
+    await this.usersRepository.delete({ id: session.userId });
+  }
+
   async saveAddress(
     dto: SaveAddressDto,
     session: SessionDto,
