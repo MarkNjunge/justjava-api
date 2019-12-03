@@ -1,4 +1,25 @@
 {
   "env": "NODE_ENV",
-  "port": "PORT"
+  "port": "PORT",
+  "rateLimit": {
+    "enabled": "RATE_LIMIT_ENABLED",
+    "max": "RATE_LIMIT_MAX",
+    "timeWindow": "RATE_LIMIT_TIME_WINDOW"
+  },
+  "adminKey": "ADMIN_KEY",
+  "cloudinary": {
+    "cloudName": "CLOUDINARY_CLOUD_NAME",
+    "apiKey": "CLOUDINARY_API_KEY",
+    "apiSecret": "CLOUDINARY_API_SECRET"
+  },
+  "db": {
+    "url": "DB_URL",
+    "ssl": "DB_SSL"
+  },
+  "google": {
+    "clientId": "GOOGLE_CLIENT_ID"
+  },
+  "redis": {
+    "url": "REDIS_URL"
+  }
 }

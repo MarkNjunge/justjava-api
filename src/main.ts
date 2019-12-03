@@ -11,30 +11,31 @@ import {
   NestFastifyApplication,
 } from "@nestjs/platform-fastify";
 import * as fastifyRateLimit from "fastify-rate-limit";
+import * as fileUpload from "fastify-file-upload";
+import { RedisService } from "./redis/redis.service";
 
 async function bootstrap() {
   initializeWinston();
 
+  const fastifyAdapter = new FastifyAdapter();
+  fastifyAdapter.register(fileUpload);
+
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter(),
+    fastifyAdapter,
     {
       logger: new CustomLogger("NestApplication"),
     },
   );
 
-  const options = new DocumentBuilder()
-    .setTitle("nest-starter")
-    .setDescription("nest-starter API description")
-    .setVersion(process.env.npm_package_version)
-    .build();
-  const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup(config.swaggerEndpoint, app, document);
+  intializeSwagger(app);
 
-  app.register(fastifyRateLimit, {
-    max: config.rateLimitMax,
-    timeWindow: config.rateLimitTimeWindow,
-  });
+  if (config.rateLimit.enabled === true) {
+    app.register(fastifyRateLimit, {
+      max: config.rateLimit.max,
+      timeWindow: config.rateLimit.timeWindow,
+    });
+  }
 
   app.enableCors({
     origin: config.corsOrigin,
@@ -46,6 +47,9 @@ async function bootstrap() {
   app.useGlobalInterceptors(new LoggingInterceptor());
   app.useGlobalPipes(new ValidationPipe());
 
+  const redis = await app.get<RedisService>(RedisService);
+  redis.connect();
+
   await app.listen(config.port, "0.0.0.0").then(() => {
     new CustomLogger("Application").log(
       `Server started on port ${config.port}`,
@@ -53,3 +57,15 @@ async function bootstrap() {
   });
 }
 bootstrap();
+
+function intializeSwagger(app: NestFastifyApplication) {
+  const options = new DocumentBuilder()
+    .setTitle("JustJava API")
+    .setDescription("JustJava API")
+    .setContactEmail("mark.kamau@outlook.com")
+    .setSchemes(process.env.NODE_ENV === "production" ? "https" : "http")
+    .build();
+
+  const document = SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup("docs", app, document);
+}

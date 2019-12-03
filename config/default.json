@@ -2,11 +2,30 @@
   "env": "development",
   "port": 3000,
   "swaggerEndpoint": "docs",
-  "rateLimitMax": 100,
-  "rateLimitTimeWindow": "1m",
+  "rateLimit": {
+    "enabled": true,
+    "max": 100,
+    "timeWindow": "1m"
+  },
   "corsOrigin": "*",
   "corsMethods": "*",
   "corsHeaders": "*",
   "validatorForbidUnknown": true,
-  "loggerTimestampFormat": "YYYY-MM-DD HH:mm:ss.SSS"
+  "loggerTimestampFormat": "YYYY-MM-DD HH:mm:ss.SSS",
+  "adminKey": "admin_key",
+  "cloudinary": {
+    "cloudName": "cloudinary_cloud_name",
+    "apiKey": "cloudinary_api_key",
+    "apiSecret": "cloudinary_api_secret"
+  },
+  "db": {
+    "url": "postgres://username:password@host:port/database",
+    "ssl": false
+  },
+  "google": {
+    "clientId": "google_client_id"
+  },
+  "redis": {
+    "url": "redis://:password@host:port/0"
+  }
 }

@@ -19,6 +19,8 @@ steps:
         "us-central1",
         "--platform",
         "managed",
+        "--update-env-vars",
+        "_ADMIN_KEY=ADMIN_KEY,_CLOUDINARY_CLOUD_NAME=CLOUDINARY_CLOUD_NAME,_CLOUDINARY_API_KEY=CLOUDINARY_API_KEY,_CLOUDINARY_API_SECRET=CLOUDINARY_API_SECRET,_DB_URL=DB_URL,_DB_SSL=DB_SSL,_GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID,_REDIS_URL=REDIS_URL",
       ]
 images:
   - gcr.io/$PROJECT_ID/justjava-api

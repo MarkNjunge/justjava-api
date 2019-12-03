@@ -6,13 +6,42 @@ export interface Config {
   env: string;
   port: number;
   swaggerEndpoint: string;
-  rateLimitMax: number;
-  rateLimitTimeWindow: string;
+  rateLimit: RateLimit;
   corsOrigin: string;
   corsMethods: string;
   corsHeaders: string;
   validatorForbidUnknown: boolean;
   loggerTimestampFormat: string;
+  adminKey: string;
+  cloudinary: CloudinaryConfig;
+  db: DbConfig;
+  google: Google;
+  redis: Redis;
+}
+
+interface RateLimit {
+  enabled: boolean;
+  max: number;
+  timeWindow: string;
+}
+
+interface CloudinaryConfig {
+  cloudName: string;
+  apiKey: string;
+  apiSecret: string;
+}
+
+interface DbConfig {
+  url: string;
+  ssl: boolean;
+}
+
+interface Google {
+  clientId: string;
+}
+
+interface Redis {
+  url: string;
 }
 
 export const config: Config = configPackage;
