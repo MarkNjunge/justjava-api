@@ -51,6 +51,9 @@ export class OrderEntity {
   @JoinColumn({ name: "user_address_id" })
   address: AddressEntity;
 
+  @RelationId((order: OrderEntity) => order.address)
+  addressId: number;
+
   @OneToMany(type => OrderItemEntity, item => item.order, {
     eager: true,
     cascade: true,

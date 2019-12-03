@@ -30,8 +30,8 @@ export class OrderDto {
   @ApiModelProperty({ nullable: true })
   userId: number;
 
-  @ApiModelProperty()
-  address: AddressDto;
+  @ApiModelProperty({ nullable: true })
+  addressId: number;
 
   @ApiModelProperty({ isArray: true, type: OrderItemDto })
   items: OrderItemDto[];
