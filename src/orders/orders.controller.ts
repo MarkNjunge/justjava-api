@@ -8,6 +8,7 @@ import {
   Param,
   Get,
   Query,
+  Put,
 } from "@nestjs/common";
 import {
   ApiUseTags,
@@ -62,5 +63,22 @@ export class OrdersController {
     @Body() dto: PlaceOrderDto,
   ): Promise<OrderDto> {
     return this.ordersService.placeOrder(s, dto);
+  }
+
+  @Put("/:id/cancel")
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiImplicitHeader({ name: "session-id" })
+  @ApiOperation({ title: "Cancel an order" })
+  async cancelOrder(@Param("session") s, @Param("id") id: number) {
+    await this.ordersService.cancelOrder(s, id);
+  }
+  @Put("/:id/cancelAdmin")
+  @UseGuards(AdminGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiImplicitHeader({ name: "admin-key" })
+  @ApiOperation({ title: "Cancel an order as an admin" })
+  async cancelOrderAdmin(@Param("id") id: number) {
+    await this.ordersService.cancelOrderAdmin(id);
   }
 }

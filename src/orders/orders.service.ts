@@ -12,6 +12,7 @@ import { UserEntity } from "../users/entities/User.entity";
 import { ApiException } from "../common/ApiException";
 import { OrderEntity } from "./entities/Order.entity";
 import { OrderDto } from "./dto/Order.dto";
+import { OrderStatus } from "./models/OrderStatus";
 
 @Injectable()
 export class OrdersService {
@@ -138,5 +139,29 @@ export class OrdersService {
     const orderEntity = OrderEntity.fromDto(dto, products, user, address);
 
     return (this.ordersRepository.save(orderEntity) as unknown) as OrderDto;
+  }
+
+  async cancelOrder(session: SessionDto, id: number) {
+    const order = await this.ordersRepository.findOne({
+      where: { id, userId: session.userId },
+    });
+
+    if (!order) {
+      throw new ApiException(HttpStatus.NOT_FOUND, "Order not found", {
+        reason: "Order either does not exist or does not belong to the user",
+      });
+    }
+
+    await this.ordersRepository.update(
+      { id },
+      { status: OrderStatus.CANCELLED },
+    );
+  }
+
+  async cancelOrderAdmin(id: number) {
+    await this.ordersRepository.update(
+      { id },
+      { status: OrderStatus.CANCELLED },
+    );
   }
 }
