@@ -9,6 +9,7 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  Patch,
 } from "@nestjs/common";
 import { AdminGuard } from "../common/guards/admin.guard";
 import {
@@ -27,6 +28,7 @@ import { UsersService } from "./users.service";
 import { SessionDto } from "../auth/dto/Session.dto";
 import { OrderDto } from "../orders/dto/Order.dto";
 import { OrdersService } from "../orders/orders.service";
+import { UpdateUserDto } from "./dto/UpdateUser.dto";
 
 @Controller("users")
 @ApiUseTags("users")
@@ -64,6 +66,16 @@ export class UsersController {
   async getCurrentUser(@Param("session") s) {
     const session = s as SessionDto;
     return this.usersService.getUserById(session.userId);
+  }
+
+  @Patch("current")
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ title: "Update a user's details" })
+  @ApiImplicitHeader({ name: "session-id" })
+  @ApiResponse({ status: 204 })
+  async updateUser(@Param("session") session, @Body() dto: UpdateUserDto) {
+    return this.usersService.updateUser(session, dto);
   }
 
   @Post("/current/addresses")

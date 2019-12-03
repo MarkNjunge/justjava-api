@@ -8,6 +8,7 @@ import { SaveAddressDto } from "./dto/SaveAddress.dto";
 import { SessionDto } from "../auth/dto/Session.dto";
 import { AddressEntity } from "./entities/Address.entity";
 import { AddressDto } from "./dto/Address.dto";
+import { UpdateUserDto } from "./dto/UpdateUser.dto";
 
 @Injectable()
 export class UsersService {
@@ -29,6 +30,10 @@ export class UsersService {
     } else {
       return user;
     }
+  }
+
+  async updateUser(session: SessionDto, dto: UpdateUserDto) {
+    return this.usersRepository.update({ id: session.userId }, dto);
   }
 
   async saveAddress(
