@@ -35,6 +35,20 @@ export class OrdersService {
     }
   }
 
+  async getOrderById(session: SessionDto, id: number) {
+    const order = await this.ordersRepository.findOne({
+      where: { id, user: { id: session.userId } },
+    });
+
+    if (!order) {
+      throw new ApiException(HttpStatus.NOT_FOUND, "Order not found", {
+        reason: "Order either does not exist or does not belong to the user",
+      });
+    } else {
+      return order;
+    }
+  }
+
   async verifyOrderItems(dto: VerifyOrderDto): Promise<OrderValidationError[]> {
     const errors: OrderValidationError[] = [];
 
@@ -143,7 +157,7 @@ export class OrdersService {
 
   async cancelOrder(session: SessionDto, id: number) {
     const order = await this.ordersRepository.findOne({
-      where: { id, userId: session.userId },
+      where: { id, user: { id: session.userId } },
     });
 
     if (!order) {

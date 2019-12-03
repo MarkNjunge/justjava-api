@@ -44,6 +44,15 @@ export class OrdersController {
     return this.ordersService.query(userId);
   }
 
+  @Get(":id")
+  @UseGuards(AuthGuard)
+  @ApiOperation({ title: "Get order by id" })
+  @ApiImplicitHeader({ name: "session-id" })
+  @ApiOkResponse({ type: OrderDto })
+  async getOrderById(@Param("session") session, @Param("id") id: number) {
+    return this.ordersService.getOrderById(session, id);
+  }
+
   @Post("/verify")
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ title: "Verify an order's items and choices are valid" })
@@ -73,6 +82,7 @@ export class OrdersController {
   async cancelOrder(@Param("session") s, @Param("id") id: number) {
     await this.ordersService.cancelOrder(s, id);
   }
+
   @Put("/:id/cancelAdmin")
   @UseGuards(AdminGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
