@@ -7,7 +7,7 @@ export class SaveAddressDto {
   streetAddress: string;
 
   @IsOptional()
-  @ApiModelProperty()
+  @ApiModelProperty({ required: false })
   deliveryInstructions: string;
 
   @IsNotEmpty()

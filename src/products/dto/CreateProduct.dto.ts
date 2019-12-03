@@ -39,7 +39,7 @@ export class CreateProductDto {
   status: string;
 
   @IsOptional()
-  @ApiModelProperty({ type: [CreateProductChoiceDto] })
+  @ApiModelProperty({ type: [CreateProductChoiceDto], required: false })
   @ValidateNested({ each: true })
   @Type(() => CreateProductChoiceDto)
   choices: CreateProductChoiceDto[];

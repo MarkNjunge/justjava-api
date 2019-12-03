@@ -14,7 +14,7 @@ export class PlaceOrderDto {
   @IsNotEmpty()
   addressId: number;
 
-  @ApiModelProperty()
+  @ApiModelProperty({ required: false })
   @IsOptional()
   additionalComments: string;
 
