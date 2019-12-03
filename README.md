@@ -31,7 +31,7 @@ Used for Google Sign In.
 
 1. Create an project on [GCP](https://console.cloud.google.com/projectcreate).
 2. Create [OAuth client ID credentials](https://console.cloud.google.com/apis/credentials) with "Web Application" as the application type.
-3. Take not of the client ID.
+3. Take note of the client ID.
 
 ### Cloudinary (optional)
 
