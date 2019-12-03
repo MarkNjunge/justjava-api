@@ -25,6 +25,9 @@ export class UserEntity {
   @Column({ name: "sign_in_method" })
   signInMethod: string;
 
+  @Column({ name: "fcm_token", nullable: true })
+  fcmToken: string;
+
   @Column({ type: "bigint", name: "created_at" })
   createdAt: number;
 

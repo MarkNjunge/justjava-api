@@ -29,6 +29,7 @@ import { SessionDto } from "../auth/dto/Session.dto";
 import { OrderDto } from "../orders/dto/Order.dto";
 import { OrdersService } from "../orders/orders.service";
 import { UpdateUserDto } from "./dto/UpdateUser.dto";
+import { UpdateFcmTokenDto } from "./dto/UpdateFcmToken.dto";
 
 @Controller("users")
 @ApiUseTags("users")
@@ -76,6 +77,19 @@ export class UsersController {
   @ApiResponse({ status: 204 })
   async updateUser(@Param("session") session, @Body() dto: UpdateUserDto) {
     return this.usersService.updateUser(session, dto);
+  }
+
+  @Patch("current/fcm")
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ title: "Update a user's Firebase messaging token" })
+  @ApiImplicitHeader({ name: "session-id" })
+  @ApiResponse({ status: 204 })
+  async updateFcmToken(
+    @Param("session") session,
+    @Body() dto: UpdateFcmTokenDto,
+  ) {
+    return this.usersService.updateFcmToken(session, dto);
   }
 
   @Delete("current")

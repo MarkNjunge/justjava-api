@@ -9,6 +9,7 @@ import { SessionDto } from "../auth/dto/Session.dto";
 import { AddressEntity } from "./entities/Address.entity";
 import { AddressDto } from "./dto/Address.dto";
 import { UpdateUserDto } from "./dto/UpdateUser.dto";
+import { UpdateFcmTokenDto } from "./dto/UpdateFcmToken.dto";
 
 @Injectable()
 export class UsersService {
@@ -34,6 +35,13 @@ export class UsersService {
 
   async updateUser(session: SessionDto, dto: UpdateUserDto) {
     return this.usersRepository.update({ id: session.userId }, dto);
+  }
+
+  async updateFcmToken(session: SessionDto, dto: UpdateFcmTokenDto) {
+    return this.usersRepository.update(
+      { id: session.userId },
+      { fcmToken: dto.fcmToken },
+    );
   }
 
   async deleteUser(session: SessionDto) {
