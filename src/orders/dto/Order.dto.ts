@@ -2,7 +2,6 @@ import { ApiModelProperty } from "@nestjs/swagger";
 import { PaymentMethod } from "../models/PaymentMethod";
 import { PaymentStatus } from "../models/PaymentStatus";
 import { OrderStatus } from "../models/OrderStatus";
-import { UserDto } from "../../users/dto/User.dto";
 import { AddressDto } from "../../users/dto/Address.dto";
 import { OrderItemDto } from "./OrderItem.dto";
 
@@ -29,7 +28,7 @@ export class OrderDto {
   paymentStatus: string;
 
   @ApiModelProperty()
-  user: UserDto;
+  userId: number;
 
   @ApiModelProperty()
   address: AddressDto;

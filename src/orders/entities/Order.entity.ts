@@ -5,6 +5,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  RelationId,
 } from "typeorm";
 import { UserEntity } from "../../users/entities/User.entity";
 import { AddressEntity } from "../../users/entities/Address.entity";
@@ -42,6 +43,9 @@ export class OrderEntity {
   })
   @JoinColumn({ name: "user_id" })
   user: UserEntity;
+
+  @RelationId((order: OrderEntity) => order.user)
+  userId: number;
 
   @ManyToOne(type => AddressEntity, { onDelete: "NO ACTION" })
   @JoinColumn({ name: "user_address_id" })
