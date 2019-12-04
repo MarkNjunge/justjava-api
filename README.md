@@ -1,6 +1,7 @@
 # [WIP] JustJava API
 
 ![](https://github.com/MarkNjunge/justjava-api/workflows/Main%20Workflow/badge.svg)
+![](https://github.com/MarkNjunge/justjava-api/workflows/deploy-dev-workflow/badge.svg)
 [![Known Vulnerabilities](https://snyk.io/test/github/MarkNjunge/justjava-api/badge.svg)](https://snyk.io/test/github/MarkNjunge/justjava-api)
 
 Backend API for [JustJava-Android](https://github.com/MarkNjunge/JustJava-Android).

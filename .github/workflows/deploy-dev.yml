@@ -1,4 +1,4 @@
-name: Deploy develop workflow
+name: deploy-dev-workflow
 on:
   push:
     branches:
@@ -17,4 +17,4 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H '178.128.46.40' >> ~/.ssh/known_hosts
       - name: Deploy
-        run: git push dokku@178.128.46.40:dev-justjava HEAD:refs/heads/master
+        run: git push dokku@178.128.46.40:dev-justjava HEAD:refs/heads/master --force
