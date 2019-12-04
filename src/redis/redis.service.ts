@@ -4,6 +4,7 @@ import { config } from "../common/Config";
 import { SessionDto } from "src/auth/dto/Session.dto";
 import { CustomLogger } from "../common/CustomLogger";
 import { ApiException } from "../common/ApiException";
+import { MpesaAccessTokenDto } from "../payments/mpesa/dto/MpesaAccessToken.dto";
 
 @Injectable()
 export class RedisService {
@@ -83,5 +84,18 @@ export class RedisService {
     this.assertHasConnected();
 
     await this.redis.del(`session:${session.userId}:${session.sessionId}`);
+  }
+
+  async saveMpesaAccessToken(dto: MpesaAccessTokenDto) {
+    await this.redis.set(
+      "mpesa:accessToken",
+      dto.access_token,
+      "ex",
+      dto.expires_in,
+    );
+  }
+
+  async getMpesaAccessToken(): Promise<string | null> {
+    return this.redis.get("mpesa:accessToken");
   }
 }
