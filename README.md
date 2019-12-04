@@ -40,6 +40,14 @@ Used for image upload.
 1. Create a [Cloudinary Account](https://cloudinary.com/users/register/free).
 2. Get the "Cloud name", "API Key" and "API Secret" from the [console](https://cloudinary.com/console).
 
+### Safaricom Developer Account (optional)
+
+Used for M-Pesa payments
+
+1. Create an account on [Daraja](https://developer.safaricom.co.ke/).
+2. Create an app.
+3. Get the `consumerKey` and `consumeSecret`.
+
 ## Installation
 
 1. Clone the repository
