@@ -12,7 +12,7 @@ import { AddressEntity } from "../../users/entities/Address.entity";
 import { OrderItemEntity } from "./OrderItem.entity";
 import { PlaceOrderDto } from "../dto/PlaceOrder.dto";
 import { OrderStatus } from "../models/OrderStatus";
-import { PaymentStatus } from "../models/PaymentStatus";
+import { OrderPaymentStatus } from "../models/OrderPaymentStatus";
 import { ProductEntity } from "../../products/entities/Product.entity";
 
 @Entity({ name: "orders" })
@@ -77,7 +77,7 @@ export class OrderEntity {
     entity.datePlaced = Math.floor(Date.now() / 1000);
     entity.status = OrderStatus.PENDING;
     entity.paymentMethod = dto.paymentMethod;
-    entity.paymentStatus = PaymentStatus.UNPAID;
+    entity.paymentStatus = OrderPaymentStatus.UNPAID;
     entity.user = user;
     entity.address = address;
     entity.items = items;

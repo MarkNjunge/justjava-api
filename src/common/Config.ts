@@ -17,6 +17,8 @@ export interface Config {
   db: DbConfig;
   google: Google;
   redis: Redis;
+  mpesa: Mpesa;
+  rave: Rave;
 }
 
 interface RateLimit {
@@ -42,6 +44,17 @@ interface Google {
 
 interface Redis {
   url: string;
+}
+
+interface Mpesa {
+  consumerKey: string;
+  consumerSecret: string;
+  callbackBaseUrl: string;
+}
+
+interface Rave {
+  encryptionKey: string;
+  publicKey: string;
 }
 
 export const config: Config = configPackage;

@@ -21,5 +21,14 @@
   },
   "redis": {
     "url": "REDIS_URL"
+  },
+  "mpesa": {
+    "consumerKey": "MPESA_CONSUMER_KEY",
+    "consumerSecret": "MPESA_CONSUMER_SECRET",
+    "callbackBaseUrl": "MPESA_CALLBACK_BASE"
+  },
+  "rave": {
+    "encryptionKey": "RAVEPAY_ENCRYPTION_KEY",
+    "publicKey": "RAVEPAY_PUBLIC_KEY"
   }
 }

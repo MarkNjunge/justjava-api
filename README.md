@@ -1,6 +1,7 @@
 # [WIP] JustJava API
 
-![](https://github.com/MarkNjunge/justjava-api/workflows/Main%20Workflow/badge.svg)
+![](https://github.com/MarkNjunge/justjava-api/workflows/test-workflow/badge.svg)
+![](https://github.com/MarkNjunge/justjava-api/workflows/deploy-dev-workflow/badge.svg)
 [![Known Vulnerabilities](https://snyk.io/test/github/MarkNjunge/justjava-api/badge.svg)](https://snyk.io/test/github/MarkNjunge/justjava-api)
 
 Backend API for [JustJava-Android](https://github.com/MarkNjunge/JustJava-Android).
@@ -39,6 +40,22 @@ Used for image upload.
 
 1. Create a [Cloudinary Account](https://cloudinary.com/users/register/free).
 2. Get the "Cloud name", "API Key" and "API Secret" from the [console](https://cloudinary.com/console).
+
+### Safaricom Developer Account (optional)
+
+Used for M-Pesa payments
+
+1. Create an account on [Daraja](https://developer.safaricom.co.ke/).
+2. Create an app.
+3. Get the `consumerKey` and `consumeSecret`.
+
+### Ravepay Sandbox Account (optional)
+
+Used for card payments
+
+1. Create an account and business on [Ravepay **sandbox**](https://ravesandbox.flutterwave.com/signup)
+
+2. Go to [API settings](https://ravesandbox.flutterwave.com/dashboard/settings/apis) and get the pubnlic key and secret key.
 
 ## Installation
 

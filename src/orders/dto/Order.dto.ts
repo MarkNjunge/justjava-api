@@ -1,6 +1,6 @@
 import { ApiModelProperty } from "@nestjs/swagger";
-import { PaymentMethod } from "../models/PaymentMethod";
-import { PaymentStatus } from "../models/PaymentStatus";
+import { PaymentMethod } from "../../payments/models/PaymentMethod";
+import { OrderPaymentStatus } from "../models/OrderPaymentStatus";
 import { OrderStatus } from "../models/OrderStatus";
 import { AddressDto } from "../../users/dto/Address.dto";
 import { OrderItemDto } from "./OrderItem.dto";
@@ -24,7 +24,7 @@ export class OrderDto {
   @ApiModelProperty({ enum: PaymentMethod })
   paymentMethod: string;
 
-  @ApiModelProperty({ enum: PaymentStatus })
+  @ApiModelProperty({ enum: OrderPaymentStatus })
   paymentStatus: string;
 
   @ApiModelProperty({ nullable: true })
