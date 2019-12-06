@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+      - name: unshallow # Prevents 'shallow update not allowed'
+        run: git fetch --unshallow origin
       - name: pre-deploy actions
         run: |
           mkdir -p ~/.ssh
@@ -17,4 +19,4 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H '178.128.46.40' >> ~/.ssh/known_hosts
       - name: Deploy
-        run: git push dokku@178.128.46.40:dev-justjava HEAD:refs/heads/master
+        run: git push dokku@178.128.46.40:dev-justjava develop:master
