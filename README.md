@@ -49,6 +49,14 @@ Used for M-Pesa payments
 2. Create an app.
 3. Get the `consumerKey` and `consumeSecret`.
 
+### Ravepay Sandbox Account (optional)
+
+Used for card payments
+
+1. Create an account and business on [Ravepay **sandbox**](https://ravesandbox.flutterwave.com/signup)
+
+2. Go to [API settings](https://ravesandbox.flutterwave.com/dashboard/settings/apis) and get the pubnlic key and secret key.
+
 ## Installation
 
 1. Clone the repository
