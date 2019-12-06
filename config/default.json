@@ -32,5 +32,9 @@
     "consumerKey": "consumer_key",
     "consumerSecret": "consumer_secret",
     "callbackBaseUrl": "base_url_where_your_api_is_hosted_without_slash"
+  },
+  "rave": {
+    "encryptionKey": "encryption_key",
+    "publicKey": "public_key"
   }
 }

@@ -21,6 +21,9 @@ import { OrderEntity } from "./orders/entities/Order.entity";
 import { MpesaController } from "./payments/mpesa/mpesa.controller";
 import { MpesaService } from "./payments/mpesa/mpesa.service";
 import { PaymentEntity } from "./payments/entities/Payment.entity";
+import { CardController } from "./payments/card/card.controller";
+import { CardService } from "./payments/card/card.service";
+import { RavepayService } from "./ravepay/ravepay.service";
 
 @Module({
   imports: [
@@ -49,6 +52,7 @@ import { PaymentEntity } from "./payments/entities/Payment.entity";
     UsersController,
     OrdersController,
     MpesaController,
+    CardController,
   ],
   providers: [
     AppService,
@@ -59,6 +63,8 @@ import { PaymentEntity } from "./payments/entities/Payment.entity";
     UsersService,
     OrdersService,
     MpesaService,
+    CardService,
+    RavepayService,
   ],
 })
 export class AppModule {}
