@@ -5,6 +5,7 @@ import { SessionDto } from "src/auth/dto/Session.dto";
 import { CustomLogger } from "../common/CustomLogger";
 import { ApiException } from "../common/ApiException";
 import { MpesaAccessTokenDto } from "../payments/mpesa/dto/MpesaAccessToken.dto";
+import * as moment from "moment";
 
 @Injectable()
 export class RedisService {
@@ -76,7 +77,7 @@ export class RedisService {
   async updateLastUseDate(session: SessionDto) {
     this.assertHasConnected();
 
-    session.lastUseDate = Math.floor(Date.now() / 1000);
+    session.lastUseDate = moment().unix();
     await this.saveSession(session);
   }
 

@@ -15,6 +15,7 @@ import { LoginResponseDto } from "./dto/LoginResponse.dto";
 import { SignUpDto } from "./dto/SignUp.dto";
 import { ApiResponseDto } from "../common/dto/ApiResponse.dto";
 import { SignInDto } from "./dto/SignIn.dto";
+import * as moment from "moment";
 
 @Controller("auth")
 @ApiUseTags("auth")
@@ -34,7 +35,9 @@ export class AuthController {
   ) {
     const response = await this.authService.signInGoogle(dto.idToken);
 
-    const sessionExpiry = new Date(Date.now() + 1000 * 60 * 60 * 24 * 365); // 1 year
+    const sessionExpiry = moment()
+      .add(1, "year")
+      .unix();
     res.header(
       "Set-Cookie",
       `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`,
@@ -57,7 +60,9 @@ export class AuthController {
   ) {
     const response = await this.authService.signUp(dto);
 
-    const sessionExpiry = new Date(Date.now() + 1000 * 60 * 60 * 24 * 365); // 1 year
+    const sessionExpiry = moment()
+      .add(1, "year")
+      .unix();
     res.header(
       "Set-Cookie",
       `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`,
@@ -85,7 +90,9 @@ export class AuthController {
   ) {
     const response = await this.authService.signIn(dto);
 
-    const sessionExpiry = new Date(Date.now() + 1000 * 60 * 60 * 24 * 365); // 1 year
+    const sessionExpiry = moment()
+      .add(1, "year")
+      .unix();
     res.header(
       "Set-Cookie",
       `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`,
