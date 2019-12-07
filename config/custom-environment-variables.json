@@ -30,5 +30,6 @@
   "rave": {
     "encryptionKey": "RAVEPAY_ENCRYPTION_KEY",
     "publicKey": "RAVEPAY_PUBLIC_KEY"
-  }
+  },
+  "serviceAccountKeyUrl": "SERVICE_ACCOUNT_KEY_URL"
 }

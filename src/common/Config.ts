@@ -19,6 +19,7 @@ export interface Config {
   redis: Redis;
   mpesa: Mpesa;
   rave: Rave;
+  serviceAccountKeyUrl: string;
 }
 
 interface RateLimit {

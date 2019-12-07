@@ -14,6 +14,8 @@ import { PaymentStatus } from "../models/PaymentStatus";
 import { ApiResponseDto } from "../../common/dto/ApiResponse.dto";
 import { OrderPaymentStatus } from "../../orders/models/OrderPaymentStatus";
 import { CustomLogger } from "../../common/CustomLogger";
+import { NotificationsService } from "../../notifications/notifications.service";
+import { NotificationReason } from "../../notifications/model/NotificationReason";
 
 @Injectable()
 export class CardService {
@@ -27,6 +29,7 @@ export class CardService {
     @InjectRepository(UserEntity)
     private readonly usersRepository: Repository<UserEntity>,
     private readonly ravepayService: RavepayService,
+    private readonly notificationService: NotificationsService,
   ) {
     this.logger = new CustomLogger("CardService");
   }
@@ -94,6 +97,12 @@ export class CardService {
       { paymentStatus: OrderPaymentStatus.PAID },
     );
     this.logger.debug(`Updated order ${dto.orderId} to PAID`);
+
+    this.notificationService.send(
+      user.fcmToken,
+      NotificationReason.PAYMENT_COMPLETED,
+      "Payment completed",
+    );
 
     return new ApiResponseDto(HttpStatus.OK, "Payment completed");
   }
