@@ -26,6 +26,14 @@ Used to store sessions.
 
 1. Create a Redis instance and get the url in the form `redis://:password@host:port/0`
 
+### Firebase
+
+Used for notifications.
+
+1. Create a project on the [Firebase console](https://console.firebase.google.com)
+2. Create and download a [service account key](https://console.firebase.google.com/project/_/settings/serviceaccounts/adminsdk)
+3. Upload it to a public url.
+
 ### GCP Project (optional)
 
 Used for Google Sign In.
