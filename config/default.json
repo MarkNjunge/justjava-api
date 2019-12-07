@@ -36,5 +36,6 @@
   "rave": {
     "encryptionKey": "encryption_key",
     "publicKey": "public_key"
-  }
+  },
+  "serviceAccountKeyUrl": "service_account_key_url.json"
 }

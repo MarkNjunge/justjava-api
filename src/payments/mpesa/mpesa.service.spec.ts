@@ -5,6 +5,8 @@ import { OrderEntity } from "../../orders/entities/Order.entity";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { RedisService } from "../../redis/redis.service";
+import { NotificationsService } from "../../notifications/notifications.service";
+import { UserEntity } from "../../users/entities/User.entity";
 
 describe("MpesaService", () => {
   let service: MpesaService;
@@ -22,7 +24,15 @@ describe("MpesaService", () => {
           useClass: Repository,
         },
         {
+          provide: getRepositoryToken(UserEntity),
+          useClass: Repository,
+        },
+        {
           provide: RedisService,
+          useClass: jest.fn(),
+        },
+        {
+          provide: NotificationsService,
           useClass: jest.fn(),
         },
       ],

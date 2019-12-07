@@ -14,6 +14,9 @@ import { PaymentMethod } from "../models/PaymentMethod";
 import { PaymentStatus } from "../models/PaymentStatus";
 import { ApiResponseDto } from "../../common/dto/ApiResponse.dto";
 import { StkCallbackDto } from "./dto/StkCallback.dto";
+import { NotificationsService } from "../../notifications/notifications.service";
+import { NotificationReason } from "../../notifications/model/NotificationReason";
+import { UserEntity } from "../../users/entities/User.entity";
 
 @Injectable()
 export class MpesaService {
@@ -24,7 +27,10 @@ export class MpesaService {
     private readonly paymentsRepository: Repository<PaymentEntity>,
     @InjectRepository(OrderEntity)
     private readonly ordersRepository: Repository<OrderEntity>,
+    @InjectRepository(UserEntity)
+    private readonly usersRepository: Repository<UserEntity>,
     private readonly redisService: RedisService,
+    private readonly notificationService: NotificationsService,
   ) {}
 
   async request(
@@ -102,6 +108,13 @@ export class MpesaService {
   async callback(body) {
     const parsedBody = this.parseCallbackData(body);
 
+    const payment = await this.paymentsRepository.findOne({
+      transactionRef: parsedBody.checkoutRequestId,
+    });
+    const user = await this.usersRepository.findOne({
+      id: payment.initializedBy,
+    });
+
     if (parsedBody.resultCode === "0") {
       const updated = {
         status: PaymentStatus.COMPLETED,
@@ -116,6 +129,12 @@ export class MpesaService {
         { transactionRef: parsedBody.checkoutRequestId },
         updated,
       );
+
+      this.notificationService.send(
+        user.fcmToken,
+        NotificationReason.PAYMENT_COMPLETED,
+        "Payment completed",
+      );
     } else {
       const updated = {
         status: PaymentStatus.CANCELLED,
@@ -123,9 +142,15 @@ export class MpesaService {
         dateUpdated: moment().unix(),
       };
 
-      return this.paymentsRepository.update(
+      await this.paymentsRepository.update(
         { transactionRef: parsedBody.checkoutRequestId },
         updated,
+      );
+
+      this.notificationService.send(
+        user.fcmToken,
+        NotificationReason.PAYMENT_CANCELLED,
+        "Payment cancelled",
       );
     }
   }

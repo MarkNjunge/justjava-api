@@ -6,6 +6,7 @@ import { getRepositoryToken } from "@nestjs/typeorm";
 import { PaymentEntity } from "../entities/Payment.entity";
 import { Repository } from "typeorm";
 import { RavepayService } from "../../ravepay/ravepay.service";
+import { NotificationsService } from "../../notifications/notifications.service";
 
 describe("CardService", () => {
   let service: CardService;
@@ -28,6 +29,10 @@ describe("CardService", () => {
         },
         {
           provide: RavepayService,
+          useClass: jest.fn(),
+        },
+        {
+          provide: NotificationsService,
           useClass: jest.fn(),
         },
       ],
