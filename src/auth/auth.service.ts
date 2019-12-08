@@ -83,6 +83,7 @@ export class AuthService {
 
     const saved = await this.usersRepository.save(user);
     delete saved.password;
+    saved.addresses = [];
 
     // Must first assert to unknown then to DTO due to 'lacking sufficient overlap'
     return (saved as unknown) as UserDto;
@@ -115,6 +116,7 @@ export class AuthService {
     // Save entity and remove password from object
     const saved = await this.usersRepository.save(user);
     delete saved.password;
+    user.addresses = [];
 
     // Create and save session
     const sessionDto = new SessionDto(
@@ -169,7 +171,7 @@ export class AuthService {
     return { user, session: sessionDto };
   }
 
-  private generateSession() {
+  private generateSession(): string {
     return crypto.randomBytes(24).toString("hex");
   }
 }
