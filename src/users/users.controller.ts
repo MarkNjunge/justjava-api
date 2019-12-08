@@ -76,7 +76,7 @@ export class UsersController {
   @ApiImplicitHeader({ name: "session-id" })
   @ApiResponse({ status: 204 })
   async updateUser(@Param("session") session, @Body() dto: UpdateUserDto) {
-    return this.usersService.updateUser(session, dto);
+    await this.usersService.updateUser(session, dto);
   }
 
   @Patch("current/fcm")
@@ -89,7 +89,7 @@ export class UsersController {
     @Param("session") session,
     @Body() dto: UpdateFcmTokenDto,
   ) {
-    return this.usersService.updateFcmToken(session, dto);
+    await this.usersService.updateFcmToken(session, dto);
   }
 
   @Delete("current")
@@ -99,7 +99,7 @@ export class UsersController {
   @ApiImplicitHeader({ name: "session-id" })
   @ApiResponse({ status: 204 })
   async deleteUser(@Param("session") session) {
-    return this.usersService.deleteUser(session);
+    await this.usersService.deleteUser(session);
   }
 
   @Post("/current/addresses")
@@ -124,7 +124,7 @@ export class UsersController {
     @Body() dto: SaveAddressDto,
     @Param("session") session,
   ) {
-    return this.usersService.updateAddress(id, dto, session);
+    await this.usersService.updateAddress(id, dto, session);
   }
 
   @Delete("/current/addresses/:id")
@@ -135,7 +135,7 @@ export class UsersController {
   @ApiResponse({ status: 204 })
   @ApiResponse({ status: 404, type: ApiResponseDto })
   async deleteAddress(@Param("id") id: number, @Param("session") session) {
-    return this.usersService.deleteAddress(id, session);
+    await this.usersService.deleteAddress(id, session);
   }
 
   @Get("/current/orders")
