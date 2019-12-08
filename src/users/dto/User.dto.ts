@@ -1,5 +1,6 @@
 import { ApiModelProperty } from "@nestjs/swagger";
 import { SignInMethod } from "../../auth/models/SignInMethod";
+import { AddressDto } from "./Address.dto";
 
 export class UserDto {
   @ApiModelProperty()
@@ -22,4 +23,7 @@ export class UserDto {
 
   @ApiModelProperty()
   createdAt: number;
+
+  @ApiModelProperty({ type: AddressDto, isArray: true })
+  addresses: AddressDto[];
 }
