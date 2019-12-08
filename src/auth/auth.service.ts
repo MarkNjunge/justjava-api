@@ -130,13 +130,10 @@ export class AuthService {
   }
 
   async signIn(dto: SignInDto): Promise<LoginResponseDto> {
-    // Select all columns, specifically password
-    const columns = this.usersRepository.metadata.ownColumns.map(
-      column => `user.${column.propertyName}`,
-    );
     const user = await this.usersRepository
       .createQueryBuilder("user")
-      .select(columns)
+      .leftJoinAndSelect("user.addresses", "address")
+      .addSelect("user.password") // Select password for comparison
       .where("user.email = :email", { email: dto.email })
       .getOne();
 
