@@ -31,6 +31,7 @@ export class AuthService {
 
   async signInGoogle(idToken: string): Promise<LoginResponseDto> {
     const payload = await this.verifyToken(idToken);
+    payload.email = payload.email.toLowerCase();
 
     if (payload == null) {
       throw new ApiException(

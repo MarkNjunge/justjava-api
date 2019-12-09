@@ -58,6 +58,7 @@ export class AuthController {
     @Body() dto: SignUpDto,
     @Res() res: FastifyReply<ServerResponse>,
   ) {
+    dto.email = dto.email.toLowerCase();
     const response = await this.authService.signUp(dto);
 
     const sessionExpiry = moment()
@@ -88,6 +89,7 @@ export class AuthController {
     @Body() dto: SignInDto,
     @Res() res: FastifyReply<ServerResponse>,
   ) {
+    dto.email = dto.email.toLowerCase();
     const response = await this.authService.signIn(dto);
 
     const sessionExpiry = moment()
