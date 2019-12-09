@@ -7,7 +7,7 @@ export class AddressDto {
   @ApiModelProperty()
   streetAddress: string;
 
-  @ApiModelProperty()
+  @ApiModelProperty({ nullable: true })
   deliveryInstructions: string;
 
   @ApiModelProperty()
