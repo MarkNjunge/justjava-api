@@ -152,7 +152,12 @@ export class OrdersService {
     const products = await this.productsRepository.findByIds(productIds);
     const orderEntity = OrderEntity.fromDto(dto, products, user, address);
 
-    return (this.ordersRepository.save(orderEntity) as unknown) as OrderDto;
+    const order = await this.ordersRepository.save(orderEntity);
+    // Add the userId and remove the user object in order to match the response dto
+    order.userId = user.id;
+    delete order.user;
+
+    return (order as unknown) as OrderDto;
   }
 
   async cancelOrder(session: SessionDto, id: number) {
