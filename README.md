@@ -6,9 +6,9 @@
 
 Backend API for [JustJava-Android](https://github.com/MarkNjunge/JustJava-Android).
 
-Live develop branch: https://api-dev.justjava.marknjunge.com/
+Live develop branch: https://dev.justjava.store/
 
-Live master branch: https://api.justjava.marknjunge.com/
+Live master branch: https://api.justjava.mstore/
 
 **[See `develop` branch for latest changes](https://github.com/MarkNjunge/justjava-api/tree/develop)**
 
