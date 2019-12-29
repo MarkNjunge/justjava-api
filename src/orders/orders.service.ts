@@ -156,6 +156,7 @@ export class OrdersService {
     // Add the userId and remove the user object in order to match the response dto
     order.userId = user.id;
     delete order.user;
+    delete order.address;
 
     return (order as unknown) as OrderDto;
   }
