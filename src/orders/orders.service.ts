@@ -160,7 +160,7 @@ export class OrdersService {
     return (order as unknown) as OrderDto;
   }
 
-  async cancelOrder(session: SessionDto, id: number) {
+  async cancelOrder(session: SessionDto, id: string) {
     const order = await this.ordersRepository.findOne({
       where: { id, user: { id: session.userId } },
     });
@@ -177,7 +177,7 @@ export class OrdersService {
     );
   }
 
-  async cancelOrderAdmin(id: number) {
+  async cancelOrderAdmin(id: string) {
     await this.ordersRepository.update(
       { id },
       { status: OrderStatus.CANCELLED },

@@ -7,7 +7,7 @@ import { OrderItemDto } from "./OrderItem.dto";
 
 export class OrderDto {
   @ApiModelProperty()
-  id: number;
+  id: string;
 
   @ApiModelProperty({ nullable: true })
   additionalComments: string;

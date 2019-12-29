@@ -1,11 +1,11 @@
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
   JoinColumn,
   ManyToOne,
   OneToMany,
   RelationId,
+  PrimaryColumn,
 } from "typeorm";
 import { UserEntity } from "../../users/entities/User.entity";
 import { AddressEntity } from "../../users/entities/Address.entity";
@@ -15,11 +15,12 @@ import { OrderStatus } from "../models/OrderStatus";
 import { OrderPaymentStatus } from "../models/OrderPaymentStatus";
 import { ProductEntity } from "../../products/entities/Product.entity";
 import * as moment from "moment";
+import * as shortid from "shortid";
 
 @Entity({ name: "orders" })
 export class OrderEntity {
-  @PrimaryGeneratedColumn("increment")
-  id: number;
+  @PrimaryColumn()
+  id: string;
 
   @Column({ name: "additional_comments", nullable: true })
   additionalComments: string;
@@ -73,7 +74,11 @@ export class OrderEntity {
     const totalPrice = items.map(i => i.totalPrice).reduce((acc, c) => acc + c);
 
     const entity = new OrderEntity();
-    entity.additionalComments = dto.additionalComments;
+    (entity.id = shortid
+      .generate()
+      .toUpperCase()
+      .replace(/-|_/g, "")),
+      (entity.additionalComments = dto.additionalComments);
     entity.totalPrice = totalPrice;
     entity.datePlaced = moment().unix();
     entity.status = OrderStatus.PENDING;

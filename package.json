@@ -46,6 +46,7 @@
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
     "rxjs": "^6.3.3",
+    "shortid": "^2.2.15",
     "slugify": "^1.3.5",
     "typeorm": "^0.2.20",
     "winston": "^3.2.1"

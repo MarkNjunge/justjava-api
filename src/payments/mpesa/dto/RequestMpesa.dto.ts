@@ -8,5 +8,5 @@ export class RequestMpesaDto {
 
   @ApiModelProperty()
   @IsNotEmpty()
-  orderId: number;
+  orderId: string;
 }
