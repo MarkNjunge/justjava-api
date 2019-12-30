@@ -5,9 +5,17 @@ import {
   Res,
   HttpCode,
   HttpStatus,
+  Delete,
+  UseGuards,
+  Param,
 } from "@nestjs/common";
 import { LoginGoogleDto } from "./dto/LoginGoogle.dto";
-import { ApiOperation, ApiResponse, ApiUseTags } from "@nestjs/swagger";
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiUseTags,
+  ApiImplicitHeader,
+} from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
 import { FastifyReply } from "fastify";
 import { ServerResponse } from "http";
@@ -16,6 +24,7 @@ import { SignUpDto } from "./dto/SignUp.dto";
 import { ApiResponseDto } from "../common/dto/ApiResponse.dto";
 import { SignInDto } from "./dto/SignIn.dto";
 import * as moment from "moment";
+import { AuthGuard } from "../common/guards/auth.guard";
 
 @Controller("auth")
 @ApiUseTags("auth")
@@ -101,5 +110,15 @@ export class AuthController {
     );
 
     res.status(200).send(response);
+  }
+
+  @Delete("/signout")
+  @UseGuards(AuthGuard)
+  @ApiOperation({ title: "Sign out of a session" })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiImplicitHeader({ name: "session-id" })
+  @ApiResponse({ status: 204 })
+  async signOut(@Param("session") session) {
+    await this.authService.signOut(session);
   }
 }

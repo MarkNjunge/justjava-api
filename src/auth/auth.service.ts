@@ -169,6 +169,10 @@ export class AuthService {
     return { user, session: sessionDto };
   }
 
+  async signOut(session: SessionDto) {
+    await this.redisService.deleteSession(session);
+  }
+
   private generateSession(): string {
     return crypto.randomBytes(24).toString("hex");
   }
