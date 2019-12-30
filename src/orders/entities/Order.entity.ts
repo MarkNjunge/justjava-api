@@ -38,7 +38,7 @@ export class OrderEntity {
   paymentMethod: string;
 
   @Column({ name: "payment_status" })
-  paymentStatus: string;
+  paymentStatus: OrderPaymentStatus;
 
   @ManyToOne(type => UserEntity, user => user.orders, {
     onDelete: "SET NULL",

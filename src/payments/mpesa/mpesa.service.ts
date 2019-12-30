@@ -17,10 +17,13 @@ import { StkCallbackDto } from "./dto/StkCallback.dto";
 import { NotificationsService } from "../../notifications/notifications.service";
 import { NotificationReason } from "../../notifications/model/NotificationReason";
 import { UserEntity } from "../../users/entities/User.entity";
+import { CustomLogger } from "../../common/CustomLogger";
+import { OrderPaymentStatus } from "src/orders/models/OrderPaymentStatus";
 
 @Injectable()
 export class MpesaService {
   private safaricomBaseUrl = "https://sandbox.safaricom.co.ke";
+  private logger = new CustomLogger("MpesaService");
 
   constructor(
     @InjectRepository(PaymentEntity)
@@ -107,6 +110,7 @@ export class MpesaService {
 
   async callback(body) {
     const parsedBody = this.parseCallbackData(body);
+    this.logger.debug(`Callback received for ${parsedBody.checkoutRequestId}`);
 
     const payment = await this.paymentsRepository.findOne({
       transactionRef: parsedBody.checkoutRequestId,
@@ -116,6 +120,10 @@ export class MpesaService {
     });
 
     if (parsedBody.resultCode === "0") {
+      this.logger.debug(
+        `Payment ${parsedBody.checkoutRequestId} was completed successfully`,
+      );
+
       const updated = {
         status: PaymentStatus.COMPLETED,
         paymentResult: parsedBody.resultDesc,
@@ -124,11 +132,19 @@ export class MpesaService {
         dateUpdated: moment().unix(),
         rawResult: JSON.stringify(body),
       };
-
       await this.paymentsRepository.update(
         { transactionRef: parsedBody.checkoutRequestId },
         updated,
       );
+      this.logger.debug(`Updated payment ${parsedBody.checkoutRequestId}`);
+
+      await this.ordersRepository.update(
+        { id: payment.orderId },
+        {
+          paymentStatus: OrderPaymentStatus.PAID,
+        },
+      );
+      this.logger.debug(`Updated order ${payment.orderId} to PAID`);
 
       this.notificationService.send(
         user.fcmToken,
@@ -137,16 +153,20 @@ export class MpesaService {
         { orderId: payment.orderId },
       );
     } else {
+      this.logger.debug(
+        `Payment ${parsedBody.checkoutRequestId} failed with reason '${parsedBody.resultDesc}')`,
+      );
+
       const updated = {
         status: PaymentStatus.CANCELLED,
         paymentResult: parsedBody.resultDesc,
         dateUpdated: moment().unix(),
       };
-
       await this.paymentsRepository.update(
         { transactionRef: parsedBody.checkoutRequestId },
         updated,
       );
+      this.logger.debug(`Updated payment ${parsedBody.checkoutRequestId}`);
 
       this.notificationService.send(
         user.fcmToken,
