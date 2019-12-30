@@ -21,11 +21,17 @@ export class NotificationsService {
     });
   }
 
-  async send(token: string, reason: NotificationReason, message: string) {
+  async send(
+    token: string,
+    reason: NotificationReason,
+    message: string,
+    extra: any = {},
+  ) {
     const payload = {
       data: {
         reason,
         message,
+        ...extra,
       },
     };
 
@@ -33,7 +39,7 @@ export class NotificationsService {
       await admin.messaging().sendToDevice(token, payload);
       this.logger.debug("Message sent");
     } catch (error) {
-      this.logger.error("Error sending message", "send");
+      this.logger.error(`Error sending message: ${error.message}`, "send");
     }
   }
 }

@@ -134,6 +134,7 @@ export class MpesaService {
         user.fcmToken,
         NotificationReason.PAYMENT_COMPLETED,
         "Payment completed",
+        { orderId: payment.orderId },
       );
     } else {
       const updated = {
@@ -151,6 +152,7 @@ export class MpesaService {
         user.fcmToken,
         NotificationReason.PAYMENT_CANCELLED,
         "Payment cancelled",
+        { orderId: payment.orderId },
       );
     }
   }

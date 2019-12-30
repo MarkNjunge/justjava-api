@@ -102,6 +102,7 @@ export class CardService {
       user.fcmToken,
       NotificationReason.PAYMENT_COMPLETED,
       "Payment completed",
+      { orderId: dto.orderId },
     );
 
     return new ApiResponseDto(HttpStatus.OK, "Payment completed");
