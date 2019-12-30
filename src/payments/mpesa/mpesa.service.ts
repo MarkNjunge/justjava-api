@@ -18,7 +18,7 @@ import { NotificationsService } from "../../notifications/notifications.service"
 import { NotificationReason } from "../../notifications/model/NotificationReason";
 import { UserEntity } from "../../users/entities/User.entity";
 import { CustomLogger } from "../../common/CustomLogger";
-import { OrderPaymentStatus } from "src/orders/models/OrderPaymentStatus";
+import { OrderPaymentStatus } from "../../orders/models/OrderPaymentStatus";
 
 @Injectable()
 export class MpesaService {
