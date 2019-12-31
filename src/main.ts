@@ -13,6 +13,7 @@ import {
 import * as fastifyRateLimit from "fastify-rate-limit";
 import * as fileUpload from "fastify-file-upload";
 import { RedisService } from "./redis/redis.service";
+import { NotificationsService } from "./notifications/notifications.service";
 
 async function bootstrap() {
   initializeWinston();
@@ -49,6 +50,11 @@ async function bootstrap() {
 
   const redis = await app.get<RedisService>(RedisService);
   redis.connect();
+
+  const notifications = await app.get<NotificationsService>(
+    NotificationsService,
+  );
+  await notifications.connect();
 
   await app.listen(config.port, "0.0.0.0").then(() => {
     new CustomLogger("Application").log(

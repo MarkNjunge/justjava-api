@@ -15,6 +15,7 @@ import { LoginResponseDto } from "./dto/LoginResponse.dto";
 import { SignUpDto } from "./dto/SignUp.dto";
 import { PasswordHash } from "../common/PasswordHash";
 import { SignInDto } from "./dto/SignIn.dto";
+import * as moment from "moment";
 
 @Injectable()
 export class AuthService {
@@ -30,6 +31,7 @@ export class AuthService {
 
   async signInGoogle(idToken: string): Promise<LoginResponseDto> {
     const payload = await this.verifyToken(idToken);
+    payload.email = payload.email.toLowerCase();
 
     if (payload == null) {
       throw new ApiException(
@@ -50,7 +52,7 @@ export class AuthService {
     const sessionDto = new SessionDto(
       userDto.id,
       this.generateSession(),
-      Math.floor(Date.now() / 1000),
+      moment().unix(),
     );
     await this.redisService.saveSession(sessionDto);
 
@@ -78,10 +80,11 @@ export class AuthService {
     user.lastName = payload.lastName;
     user.email = payload.email;
     user.signInMethod = SignInMethod.GOOGLE;
-    user.createdAt = Math.floor(Date.now() / 1000);
+    user.createdAt = moment().unix();
 
     const saved = await this.usersRepository.save(user);
     delete saved.password;
+    saved.addresses = [];
 
     // Must first assert to unknown then to DTO due to 'lacking sufficient overlap'
     return (saved as unknown) as UserDto;
@@ -109,17 +112,18 @@ export class AuthService {
     user.mobileNumber = dto.mobileNumber;
     user.password = PasswordHash.hash(dto.password);
     user.signInMethod = SignInMethod.PASSWORD;
-    user.createdAt = Math.floor(Date.now() / 1000);
+    user.createdAt = moment().unix();
 
     // Save entity and remove password from object
     const saved = await this.usersRepository.save(user);
     delete saved.password;
+    user.addresses = [];
 
     // Create and save session
     const sessionDto = new SessionDto(
       saved.id,
       this.generateSession(),
-      Math.floor(Date.now() / 1000),
+      moment().unix(),
     );
     await this.redisService.saveSession(sessionDto);
 
@@ -127,13 +131,10 @@ export class AuthService {
   }
 
   async signIn(dto: SignInDto): Promise<LoginResponseDto> {
-    // Select all columns, specifically password
-    const columns = this.usersRepository.metadata.ownColumns.map(
-      column => `user.${column.propertyName}`,
-    );
     const user = await this.usersRepository
       .createQueryBuilder("user")
-      .select(columns)
+      .leftJoinAndSelect("user.addresses", "address")
+      .addSelect("user.password") // Select password for comparison
       .where("user.email = :email", { email: dto.email })
       .getOne();
 
@@ -161,14 +162,18 @@ export class AuthService {
     const sessionDto = new SessionDto(
       user.id,
       this.generateSession(),
-      Math.floor(Date.now() / 1000),
+      moment().unix(),
     );
     await this.redisService.saveSession(sessionDto);
 
     return { user, session: sessionDto };
   }
 
-  private generateSession() {
+  async signOut(session: SessionDto) {
+    await this.redisService.deleteSession(session);
+  }
+
+  private generateSession(): string {
     return crypto.randomBytes(24).toString("hex");
   }
 }

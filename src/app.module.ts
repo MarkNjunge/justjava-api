@@ -24,6 +24,7 @@ import { PaymentEntity } from "./payments/entities/Payment.entity";
 import { CardController } from "./payments/card/card.controller";
 import { CardService } from "./payments/card/card.service";
 import { RavepayService } from "./ravepay/ravepay.service";
+import { NotificationsService } from "./notifications/notifications.service";
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { RavepayService } from "./ravepay/ravepay.service";
     MpesaService,
     CardService,
     RavepayService,
+    NotificationsService,
   ],
 })
 export class AppModule {}

@@ -5,6 +5,7 @@ import { SessionDto } from "src/auth/dto/Session.dto";
 import { CustomLogger } from "../common/CustomLogger";
 import { ApiException } from "../common/ApiException";
 import { MpesaAccessTokenDto } from "../payments/mpesa/dto/MpesaAccessToken.dto";
+import * as moment from "moment";
 
 @Injectable()
 export class RedisService {
@@ -55,7 +56,7 @@ export class RedisService {
     this.assertHasConnected();
 
     await this.redis.set(
-      `session:${session.userId}:${session.sessionId}`,
+      `justjava:session:${session.sessionId}`,
       JSON.stringify(session),
     );
   }
@@ -63,11 +64,10 @@ export class RedisService {
   async getSession(sessionId: string): Promise<SessionDto> {
     this.assertHasConnected();
 
-    const res = await this.redis.scan(0, "MATCH", `session:*:${sessionId}`);
+    const res = await this.redis.get(`justjava:session:${sessionId}`);
 
-    if (res[1][0]) {
-      const s = await this.redis.get(res[1][0]);
-      return JSON.parse(s);
+    if (res) {
+      return JSON.parse(res);
     } else {
       return null;
     }
@@ -76,19 +76,19 @@ export class RedisService {
   async updateLastUseDate(session: SessionDto) {
     this.assertHasConnected();
 
-    session.lastUseDate = Math.floor(Date.now() / 1000);
+    session.lastUseDate = moment().unix();
     await this.saveSession(session);
   }
 
   async deleteSession(session: SessionDto) {
     this.assertHasConnected();
 
-    await this.redis.del(`session:${session.userId}:${session.sessionId}`);
+    await this.redis.del(`justjava:session:${session.sessionId}`);
   }
 
   async saveMpesaAccessToken(dto: MpesaAccessTokenDto) {
     await this.redis.set(
-      "mpesa:accessToken",
+      "justjava:mpesa:accessToken",
       dto.access_token,
       "ex",
       dto.expires_in,
@@ -96,6 +96,6 @@ export class RedisService {
   }
 
   async getMpesaAccessToken(): Promise<string | null> {
-    return this.redis.get("mpesa:accessToken");
+    return this.redis.get("justjava:mpesa:accessToken");
   }
 }

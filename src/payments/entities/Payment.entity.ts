@@ -6,7 +6,7 @@ export class PaymentEntity {
   id: number;
 
   @Column({ name: "order_id" })
-  orderId: number;
+  orderId: string;
 
   @Column({ name: "initialized_by" })
   initializedBy: number;

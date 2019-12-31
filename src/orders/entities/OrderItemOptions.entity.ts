@@ -31,7 +31,7 @@ export class OrderItemOptionsEntity {
   optionId: number;
 
   @Column({ name: "option_name" })
-  optionaName: string;
+  optionName: string;
 
   @Column({ name: "option_price", type: "real" })
   optionPrice: number;
@@ -47,7 +47,7 @@ export class OrderItemOptionsEntity {
     entity.choiceId = choice.id;
     entity.choiceName = choice.name;
     entity.optionId = option.id;
-    entity.optionaName = option.name;
+    entity.optionName = option.name;
     entity.optionPrice = option.price;
 
     return entity;

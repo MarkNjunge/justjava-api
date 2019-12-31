@@ -79,7 +79,7 @@ export class OrdersController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiImplicitHeader({ name: "session-id" })
   @ApiOperation({ title: "Cancel an order" })
-  async cancelOrder(@Param("session") s, @Param("id") id: number) {
+  async cancelOrder(@Param("session") s, @Param("id") id: string) {
     await this.ordersService.cancelOrder(s, id);
   }
 
@@ -88,7 +88,7 @@ export class OrdersController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiImplicitHeader({ name: "admin-key" })
   @ApiOperation({ title: "Cancel an order as an admin" })
-  async cancelOrderAdmin(@Param("id") id: number) {
+  async cancelOrderAdmin(@Param("id") id: string) {
     await this.ordersService.cancelOrderAdmin(id);
   }
 }

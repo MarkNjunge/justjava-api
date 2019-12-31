@@ -8,6 +8,7 @@ import {
 import { FastifyReply, FastifyRequest } from "fastify";
 import { ServerResponse, IncomingMessage } from "http";
 import { CustomLogger } from "../CustomLogger";
+import * as moment from "moment";
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -46,7 +47,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const requestTime = request.params.requestTime;
 
     this.logger.log(
-      `${method} ${url} - ${status} - ${Date.now() - requestTime}ms`,
+      `${method} ${url} - ${status} - ${moment().valueOf() - requestTime}ms`,
       "TRACE",
     );
 

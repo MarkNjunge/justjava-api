@@ -4,7 +4,7 @@ import { IsNotEmpty } from "class-validator";
 export class InitiatePaymentDto {
   @ApiModelProperty()
   @IsNotEmpty()
-  orderId: number;
+  orderId: string;
 
   @ApiModelProperty()
   @IsNotEmpty()

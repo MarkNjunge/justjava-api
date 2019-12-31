@@ -6,9 +6,9 @@
 
 Backend API for [JustJava-Android](https://github.com/MarkNjunge/JustJava-Android).
 
-Live develop branch: https://api-dev.justjava.marknjunge.com/
+Live develop branch: https://dev.justjava.store/
 
-Live master branch: https://api.justjava.marknjunge.com/
+Live master branch: https://api.justjava.store/
 
 **[See `develop` branch for latest changes](https://github.com/MarkNjunge/justjava-api/tree/develop)**
 
@@ -25,6 +25,14 @@ Used to store the API's data.
 Used to store sessions.
 
 1. Create a Redis instance and get the url in the form `redis://:password@host:port/0`
+
+### Firebase
+
+Used for notifications.
+
+1. Create a project on the [Firebase console](https://console.firebase.google.com)
+2. Create and download a [service account key](https://console.firebase.google.com/project/_/settings/serviceaccounts/adminsdk)
+3. Upload it to a public url.
 
 ### GCP Project (optional)
 
