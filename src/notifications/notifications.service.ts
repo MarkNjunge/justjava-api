@@ -14,10 +14,10 @@ export class NotificationsService {
   }
 
   async connect() {
-    const res = await axios.default.get(config.serviceAccountKeyUrl);
+    const res = await axios.default.get(config.google.serviceAccountKeyUrl);
     admin.initializeApp({
       credential: admin.credential.cert(res.data),
-      databaseURL: "https://justjava-android.firebaseio.com",
+      databaseURL: config.google.databaseURL,
     });
   }
 

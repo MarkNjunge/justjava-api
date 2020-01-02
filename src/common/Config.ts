@@ -19,7 +19,6 @@ export interface Config {
   redis: Redis;
   mpesa: Mpesa;
   rave: Rave;
-  serviceAccountKeyUrl: string;
 }
 
 interface RateLimit {
@@ -41,6 +40,8 @@ interface DbConfig {
 
 interface Google {
   clientId: string;
+  serviceAccountKeyUrl: string;
+  databaseURL: string;
 }
 
 interface Redis {
