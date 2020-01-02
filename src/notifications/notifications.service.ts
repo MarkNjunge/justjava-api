@@ -14,11 +14,15 @@ export class NotificationsService {
   }
 
   async connect() {
-    const res = await axios.default.get(config.google.serviceAccountKeyUrl);
-    admin.initializeApp({
-      credential: admin.credential.cert(res.data),
-      databaseURL: config.google.databaseURL,
-    });
+    try {
+      const res = await axios.default.get(config.google.serviceAccountKeyUrl);
+      admin.initializeApp({
+        credential: admin.credential.cert(res.data),
+        databaseURL: config.google.databaseURL,
+      });
+    } catch (e) {
+      this.logger.error(e.message, e);
+    }
   }
 
   async send(
