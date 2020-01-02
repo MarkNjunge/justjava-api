@@ -1,0 +1,50 @@
+version: "3"
+services:
+  app:
+    container_name: justjava-api
+    restart: always
+    build: .
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DB_URL=postgres://postgres:postgres@postgres:5432/justjava
+      - REDIS_URL=redis://:redis@redis:6379/0
+      - SERVICE_ACCOUNT_KEY_URL=CHANGE_ME
+      - FIREBASE_DATABASE_URL=CHANGE_ME
+    networks:
+      - justjava
+  postgres:
+    image: postgres:11.2
+    container_name: justjava-api_pgsql
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=justjava
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - justjava
+  redis:
+    image: bitnami/redis:5.0
+    container_name: justjava-api_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=redis
+    volumes:
+      - redis-data:/data
+    networks:
+      - justjava
+volumes:
+  db-data:
+  redis-data:
+networks:
+  justjava:

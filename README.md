@@ -98,6 +98,20 @@ $ yarn run start:dev
 
 http://localhost:3000/docs
 
+## Docker
+
+Build docker images
+
+```
+docker build -t justjava-api .
+```
+
+or use docker-compose
+
+```
+docker-compose up -d
+```
+
 ## Testing
 
 ```bash
