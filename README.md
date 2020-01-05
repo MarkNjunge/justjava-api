@@ -1,10 +1,10 @@
-# [WIP] JustJava API
+# JustJava API
 
 ![](https://github.com/MarkNjunge/justjava-api/workflows/test-workflow/badge.svg)
 ![](https://github.com/MarkNjunge/justjava-api/workflows/deploy-dev-workflow/badge.svg)
 [![Known Vulnerabilities](https://snyk.io/test/github/MarkNjunge/justjava-api/badge.svg)](https://snyk.io/test/github/MarkNjunge/justjava-api)
 
-Backend API for [JustJava-Android](https://github.com/MarkNjunge/JustJava-Android).
+Backend API for [JustJava-Android](https://github.com/MarkNjunge/JustJava-Android), a mock food ordering and delivery application for a coffee shop.
 
 Live develop branch: https://dev.justjava.store/
 
