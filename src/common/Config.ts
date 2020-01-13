@@ -61,7 +61,7 @@ interface Rave {
 }
 
 interface Datadog {
-  enabled: boolean;
+  enabled: string;
   apiKey: string;
   service: string;
   source: string;

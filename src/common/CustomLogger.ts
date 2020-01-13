@@ -67,7 +67,15 @@ export function initializeWinston() {
     ],
   });
 
-  if (config.datadog.enabled === true) {
+  // Handle dokku setting environment variable as string instead of boolean
+  let datadogEnabled: boolean;
+  if (typeof config.datadog.enabled === "string") {
+    datadogEnabled = config.datadog.enabled === "true" ? true : false;
+  } else if (typeof config.datadog.enabled === "boolean") {
+    datadogEnabled = config.datadog.enabled;
+  }
+
+  if (datadogEnabled === true) {
     winston.add(new DatadogTransport({}));
   }
 }
