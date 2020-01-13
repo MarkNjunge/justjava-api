@@ -32,5 +32,12 @@
   "rave": {
     "encryptionKey": "RAVEPAY_ENCRYPTION_KEY",
     "publicKey": "RAVEPAY_PUBLIC_KEY"
+  },
+  "datadog": {
+    "enabled": "DATADOG_ENABLED",
+    "apiKey": "DATADOG_API_KEY",
+    "service": "DATADOG_SERVICE",
+    "source": "DATADOG_SOURCE",
+    "host": "DATADOG_HOST"
   }
 }

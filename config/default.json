@@ -38,5 +38,12 @@
   "rave": {
     "encryptionKey": "encryption_key",
     "publicKey": "public_key"
+  },
+  "datadog": {
+    "enabled": false,
+    "apiKey": "datadog_api_key",
+    "service": "dev.justjava",
+    "source": "justjava-api",
+    "host": "justjava.store"
   }
 }

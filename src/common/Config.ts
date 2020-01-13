@@ -19,6 +19,7 @@ export interface Config {
   redis: Redis;
   mpesa: Mpesa;
   rave: Rave;
+  datadog: Datadog;
 }
 
 interface RateLimit {
@@ -57,6 +58,14 @@ interface Mpesa {
 interface Rave {
   encryptionKey: string;
   publicKey: string;
+}
+
+interface Datadog {
+  enabled: boolean;
+  apiKey: string;
+  service: string;
+  source: string;
+  host: string;
 }
 
 export const config: Config = configPackage;
