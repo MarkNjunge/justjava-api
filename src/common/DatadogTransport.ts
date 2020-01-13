@@ -42,10 +42,13 @@ export class DatadogTransport extends Transport {
         .split(method)[1]
         .split(" - ")[0]
         .trim();
-      const statusCode = message
-        .split(urlPath)[1]
-        .split(" - ")[1]
-        .trim();
+      const statusCode = parseInt(
+        message
+          .split(urlPath)[1]
+          .split(" - ")[1]
+          .trim(),
+        10,
+      );
 
       body = {
         ...body,
@@ -58,7 +61,7 @@ export class DatadogTransport extends Transport {
       if (durationMatch !== null) {
         body = {
           ...body,
-          duration: durationMatch[0].split("ms")[0],
+          duration: parseInt(durationMatch[0].split("ms")[0], 10),
         };
       }
     }
