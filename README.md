@@ -34,6 +34,13 @@ Used for notifications.
 2. Create and download a [service account key](https://console.firebase.google.com/project/_/settings/serviceaccounts/adminsdk)
 3. Upload it to a public url.
 
+## Datadog (optional)
+
+Used for logs
+
+1. Create an account on [Datadog](https://app.datadoghq.com/)
+2. Create an [API key](https://docs.datadoghq.com/account_management/api-app-keys/)
+
 ### GCP Project (optional)
 
 Used for Google Sign In.
