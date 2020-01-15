@@ -36,4 +36,16 @@ export class LoggingInterceptor implements NestInterceptor {
         ),
       );
   }
+
+  private buildLogMessage(
+    request: FastifyRequest<IncomingMessage>,
+    response: FastifyReply<ServerResponse>,
+    requestTime: number,
+  ) {
+    const method = request.req.method;
+    const url = request.req.url;
+    const totalTime = moment().valueOf() - requestTime;
+
+    return `${method} ${url} - ${response.res.statusCode} - ${totalTime}ms`;
+  }
 }
