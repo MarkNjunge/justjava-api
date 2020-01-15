@@ -34,7 +34,7 @@ Used for notifications.
 2. Create and download a [service account key](https://console.firebase.google.com/project/_/settings/serviceaccounts/adminsdk)
 3. Upload it to a public url.
 
-## Datadog (optional)
+### Datadog (optional)
 
 Used for logs
 
