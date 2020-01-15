@@ -1,0 +1,7 @@
+{
+  "datadog": {
+    "enabled": true,
+    "service": "api.justjava",
+    "host": "api.justjava.store"
+  }
+}
