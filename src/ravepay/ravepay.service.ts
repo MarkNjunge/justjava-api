@@ -79,7 +79,6 @@ export class RavepayService {
       country: "KE",
       amount,
       email: user.email,
-      phonenumber: user.mobileNumber,
       firstname: user.firstName,
       lastname: user.lastName,
       txRef,

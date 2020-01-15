@@ -17,6 +17,8 @@ import { NotificationsService } from "./notifications/notifications.service";
 
 async function bootstrap() {
   initializeWinston();
+  const logger = new CustomLogger("Application");
+  logger.log("****** Starting API ******");
 
   const fastifyAdapter = new FastifyAdapter();
   fastifyAdapter.register(fileUpload);
@@ -25,7 +27,7 @@ async function bootstrap() {
     AppModule,
     fastifyAdapter,
     {
-      logger: new CustomLogger("NestApplication"),
+      logger: false,
     },
   );
 
@@ -57,9 +59,7 @@ async function bootstrap() {
   await notifications.connect();
 
   await app.listen(config.port, "0.0.0.0").then(() => {
-    new CustomLogger("Application").log(
-      `Server started on port ${config.port}`,
-    );
+    logger.log(`Started on port ${config.port}`);
   });
 }
 bootstrap();
@@ -68,7 +68,7 @@ function intializeSwagger(app: NestFastifyApplication) {
   const options = new DocumentBuilder()
     .setTitle("JustJava API")
     .setDescription("JustJava API")
-    .setContactEmail("mark.kamau@outlook.com")
+    .setContactEmail("contact@marknjunge.com")
     .setSchemes(process.env.NODE_ENV === "production" ? "https" : "http")
     .build();
 

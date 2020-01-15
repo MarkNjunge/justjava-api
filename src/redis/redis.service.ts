@@ -25,7 +25,6 @@ export class RedisService {
     });
 
     this.redis.on("connect", () => {
-      this.logger.log("Connected to Redis instance");
       this.isConnected = true;
     });
 

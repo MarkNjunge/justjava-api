@@ -32,7 +32,7 @@ export class LoggingInterceptor implements NestInterceptor {
       .handle()
       .pipe(
         tap(() =>
-          this.logger.log(this.buildLogMessage(request, response, requestTime)),
+          this.logger.logRoute(request, response.res.statusCode, requestTime),
         ),
       );
   }

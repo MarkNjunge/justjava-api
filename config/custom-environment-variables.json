@@ -17,7 +17,9 @@
     "ssl": "DB_SSL"
   },
   "google": {
-    "clientId": "GOOGLE_CLIENT_ID"
+    "clientId": "GOOGLE_CLIENT_ID",
+    "serviceAccountKeyUrl": "SERVICE_ACCOUNT_KEY_URL",
+    "databaseURL": "FIREBASE_DATABASE_URL"
   },
   "redis": {
     "url": "REDIS_URL"
@@ -31,5 +33,11 @@
     "encryptionKey": "RAVEPAY_ENCRYPTION_KEY",
     "publicKey": "RAVEPAY_PUBLIC_KEY"
   },
-  "serviceAccountKeyUrl": "SERVICE_ACCOUNT_KEY_URL"
+  "datadog": {
+    "enabled": "DATADOG_ENABLED",
+    "apiKey": "DATADOG_API_KEY",
+    "service": "DATADOG_SERVICE",
+    "source": "DATADOG_SOURCE",
+    "host": "DATADOG_HOST"
+  }
 }

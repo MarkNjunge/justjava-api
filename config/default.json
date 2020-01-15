@@ -23,7 +23,9 @@
     "ssl": false
   },
   "google": {
-    "clientId": "google_client_id"
+    "clientId": "google_client_id",
+    "serviceAccountKeyUrl": "service_account_key_url.json",
+    "databaseURL": "https://your-project.firebaseio.com"
   },
   "redis": {
     "url": "redis://:password@host:port/0"
@@ -37,5 +39,11 @@
     "encryptionKey": "encryption_key",
     "publicKey": "public_key"
   },
-  "serviceAccountKeyUrl": "service_account_key_url.json"
+  "datadog": {
+    "enabled": false,
+    "apiKey": "datadog_api_key",
+    "service": "dev.justjava",
+    "source": "justjava-api",
+    "host": "justjava.store"
+  }
 }

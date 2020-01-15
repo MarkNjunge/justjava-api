@@ -19,7 +19,7 @@ export interface Config {
   redis: Redis;
   mpesa: Mpesa;
   rave: Rave;
-  serviceAccountKeyUrl: string;
+  datadog: Datadog;
 }
 
 interface RateLimit {
@@ -41,6 +41,8 @@ interface DbConfig {
 
 interface Google {
   clientId: string;
+  serviceAccountKeyUrl: string;
+  databaseURL: string;
 }
 
 interface Redis {
@@ -56,6 +58,14 @@ interface Mpesa {
 interface Rave {
   encryptionKey: string;
   publicKey: string;
+}
+
+interface Datadog {
+  enabled: string;
+  apiKey: string;
+  service: string;
+  source: string;
+  host: string;
 }
 
 export const config: Config = configPackage;

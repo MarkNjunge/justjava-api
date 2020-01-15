@@ -1,10 +1,10 @@
-# [WIP] JustJava API
+# JustJava API
 
 ![](https://github.com/MarkNjunge/justjava-api/workflows/test-workflow/badge.svg)
 ![](https://github.com/MarkNjunge/justjava-api/workflows/deploy-dev-workflow/badge.svg)
 [![Known Vulnerabilities](https://snyk.io/test/github/MarkNjunge/justjava-api/badge.svg)](https://snyk.io/test/github/MarkNjunge/justjava-api)
 
-Backend API for [JustJava-Android](https://github.com/MarkNjunge/JustJava-Android).
+Backend API for [JustJava-Android](https://github.com/MarkNjunge/JustJava-Android), a mock food ordering and delivery application for a coffee shop.
 
 Live develop branch: https://dev.justjava.store/
 
@@ -33,6 +33,13 @@ Used for notifications.
 1. Create a project on the [Firebase console](https://console.firebase.google.com)
 2. Create and download a [service account key](https://console.firebase.google.com/project/_/settings/serviceaccounts/adminsdk)
 3. Upload it to a public url.
+
+### Datadog (optional)
+
+Used for logs
+
+1. Create an account on [Datadog](https://app.datadoghq.com/)
+2. Create an [API key](https://docs.datadoghq.com/account_management/api-app-keys/)
 
 ### GCP Project (optional)
 
@@ -97,6 +104,20 @@ $ yarn run start:dev
 5. Go to `/docs` to view routes documentation.
 
 http://localhost:3000/docs
+
+## Docker
+
+Build docker images
+
+```
+docker build -t justjava-api .
+```
+
+or use docker-compose
+
+```
+docker-compose up -d
+```
 
 ## Testing
 
