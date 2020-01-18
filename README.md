@@ -110,20 +110,12 @@ http://localhost:3000/docs
 Build docker images
 
 ```
-yarn install
-
-yarn build
-
 docker build -t justjava-api .
 ```
 
 or use docker-compose
 
 ```
-yarn install
-
-yarn build
-
 docker-compose up -d
 ```
 
