@@ -92,7 +92,9 @@ $ cp ./config/default.json ./local.json
 $ yarn install
 ```
 
-4. Start the server
+4. (Optional) Add the sample data in [./sample-data/1-products.sql](./sample-data/1-products.sql)
+
+5. Start the server
 
 ```bash
 $ yarn run start
