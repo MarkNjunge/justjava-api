@@ -80,7 +80,7 @@ Used for card payments
 $ git clone https://github.com/MarkNjunge/justjava-api.git
 ```
 
-2. Make a `./config/local.json` or `./.env` file for configuration. See the variable mappings [./config/custom-environment-variables.json](./config/custom-environment-variables.json).
+2. Make a `./config/local.json` or `./.env` file for configuration. See the variable mappings [./config/custom-environment-variables.json](./config/custom-environment-variables.json). If you use a `.env` file, copy the contents of [./.env.sample](./.env.sample)
 
 ```bash
 $ cp ./config/default.json ./local.json
@@ -92,9 +92,7 @@ $ cp ./config/default.json ./local.json
 $ yarn install
 ```
 
-4. (Optional) Add the sample data in [./sample-data/1-products.sql](./sample-data/1-products.sql)
-
-5. Start the server
+4. Start the server
 
 ```bash
 $ yarn run start
