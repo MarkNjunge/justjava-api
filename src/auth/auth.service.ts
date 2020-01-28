@@ -16,6 +16,8 @@ import { SignUpDto } from "./dto/SignUp.dto";
 import { PasswordHash } from "../common/PasswordHash";
 import { SignInDto } from "./dto/SignIn.dto";
 import * as moment from "moment";
+import { ChangePasswordDto } from "./dto/ChangePassword.dto";
+import { ApiResponseDto } from "../common/dto/ApiResponse.dto";
 
 @Injectable()
 export class AuthService {
@@ -171,6 +173,49 @@ export class AuthService {
 
   async signOut(session: SessionDto) {
     await this.redisService.deleteSession(session);
+  }
+
+  async changePassword(
+    session: SessionDto,
+    dto: ChangePasswordDto,
+  ): Promise<ApiResponseDto> {
+    const user = await this.usersRepository
+      .createQueryBuilder("user")
+      .leftJoinAndSelect("user.addresses", "address")
+      .addSelect("user.password") // Select password for comparison
+      .where("user.id = :id", { id: session.userId })
+      .getOne();
+
+    // Check if user exists
+    if (!user) {
+      throw new ApiException(HttpStatus.NOT_FOUND, "Email address not in use");
+    }
+
+    // Check if user uses Google Sign in
+    if (user.signInMethod === SignInMethod.GOOGLE) {
+      throw new ApiException(
+        HttpStatus.FORBIDDEN,
+        "Email address uses Google Sign In",
+      );
+    }
+
+    // Verify current password
+    const valid = PasswordHash.validate(dto.currentPassword, user.password);
+    if (!valid) {
+      throw new ApiException(
+        HttpStatus.FORBIDDEN,
+        "Current password is incorrect",
+      );
+    }
+
+    const newPasswordHash = PasswordHash.hash(dto.newPassword);
+
+    await this.usersRepository.update(
+      { id: session.userId },
+      { password: newPasswordHash },
+    );
+
+    return { httpStatus: 200, message: "Password changed successfully" };
   }
 
   private generateSession(): string {

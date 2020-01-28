@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Param,
+  Patch,
 } from "@nestjs/common";
 import { LoginGoogleDto } from "./dto/LoginGoogle.dto";
 import {
@@ -25,6 +26,7 @@ import { ApiResponseDto } from "../common/dto/ApiResponse.dto";
 import { SignInDto } from "./dto/SignIn.dto";
 import * as moment from "moment";
 import { AuthGuard } from "../common/guards/auth.guard";
+import { ChangePasswordDto } from "./dto/ChangePassword.dto";
 
 @Controller("auth")
 @ApiUseTags("auth")
@@ -120,5 +122,17 @@ export class AuthController {
   @ApiResponse({ status: 204 })
   async signOut(@Param("session") session) {
     await this.authService.signOut(session);
+  }
+
+  @Patch("/changePassword")
+  @UseGuards(AuthGuard)
+  @ApiOperation({ title: "Change password" })
+  @ApiImplicitHeader({ name: "session-id" })
+  @ApiResponse({ status: 200, type: ApiResponseDto })
+  async changePassword(
+    @Param("session") session,
+    @Body() dto: ChangePasswordDto,
+  ) {
+    return this.authService.changePassword(session, dto);
   }
 }
