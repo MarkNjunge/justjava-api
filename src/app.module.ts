@@ -25,6 +25,7 @@ import { CardController } from "./payments/card/card.controller";
 import { CardService } from "./payments/card/card.service";
 import { RavepayService } from "./ravepay/ravepay.service";
 import { NotificationsService } from "./notifications/notifications.service";
+import { EmailService } from "./email/email.service";
 import * as path from "path";
 
 @Module({
@@ -70,6 +71,7 @@ import * as path from "path";
     CardService,
     RavepayService,
     NotificationsService,
+    EmailService,
   ],
 })
 export class AppModule {}

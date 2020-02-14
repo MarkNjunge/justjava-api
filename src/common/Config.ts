@@ -20,6 +20,7 @@ export interface Config {
   mpesa: Mpesa;
   rave: Rave;
   datadog: Datadog;
+  mailgun: Mailgun;
 }
 
 interface RateLimit {
@@ -68,4 +69,19 @@ interface Datadog {
   host: string;
 }
 
+interface Mailgun {
+  enabled: boolean;
+  apiKey: string;
+  from: string;
+}
+
 export const config: Config = configPackage;
+
+// Handle dokku setting environment variables as string instead of boolean
+export function trueBool(value: boolean | string) {
+  if (typeof value === "string") {
+    return value === "true" ? true : false;
+  } else if (typeof value === "boolean") {
+    return value;
+  }
+}

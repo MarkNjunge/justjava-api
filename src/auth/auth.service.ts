@@ -1,5 +1,5 @@
-import { Injectable, HttpStatus } from "@nestjs/common";
-import { config } from "../common/Config";
+import { Injectable, HttpStatus, UnauthorizedException } from "@nestjs/common";
+import { config, trueBool } from "../common/Config";
 import { OAuth2Client } from "google-auth-library";
 import { ApiException } from "../common/ApiException";
 import { GoogleTokenPayload } from "./models/GoogleTokenPayload";
@@ -18,15 +18,21 @@ import { SignInDto } from "./dto/SignIn.dto";
 import * as moment from "moment";
 import { ChangePasswordDto } from "./dto/ChangePassword.dto";
 import { ApiResponseDto } from "../common/dto/ApiResponse.dto";
+import { EmailService } from "../email/email.service";
+import { RequestResetPasswordDto } from "./dto/RequestResetPassword.dto";
+import { CustomLogger } from "../common/CustomLogger";
+import { ResetPasswordDto } from "./dto/ResetPassword.dto";
 
 @Injectable()
 export class AuthService {
   private client: OAuth2Client;
+  private logger = new CustomLogger("AuthService");
 
   constructor(
     @InjectRepository(UserEntity)
     private readonly usersRepository: Repository<UserEntity>,
     private readonly redisService: RedisService,
+    private readonly emailService: EmailService,
   ) {
     this.client = new OAuth2Client(config.google.clientId);
   }
@@ -214,6 +220,81 @@ export class AuthService {
       { id: session.userId },
       { password: newPasswordHash },
     );
+
+    return { httpStatus: 200, message: "Password changed successfully" };
+  }
+
+  async requestPasswordReset(
+    dto: RequestResetPasswordDto,
+  ): Promise<ApiResponseDto> {
+    this.logger.debug(`Received password reset request for email ${dto.email}`);
+    const user = await this.usersRepository.findOne({
+      where: { email: dto.email },
+    });
+
+    // Ensure user exists
+    if (!user) {
+      this.logger.debug(`There is no user with email ${dto.email}`);
+      return {
+        httpStatus: 200,
+        message: "Password reset email sent",
+      } as ApiResponseDto;
+    }
+
+    // Can't reset passwords for google sign in
+    if (user.signInMethod === SignInMethod.GOOGLE) {
+      this.logger.debug(`User with email ${dto.email} uses Google sign in`);
+      return {
+        httpStatus: 200,
+        message: "Password reset email sent",
+      } as ApiResponseDto;
+    }
+
+    const token = this.generateSession();
+    this.logger.debug(`Generated token ${token.slice(0, 6)}...`);
+
+    await this.redisService.savePasswordResetToken({
+      email: user.email,
+      token,
+    });
+
+    if (trueBool(config.mailgun.enabled) === true) {
+      await this.emailService.sendPasswordResetEmail(
+        user.email,
+        user.firstName,
+        token,
+      );
+      this.logger.debug(`Sent password reset email to ${dto.email}`);
+
+      return {
+        httpStatus: 200,
+        message: "Password reset email sent",
+      } as ApiResponseDto;
+    } else {
+      return {
+        httpStatus: 200,
+        message: token,
+      } as ApiResponseDto;
+    }
+  }
+
+  async resetPassword(dto: ResetPasswordDto) {
+    const slicedToken = `${dto.token.slice(0, 6)}...`;
+    this.logger.debug(`Resetting password using token ${slicedToken}`);
+    const resetToken = await this.redisService.getPasswordResetToken(dto.token);
+
+    if (!resetToken) {
+      this.logger.debug(`Token ${slicedToken} is not valid`);
+      throw new UnauthorizedException("Invalid token");
+    }
+
+    const newPasswordHash = PasswordHash.hash(dto.newPassword);
+
+    await this.usersRepository.update(
+      { email: resetToken.email },
+      { password: newPasswordHash },
+    );
+    this.logger.debug(`Reset password for user ${resetToken.email}`);
 
     return { httpStatus: 200, message: "Password changed successfully" };
   }

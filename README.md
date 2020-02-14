@@ -72,6 +72,14 @@ Used for card payments
 
 2. Go to [API settings](https://ravesandbox.flutterwave.com/dashboard/settings/apis) and get the pubnlic key and secret key.
 
+### Mailgun (optional)
+
+Used for sending password reset emails. If this is disabled, the token will be returning in the HTTP response.
+
+1. Create an account on [Mailgun](https://www.mailgun.com/) and complete the setup.
+
+2. Create an email template called `reset-password` that has a `name` and `token` parameter.
+
 ## Installation
 
 1. Clone the repository

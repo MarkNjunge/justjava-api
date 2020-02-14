@@ -5,6 +5,7 @@ import { getRepositoryToken } from "@nestjs/typeorm";
 import { UserEntity } from "../users/entities/User.entity";
 import { Repository } from "typeorm";
 import { RedisService } from "../redis/redis.service";
+import { EmailService } from "../email/email.service";
 
 describe("Auth Controller", () => {
   let controller: AuthController;
@@ -20,6 +21,10 @@ describe("Auth Controller", () => {
         },
         {
           provide: RedisService,
+          useClass: jest.fn(),
+        },
+        {
+          provide: EmailService,
           useClass: jest.fn(),
         },
       ],

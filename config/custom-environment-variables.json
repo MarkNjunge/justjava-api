@@ -39,5 +39,10 @@
     "service": "DATADOG_SERVICE",
     "source": "DATADOG_SOURCE",
     "host": "DATADOG_HOST"
+  },
+  "mailgun": {
+    "enabled": "MAILGUN_ENABLED",
+    "apiKey": "MAILGUN_API_KEY",
+    "from": "MAILGUN_FROM"
   }
 }

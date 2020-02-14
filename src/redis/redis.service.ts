@@ -6,6 +6,7 @@ import { CustomLogger } from "../common/CustomLogger";
 import { ApiException } from "../common/ApiException";
 import { MpesaAccessTokenDto } from "../payments/mpesa/dto/MpesaAccessToken.dto";
 import * as moment from "moment";
+import { ResetPasswordTokenDto } from "../auth/dto/ResetPasswordToken.dto";
 
 @Injectable()
 export class RedisService {
@@ -96,5 +97,26 @@ export class RedisService {
 
   async getMpesaAccessToken(): Promise<string | null> {
     return this.redis.get("justjava:mpesa:accessToken");
+  }
+
+  async savePasswordResetToken(dto: ResetPasswordTokenDto) {
+    await this.redis.set(
+      `justjava:password:${dto.token}`,
+      JSON.stringify(dto),
+      "ex",
+      86400,
+    );
+  }
+
+  async getPasswordResetToken(token: string): Promise<ResetPasswordTokenDto> {
+    this.assertHasConnected();
+
+    const res = await this.redis.get(`justjava:password:${token}`);
+
+    if (res) {
+      return JSON.parse(res);
+    } else {
+      return null;
+    }
   }
 }

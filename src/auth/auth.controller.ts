@@ -27,6 +27,8 @@ import { SignInDto } from "./dto/SignIn.dto";
 import * as moment from "moment";
 import { AuthGuard } from "../common/guards/auth.guard";
 import { ChangePasswordDto } from "./dto/ChangePassword.dto";
+import { RequestResetPasswordDto } from "./dto/RequestResetPassword.dto";
+import { ResetPasswordDto } from "./dto/ResetPassword.dto";
 
 @Controller("auth")
 @ApiUseTags("auth")
@@ -134,5 +136,19 @@ export class AuthController {
     @Body() dto: ChangePasswordDto,
   ) {
     return this.authService.changePassword(session, dto);
+  }
+
+  @Post("/requestPasswordReset")
+  @ApiOperation({ title: "Request password reset email" })
+  @ApiResponse({ status: 200, type: ApiResponseDto })
+  async requestPasswordReset(@Body() dto: RequestResetPasswordDto) {
+    return this.authService.requestPasswordReset(dto);
+  }
+
+  @Post("/resetPassword")
+  @ApiOperation({ title: "Reset password using token" })
+  @ApiResponse({ status: 200, type: ApiResponseDto })
+  async resetPassword(@Body() dto: ResetPasswordDto) {
+    return this.authService.resetPassword(dto);
   }
 }
