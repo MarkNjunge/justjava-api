@@ -4,6 +4,7 @@ import { RedisService } from "../redis/redis.service";
 import { UserEntity } from "../users/entities/User.entity";
 import { Repository } from "typeorm";
 import { getRepositoryToken } from "@nestjs/typeorm";
+import { EmailService } from "../email/email.service";
 
 describe("AuthService", () => {
   let service: AuthService;
@@ -14,6 +15,10 @@ describe("AuthService", () => {
         AuthService,
         {
           provide: RedisService,
+          useClass: jest.fn(),
+        },
+        {
+          provide: EmailService,
           useClass: jest.fn(),
         },
         {

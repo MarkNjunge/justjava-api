@@ -45,5 +45,10 @@
     "service": "dev.justjava",
     "source": "justjava-api",
     "host": "justjava.store"
+  },
+  "mailgun": {
+    "enabled": true,
+    "apiKey": "key-abc123",
+    "from": "Name <address@mail.example.com>"
   }
 }

@@ -72,6 +72,14 @@ Used for card payments
 
 2. Go to [API settings](https://ravesandbox.flutterwave.com/dashboard/settings/apis) and get the pubnlic key and secret key.
 
+### Mailgun (optional)
+
+Used for sending password reset emails. If this is disabled, the token will be returning in the HTTP response.
+
+1. Create an account on [Mailgun](https://www.mailgun.com/) and complete the setup.
+
+2. Create an email template called `reset-password` that has a `name` and `token` parameter.
+
 ## Installation
 
 1. Clone the repository
@@ -80,7 +88,7 @@ Used for card payments
 $ git clone https://github.com/MarkNjunge/justjava-api.git
 ```
 
-2. Make a `./config/local.json` or `./.env` file for configuration. See the variable mappings [./config/custom-environment-variables.json](./config/custom-environment-variables.json).
+2. Make a `./config/local.json` or `./.env` file for configuration. See the variable mappings [./config/custom-environment-variables.json](./config/custom-environment-variables.json). If you use a `.env` file, copy the contents of [./.env.sample](./.env.sample)
 
 ```bash
 $ cp ./config/default.json ./local.json

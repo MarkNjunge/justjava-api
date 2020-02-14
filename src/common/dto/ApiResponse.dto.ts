@@ -8,7 +8,7 @@ export class ApiResponseDto {
   message: string;
 
   @ApiModelProperty()
-  meta: any;
+  meta?: any;
 
   constructor(httpStatus: number, message: string, meta?: any) {
     this.httpStatus = httpStatus;

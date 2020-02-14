@@ -25,14 +25,18 @@ import { CardController } from "./payments/card/card.controller";
 import { CardService } from "./payments/card/card.service";
 import { RavepayService } from "./ravepay/ravepay.service";
 import { NotificationsService } from "./notifications/notifications.service";
+import { EmailService } from "./email/email.service";
+import * as path from "path";
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: "postgres",
       url: config.db.url,
-      entities: [__dirname + "/**/*.entity{.ts,.js}"],
-      synchronize: true,
+      entities: [path.join(__dirname, "./**/*.entity{.ts,.js}")],
+      migrations: [path.join(__dirname, "./migration/*{.ts,.js}")],
+      migrationsRun: true,
+      synchronize: false,
       extra: {
         ssl: config.db.ssl,
       },
@@ -67,6 +71,7 @@ import { NotificationsService } from "./notifications/notifications.service";
     CardService,
     RavepayService,
     NotificationsService,
+    EmailService,
   ],
 })
 export class AppModule {}
