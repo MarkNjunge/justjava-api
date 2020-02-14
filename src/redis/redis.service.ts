@@ -20,12 +20,14 @@ export class RedisService {
 
   async connect() {
     this.redis = new IoRedis(config.redis.url, {
-      retryStrategy() {
-        return false;
+      retryStrategy: times => {
+        const delay = Math.min(times * 50, 2000);
+        return delay;
       },
     });
 
     this.redis.on("connect", () => {
+      this.logger.log("Connected to redis");
       this.isConnected = true;
     });
 
