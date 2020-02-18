@@ -71,6 +71,7 @@ interface Datadog {
 
 interface Mailgun {
   enabled: boolean;
+  domain: string;
   apiKey: string;
   from: string;
 }

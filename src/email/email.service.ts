@@ -25,7 +25,7 @@ export class EmailService {
         password: config.mailgun.apiKey,
       },
       method: "POST",
-      url: "https://api.mailgun.net/v3/mail.marknjunge.com/messages",
+      url: `https://api.mailgun.net/v3/${config.mailgun.domain}/messages`,
       data: params,
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
