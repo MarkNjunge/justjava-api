@@ -38,6 +38,8 @@ export class RedisService {
           "RedisService.connect",
         );
         this.isConnected = false;
+      } else if (err.code === "ETIMEDOUT") {
+        // Error still happens when connection is valid
       } else {
         this.logger.error(err.message, "RedisService.connect");
       }

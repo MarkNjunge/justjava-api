@@ -48,6 +48,7 @@
   },
   "mailgun": {
     "enabled": true,
+    "domain": "your-mailgun-domain",
     "apiKey": "key-abc123",
     "from": "Name <address@mail.example.com>"
   }
