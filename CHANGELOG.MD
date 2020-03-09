@@ -1,3 +1,9 @@
+# 1.1.1
+
+- Ignore ETIMEDOUT error from IoRedis.
+
+  Error still occurs when connection is successful.
+
 # 1.1.0
 
 - Create smaller dockerfiles
