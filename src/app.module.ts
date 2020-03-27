@@ -1,8 +1,6 @@
 import { Module } from "@nestjs/common";
 import { AppController } from "./app/app.controller";
 import { AppService } from "./app/app.service";
-import { ImagesController } from "./images/images.controller";
-import { ImagesService } from "./images/images.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { config } from "./common/Config";
 import { ProductEntity } from "./shared/products/entities/Product.entity";
@@ -55,7 +53,6 @@ import * as path from "path";
   ],
   controllers: [
     AppController,
-    ImagesController,
     AuthController,
     UsersController,
     OrdersController,
@@ -64,7 +61,6 @@ import * as path from "path";
   ],
   providers: [
     AppService,
-    ImagesService,
     AuthService,
     RedisService,
     UsersService,

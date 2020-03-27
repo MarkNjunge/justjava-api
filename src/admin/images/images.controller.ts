@@ -7,12 +7,12 @@ import {
   ApiUseTags,
 } from "@nestjs/swagger";
 import { UploadImageDto } from "./dto/UploadImage.dto";
-import { ApiImplicitFormData } from "../common/decorators/api-imlicit-form-data.decorator";
+import { ApiImplicitFormData } from "../../common/decorators/api-imlicit-form-data.decorator";
 import { ImagesService } from "./images.service";
 import { CloudinaryInfoDto } from "./dto/CloudinaryInfo.dto";
-import { AdminGuard } from "../common/guards/admin.guard";
+import { AdminGuard } from "../../common/guards/admin.guard";
 
-@Controller("images")
+@Controller("admin/images")
 @ApiUseTags("images")
 @UseGuards(AdminGuard)
 export class ImagesController {

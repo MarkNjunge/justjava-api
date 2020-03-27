@@ -1,9 +1,9 @@
 import { Injectable, HttpStatus } from "@nestjs/common";
 import * as cloudinary from "cloudinary";
 import { UploadImageDto } from "./dto/UploadImage.dto";
-import { config } from "../common/Config";
+import { config } from "../../common/Config";
 import { CloudinaryInfoDto } from "./dto/CloudinaryInfo.dto";
-import { ApiException } from "../common/ApiException";
+import { ApiException } from "../../common/ApiException";
 
 @Injectable()
 export class ImagesService {
