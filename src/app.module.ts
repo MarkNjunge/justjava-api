@@ -3,11 +3,9 @@ import { AppController } from "./app/app.controller";
 import { AppService } from "./app/app.service";
 import { ImagesController } from "./images/images.controller";
 import { ImagesService } from "./images/images.service";
-import { ProductsController } from "./products/products.controller";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { config } from "./common/Config";
-import { ProductsService } from "./products/products.service";
-import { ProductEntity } from "./products/entities/Product.entity";
+import { ProductEntity } from "./shared/products/entities/Product.entity";
 import { AuthController } from "./auth/auth.controller";
 import { AuthService } from "./auth/auth.service";
 import { UserEntity } from "./users/entities/User.entity";
@@ -26,6 +24,9 @@ import { CardService } from "./payments/card/card.service";
 import { RavepayService } from "./ravepay/ravepay.service";
 import { NotificationsService } from "./notifications/notifications.service";
 import { EmailService } from "./email/email.service";
+import { AdminModule } from "./admin/admin.module";
+import { SharedModule } from "./shared/shared.module";
+import { ClientModule } from "./client/client.module";
 import * as path from "path";
 
 @Module({
@@ -48,11 +49,13 @@ import * as path from "path";
       OrderEntity,
       PaymentEntity,
     ]),
+    ClientModule,
+    AdminModule,
+    SharedModule,
   ],
   controllers: [
     AppController,
     ImagesController,
-    ProductsController,
     AuthController,
     UsersController,
     OrdersController,
@@ -62,7 +65,6 @@ import * as path from "path";
   providers: [
     AppService,
     ImagesService,
-    ProductsService,
     AuthService,
     RedisService,
     UsersService,

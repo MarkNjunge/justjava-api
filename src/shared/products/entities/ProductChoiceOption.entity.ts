@@ -22,10 +22,14 @@ export class ProductChoiceOptionEntity {
   @Column({ type: "real" })
   price: number;
 
-  @ManyToOne(type => ProductChoiceEntity, choice => choice.options, {
-    nullable: false,
-    onDelete: "CASCADE",
-  })
+  @ManyToOne(
+    type => ProductChoiceEntity,
+    choice => choice.options,
+    {
+      nullable: false,
+      onDelete: "CASCADE",
+    },
+  )
   @JoinColumn({ name: "choice_id" })
   choice: ProductChoiceEntity;
 

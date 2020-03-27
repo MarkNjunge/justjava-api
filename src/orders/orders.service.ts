@@ -1,7 +1,7 @@
 import { Injectable, HttpStatus } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { ProductEntity } from "../products/entities/Product.entity";
+import { ProductEntity } from "../shared/products/entities/Product.entity";
 import { OrderValidationError } from "./dto/OrderValidationError.dto";
 import { OrderValidationErrorModel } from "./dto/OrderValidationErrorModel.dto";
 import { OrderValidationErrorType } from "./dto/OrderValidationErrorType.dto";

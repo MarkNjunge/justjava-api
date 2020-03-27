@@ -1,11 +1,11 @@
 import { Injectable, HttpStatus } from "@nestjs/common";
-import { CreateProductDto } from "./dto/CreateProduct.dto";
 import slugify from "slugify";
-import { ProductEntity } from "./entities/Product.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
+import { ProductEntity } from "./entities/Product.entity";
 import { ProductDto } from "./dto/Product.dto";
-import { ApiException } from "../common/ApiException";
+import { ApiException } from "../../common/ApiException";
+import { CreateProductDto } from "./dto/CreateProduct.dto";
 
 @Injectable()
 export class ProductsService {

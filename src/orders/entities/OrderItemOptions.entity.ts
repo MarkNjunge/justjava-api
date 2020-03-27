@@ -7,17 +7,21 @@ import {
 } from "typeorm";
 import { OrderItemEntity } from "./OrderItem.entity";
 import { PlaceOrderItemOptionDto } from "../dto/PlaceOrderItemOption.dto";
-import { ProductEntity } from "../../products/entities/Product.entity";
+import { ProductEntity } from "../../shared/products/entities/Product.entity";
 
 @Entity({ name: "order_item_options" })
 export class OrderItemOptionsEntity {
   @PrimaryGeneratedColumn("increment")
   id: number;
 
-  @ManyToOne(type => OrderItemEntity, item => item.options, {
-    nullable: false,
-    onDelete: "CASCADE",
-  })
+  @ManyToOne(
+    type => OrderItemEntity,
+    item => item.options,
+    {
+      nullable: false,
+      onDelete: "CASCADE",
+    },
+  )
   @JoinColumn({ name: "order_item_id" })
   item: OrderItemEntity;
 

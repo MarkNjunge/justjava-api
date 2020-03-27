@@ -2,7 +2,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { ProductsController } from "./products.controller";
 import { ProductsService } from "./products.service";
 import { getRepositoryToken } from "@nestjs/typeorm";
-import { ProductEntity } from "./entities/Product.entity";
+import { ProductEntity } from "../shared/products/entities/Product.entity";
 import { Repository } from "typeorm";
 
 describe("Products Controller", () => {

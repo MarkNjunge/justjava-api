@@ -9,17 +9,21 @@ import {
 import { OrderEntity } from "./Order.entity";
 import { OrderItemOptionsEntity } from "./OrderItemOptions.entity";
 import { PlaceOrderItemDto } from "../dto/PlaceOrderItem.dto";
-import { ProductEntity } from "../../products/entities/Product.entity";
+import { ProductEntity } from "../../shared/products/entities/Product.entity";
 
 @Entity({ name: "order_items" })
 export class OrderItemEntity {
   @PrimaryGeneratedColumn("increment")
   id: number;
 
-  @ManyToOne(type => OrderEntity, order => order.items, {
-    nullable: false,
-    onDelete: "CASCADE",
-  })
+  @ManyToOne(
+    type => OrderEntity,
+    order => order.items,
+    {
+      nullable: false,
+      onDelete: "CASCADE",
+    },
+  )
   @JoinColumn({ name: "order_id" })
   order: OrderEntity;
 
@@ -38,10 +42,14 @@ export class OrderItemEntity {
   @Column({ name: "quantity" })
   quantity: number;
 
-  @OneToMany(type => OrderItemOptionsEntity, option => option.item, {
-    eager: true,
-    cascade: true,
-  })
+  @OneToMany(
+    type => OrderItemOptionsEntity,
+    option => option.item,
+    {
+      eager: true,
+      cascade: true,
+    },
+  )
   options: OrderItemOptionsEntity[];
 
   static fromDto(

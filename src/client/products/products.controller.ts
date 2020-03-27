@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from "@nestjs/common";
-import { ProductsService } from "../shared/products/products.service";
-import { ProductDto } from "../shared/products/dto/Product.dto";
+import { ProductsService } from "../../shared/products/products.service";
+import { ProductDto } from "../../shared/products/dto/Product.dto";
 import { ApiOperation, ApiResponse, ApiUseTags } from "@nestjs/swagger";
 
 @Controller("products")

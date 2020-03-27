@@ -13,7 +13,7 @@ import { OrderItemEntity } from "./OrderItem.entity";
 import { PlaceOrderDto } from "../dto/PlaceOrder.dto";
 import { OrderStatus } from "../models/OrderStatus";
 import { OrderPaymentStatus } from "../models/OrderPaymentStatus";
-import { ProductEntity } from "../../products/entities/Product.entity";
+import { ProductEntity } from "../../shared/products/entities/Product.entity";
 import * as moment from "moment";
 import * as shortid from "shortid";
 
@@ -40,9 +40,13 @@ export class OrderEntity {
   @Column({ name: "payment_status" })
   paymentStatus: OrderPaymentStatus;
 
-  @ManyToOne(type => UserEntity, user => user.orders, {
-    onDelete: "SET NULL",
-  })
+  @ManyToOne(
+    type => UserEntity,
+    user => user.orders,
+    {
+      onDelete: "SET NULL",
+    },
+  )
   @JoinColumn({ name: "user_id" })
   user: UserEntity;
 
@@ -56,10 +60,14 @@ export class OrderEntity {
   @RelationId((order: OrderEntity) => order.address)
   addressId: number;
 
-  @OneToMany(type => OrderItemEntity, item => item.order, {
-    eager: true,
-    cascade: true,
-  })
+  @OneToMany(
+    type => OrderItemEntity,
+    item => item.order,
+    {
+      eager: true,
+      cascade: true,
+    },
+  )
   items: OrderItemEntity[];
 
   static fromDto(
