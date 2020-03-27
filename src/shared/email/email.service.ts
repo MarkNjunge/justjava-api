@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import * as axios from "axios";
-import { config } from "../common/Config";
-import { CustomLogger } from "../common/CustomLogger";
+import { config } from "../../common/Config";
+import { CustomLogger } from "../../common/CustomLogger";
 
 @Injectable()
 export class EmailService {

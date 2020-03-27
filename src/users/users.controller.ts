@@ -25,7 +25,7 @@ import { ApiResponseDto } from "../common/dto/ApiResponse.dto";
 import { AddressDto } from "./dto/Address.dto";
 import { SaveAddressDto } from "./dto/SaveAddress.dto";
 import { UsersService } from "./users.service";
-import { SessionDto } from "../auth/dto/Session.dto";
+import { SessionDto } from "../client/auth/dto/Session.dto";
 import { OrderDto } from "../orders/dto/Order.dto";
 import { OrdersService } from "../orders/orders.service";
 import { UpdateUserDto } from "./dto/UpdateUser.dto";

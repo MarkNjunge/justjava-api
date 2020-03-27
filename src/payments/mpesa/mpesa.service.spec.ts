@@ -4,7 +4,7 @@ import { PaymentEntity } from "../entities/Payment.entity";
 import { OrderEntity } from "../../orders/entities/Order.entity";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { RedisService } from "../../redis/redis.service";
+import { RedisService } from "../../shared/redis/redis.service";
 import { NotificationsService } from "../../notifications/notifications.service";
 import { UserEntity } from "../../users/entities/User.entity";
 

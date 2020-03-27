@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { CardController } from "./card.controller";
 import { CardService } from "./card.service";
-import { RedisService } from "../../redis/redis.service";
+import { RedisService } from "../../shared/redis/redis.service";
 
 describe("Card Controller", () => {
   let controller: CardController;

@@ -5,7 +5,7 @@ import { Repository } from "typeorm";
 import { UserDto } from "./dto/User.dto";
 import { ApiException } from "../common/ApiException";
 import { SaveAddressDto } from "./dto/SaveAddress.dto";
-import { SessionDto } from "../auth/dto/Session.dto";
+import { SessionDto } from "../client/auth/dto/Session.dto";
 import { AddressEntity } from "./entities/Address.entity";
 import { AddressDto } from "./dto/Address.dto";
 import { UpdateUserDto } from "./dto/UpdateUser.dto";

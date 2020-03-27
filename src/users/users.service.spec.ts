@@ -4,7 +4,7 @@ import { AddressEntity } from "./entities/Address.entity";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { UserEntity } from "./entities/User.entity";
 import { Repository } from "typeorm";
-import { RedisService } from "../redis/redis.service";
+import { RedisService } from "../shared/redis/redis.service";
 
 describe("UsersService", () => {
   let service: UsersService;

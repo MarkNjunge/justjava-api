@@ -1,5 +1,5 @@
 import { Injectable, HttpStatus } from "@nestjs/common";
-import { SessionDto } from "src/auth/dto/Session.dto";
+import { SessionDto } from "../../client/auth/dto/Session.dto";
 import { InitiatePaymentDto } from "./dto/InitiatePayment.dto";
 import { UserEntity } from "../../users/entities/User.entity";
 import { InjectRepository } from "@nestjs/typeorm";

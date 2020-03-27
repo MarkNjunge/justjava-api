@@ -2,8 +2,8 @@ import { Injectable, HttpStatus } from "@nestjs/common";
 import * as axios from "axios";
 import * as forge from "node-forge";
 import { config } from "../common/Config";
-import { InitiatePaymentDto } from "src/payments/card/dto/InitiatePayment.dto";
-import { UserDto } from "src/users/dto/User.dto";
+import { InitiatePaymentDto } from "../payments/card/dto/InitiatePayment.dto";
+import { UserDto } from "../users/dto/User.dto";
 import * as moment from "moment";
 import { ApiException } from "../common/ApiException";
 

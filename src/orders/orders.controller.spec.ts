@@ -6,7 +6,7 @@ import { ProductEntity } from "../shared/products/entities/Product.entity";
 import { Repository } from "typeorm";
 import { OrderEntity } from "./entities/Order.entity";
 import { UserEntity } from "../users/entities/User.entity";
-import { RedisService } from "../redis/redis.service";
+import { RedisService } from "../shared/redis/redis.service";
 
 describe("Orders Controller", () => {
   let controller: OrdersController;

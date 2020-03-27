@@ -7,7 +7,7 @@ import {
 import { Observable } from "rxjs";
 import { IncomingMessage } from "http";
 import { FastifyRequest } from "fastify";
-import { RedisService } from "../../redis/redis.service";
+import { RedisService } from "../../shared/redis/redis.service";
 import { ApiException } from "../ApiException";
 
 @Injectable()
@@ -17,9 +17,9 @@ export class AuthGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const request: FastifyRequest<
-      IncomingMessage
-    > = context.switchToHttp().getRequest();
+    const request: FastifyRequest<IncomingMessage> = context
+      .switchToHttp()
+      .getRequest();
     return this.validateRequest(request);
   }
 

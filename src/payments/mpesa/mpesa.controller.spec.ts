@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { MpesaController } from "./mpesa.controller";
 import { MpesaService } from "./mpesa.service";
-import { RedisService } from "../../redis/redis.service";
+import { RedisService } from "../../shared/redis/redis.service";
 
 describe("Mpesa Controller", () => {
   let controller: MpesaController;

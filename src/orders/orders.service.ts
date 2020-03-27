@@ -7,7 +7,7 @@ import { OrderValidationErrorModel } from "./dto/OrderValidationErrorModel.dto";
 import { OrderValidationErrorType } from "./dto/OrderValidationErrorType.dto";
 import { VerifyOrderDto } from "./dto/VerifyOrder.dto";
 import { PlaceOrderDto } from "./dto/PlaceOrder.dto";
-import { SessionDto } from "../auth/dto/Session.dto";
+import { SessionDto } from "../client/auth/dto/Session.dto";
 import { UserEntity } from "../users/entities/User.entity";
 import { ApiException } from "../common/ApiException";
 import { OrderEntity } from "./entities/Order.entity";

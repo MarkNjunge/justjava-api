@@ -1,26 +1,26 @@
 import { Injectable, HttpStatus, UnauthorizedException } from "@nestjs/common";
-import { config, trueBool } from "../common/Config";
+import { config, trueBool } from "../../common/Config";
 import { OAuth2Client } from "google-auth-library";
-import { ApiException } from "../common/ApiException";
+import { ApiException } from "../../common/ApiException";
 import { GoogleTokenPayload } from "./models/GoogleTokenPayload";
-import { UserEntity } from "../users/entities/User.entity";
+import { UserEntity } from "../../users/entities/User.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { SignInMethod } from "./models/SignInMethod";
-import { UserDto } from "../users/dto/User.dto";
-import { RedisService } from "../redis/redis.service";
+import { UserDto } from "../../users/dto/User.dto";
+import { RedisService } from "../../shared/redis/redis.service";
 import * as crypto from "crypto";
 import { SessionDto } from "./dto/Session.dto";
 import { LoginResponseDto } from "./dto/LoginResponse.dto";
 import { SignUpDto } from "./dto/SignUp.dto";
-import { PasswordHash } from "../common/PasswordHash";
+import { PasswordHash } from "../../common/PasswordHash";
 import { SignInDto } from "./dto/SignIn.dto";
 import * as moment from "moment";
 import { ChangePasswordDto } from "./dto/ChangePassword.dto";
-import { ApiResponseDto } from "../common/dto/ApiResponse.dto";
-import { EmailService } from "../email/email.service";
+import { ApiResponseDto } from "../../common/dto/ApiResponse.dto";
+import { EmailService } from "../../shared/email/email.service";
 import { RequestResetPasswordDto } from "./dto/RequestResetPassword.dto";
-import { CustomLogger } from "../common/CustomLogger";
+import { CustomLogger } from "../../common/CustomLogger";
 import { ResetPasswordDto } from "./dto/ResetPassword.dto";
 
 @Injectable()

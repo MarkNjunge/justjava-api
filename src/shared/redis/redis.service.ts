@@ -1,12 +1,12 @@
 import { Injectable, HttpStatus } from "@nestjs/common";
 import * as IoRedis from "ioredis";
-import { config } from "../common/Config";
-import { SessionDto } from "src/auth/dto/Session.dto";
-import { CustomLogger } from "../common/CustomLogger";
-import { ApiException } from "../common/ApiException";
-import { MpesaAccessTokenDto } from "../payments/mpesa/dto/MpesaAccessToken.dto";
+import { config } from "../../common/Config";
+import { SessionDto } from "../../client/auth/dto/Session.dto";
+import { CustomLogger } from "../../common/CustomLogger";
+import { ApiException } from "../../common/ApiException";
+import { MpesaAccessTokenDto } from "../../payments/mpesa/dto/MpesaAccessToken.dto";
 import * as moment from "moment";
-import { ResetPasswordTokenDto } from "../auth/dto/ResetPasswordToken.dto";
+import { ResetPasswordTokenDto } from "../../client/auth/dto/ResetPasswordToken.dto";
 
 @Injectable()
 export class RedisService {

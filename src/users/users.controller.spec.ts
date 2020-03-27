@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { UsersController } from "./users.controller";
-import { RedisService } from "../redis/redis.service";
+import { RedisService } from "../shared/redis/redis.service";
 import { UsersService } from "./users.service";
 import { OrdersService } from "../orders/orders.service";
 
