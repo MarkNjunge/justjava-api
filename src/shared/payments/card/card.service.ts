@@ -1,4 +1,9 @@
-import { Injectable, HttpStatus } from "@nestjs/common";
+import {
+  Injectable,
+  HttpStatus,
+  NotFoundException,
+  BadRequestException,
+} from "@nestjs/common";
 import { SessionDto } from "../../../client/auth/dto/Session.dto";
 import { InitiatePaymentDto } from "./dto/InitiatePayment.dto";
 import { UserEntity } from "../../../shared/users/entities/User.entity";
@@ -6,7 +11,6 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { PaymentEntity } from "../entities/Payment.entity";
 import { Repository } from "typeorm";
 import { OrderEntity } from "../../../shared/orders/entities/Order.entity";
-import { ApiException } from "../../../common/ApiException";
 import * as moment from "moment";
 import { RavepayService } from "../ravepay/ravepay.service";
 import { PaymentMethod } from "../models/PaymentMethod";
@@ -39,20 +43,20 @@ export class CardService {
       where: { id: session.userId },
     });
     if (!user) {
-      throw new ApiException(HttpStatus.NOT_FOUND, "User does not exist");
+      throw new NotFoundException({ message: "User does not exist" });
     }
 
     const order = await this.ordersRepository.findOne({
       where: { id: dto.orderId },
     });
     if (!order) {
-      throw new ApiException(HttpStatus.NOT_FOUND, "Order does not exist");
+      throw new NotFoundException({ message: "Order does not exist" });
     }
     if (order.paymentMethod !== PaymentMethod.CARD) {
-      throw new ApiException(
-        HttpStatus.BAD_REQUEST,
-        "Order does not use card as a payment method. Change the PaymentMethod first.",
-      );
+      throw new BadRequestException({
+        message:
+          "Order does not use card as a payment method. Change the PaymentMethod first.",
+      });
     }
 
     this.logger.debug("Initiating Ravepay request");

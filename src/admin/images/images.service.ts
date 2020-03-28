@@ -1,9 +1,8 @@
-import { Injectable, HttpStatus } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import * as cloudinary from "cloudinary";
 import { UploadImageDto } from "./dto/UploadImage.dto";
 import { config } from "../../common/Config";
 import { CloudinaryInfoDto } from "./dto/CloudinaryInfo.dto";
-import { ApiException } from "../../common/ApiException";
 
 @Injectable()
 export class ImagesService {
@@ -62,7 +61,7 @@ export class ImagesService {
       };
     } catch (e) {
       if (e.error.http_code) {
-        throw new ApiException(HttpStatus.NOT_FOUND, e.error.message);
+        throw new NotFoundException({ message: e.error.message });
       } else {
         throw new Error(e.error.message);
       }

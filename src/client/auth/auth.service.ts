@@ -1,7 +1,12 @@
-import { Injectable, HttpStatus, UnauthorizedException } from "@nestjs/common";
+import {
+  Injectable,
+  UnauthorizedException,
+  ForbiddenException,
+  ConflictException,
+  NotFoundException,
+} from "@nestjs/common";
 import { config, trueBool } from "../../common/Config";
 import { OAuth2Client } from "google-auth-library";
-import { ApiException } from "../../common/ApiException";
 import { GoogleTokenPayload } from "./models/GoogleTokenPayload";
 import { UserEntity } from "../../shared/users/entities/User.entity";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -42,11 +47,10 @@ export class AuthService {
     payload.email = payload.email.toLowerCase();
 
     if (payload == null) {
-      throw new ApiException(
-        HttpStatus.FORBIDDEN,
-        "Sign in with Google unsuccessful.",
-        { reason: "Decoding token failed." },
-      );
+      throw new ForbiddenException({
+        message: "Sign in with Google unsuccessful.",
+        meta: { reason: "Decoding token failed." },
+      });
     }
 
     const existing = await this.usersRepository.findOne({
@@ -109,7 +113,7 @@ export class AuthService {
           ? "Email aleady is use using Google Sign In."
           : "Email aleady is use.";
 
-      throw new ApiException(HttpStatus.CONFLICT, msg);
+      throw new ConflictException({ message: msg });
     }
 
     // Create user db entity
@@ -148,21 +152,20 @@ export class AuthService {
 
     // Check if user exists
     if (!user) {
-      throw new ApiException(HttpStatus.NOT_FOUND, "Email address not in use");
+      throw new NotFoundException({ message: "Email address not in use" });
     }
 
     // Check if user uses Google Sign in
     if (user.signInMethod === SignInMethod.GOOGLE) {
-      throw new ApiException(
-        HttpStatus.FORBIDDEN,
-        "Email address uses Google Sign In",
-      );
+      throw new ForbiddenException({
+        message: "Email address uses Google Sign In",
+      });
     }
 
     // Compare password
     const valid = PasswordHash.validate(dto.password, user.password);
     if (!valid) {
-      throw new ApiException(HttpStatus.FORBIDDEN, "Incorrect password");
+      throw new ForbiddenException({ message: "Incorrect password" });
     }
     delete user.password; // Remove password for response
 
@@ -194,24 +197,22 @@ export class AuthService {
 
     // Check if user exists
     if (!user) {
-      throw new ApiException(HttpStatus.NOT_FOUND, "Email address not in use");
+      throw new NotFoundException({ message: "Email address not in use" });
     }
 
     // Check if user uses Google Sign in
     if (user.signInMethod === SignInMethod.GOOGLE) {
-      throw new ApiException(
-        HttpStatus.FORBIDDEN,
-        "Email address uses Google Sign In",
-      );
+      throw new ForbiddenException({
+        message: "Email address uses Google Sign In",
+      });
     }
 
     // Verify current password
     const valid = PasswordHash.validate(dto.currentPassword, user.password);
     if (!valid) {
-      throw new ApiException(
-        HttpStatus.FORBIDDEN,
-        "Current password is incorrect",
-      );
+      throw new ForbiddenException({
+        message: "Current password is incorrect",
+      });
     }
 
     const newPasswordHash = PasswordHash.hash(dto.newPassword);

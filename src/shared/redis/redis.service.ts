@@ -1,9 +1,8 @@
-import { Injectable, HttpStatus } from "@nestjs/common";
+import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import * as IoRedis from "ioredis";
 import { config } from "../../common/Config";
 import { SessionDto } from "../../client/auth/dto/Session.dto";
 import { CustomLogger } from "../../common/CustomLogger";
-import { ApiException } from "../../common/ApiException";
 import { MpesaAccessTokenDto } from "../payments/mpesa/dto/MpesaAccessToken.dto";
 import * as moment from "moment";
 import { ResetPasswordTokenDto } from "../../client/auth/dto/ResetPasswordToken.dto";
@@ -48,11 +47,10 @@ export class RedisService {
 
   private assertHasConnected() {
     if (!this.isConnected) {
-      throw new ApiException(
-        HttpStatus.INTERNAL_SERVER_ERROR,
-        "Unable to authenticate",
-        { reason: "A connection to Redis has not been established" },
-      );
+      throw new InternalServerErrorException({
+        message: "Unable to authenticate",
+        meta: { reason: "A connection to Redis has not been established" },
+      });
     }
   }
 

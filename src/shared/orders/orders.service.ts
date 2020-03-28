@@ -1,4 +1,4 @@
-import { Injectable, HttpStatus } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { ProductEntity } from "../products/entities/Product.entity";
@@ -9,7 +9,6 @@ import { VerifyOrderDto } from "./dto/VerifyOrder.dto";
 import { PlaceOrderDto } from "./dto/PlaceOrder.dto";
 import { SessionDto } from "../../client/auth/dto/Session.dto";
 import { UserEntity } from "../users/entities/User.entity";
-import { ApiException } from "../../common/ApiException";
 import { OrderEntity } from "./entities/Order.entity";
 import { OrderDto } from "./dto/Order.dto";
 import { OrderStatus } from "./models/OrderStatus";
@@ -41,8 +40,11 @@ export class OrdersService {
     });
 
     if (!order) {
-      throw new ApiException(HttpStatus.NOT_FOUND, "Order not found", {
-        reason: "Order either does not exist or does not belong to the user",
+      throw new NotFoundException({
+        message: "Order not found",
+        meta: {
+          reason: "Order either does not exist or does not belong to the user",
+        },
       });
     } else {
       return order;
@@ -141,11 +143,11 @@ export class OrdersService {
       where: { id: session.userId },
     });
     if (!user) {
-      throw new ApiException(HttpStatus.NOT_FOUND, `User does not exist`);
+      throw new NotFoundException({ message: `User does not exist` });
     }
     const address = user.addresses.filter(a => a.id === dto.addressId)[0];
     if (!address) {
-      throw new ApiException(HttpStatus.NOT_FOUND, `Address does not exist`);
+      throw new NotFoundException({ messge: `Address does not exist` });
     }
 
     const productIds = dto.items.map(i => i.productId);
@@ -167,8 +169,11 @@ export class OrdersService {
     });
 
     if (!order) {
-      throw new ApiException(HttpStatus.NOT_FOUND, "Order not found", {
-        reason: "Order either does not exist or does not belong to the user",
+      throw new NotFoundException({
+        message: "Order not found",
+        meta: {
+          reason: "Order either does not exist or does not belong to the user",
+        },
       });
     }
 

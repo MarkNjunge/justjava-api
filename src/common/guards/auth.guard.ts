@@ -3,12 +3,12 @@ import {
   CanActivate,
   ExecutionContext,
   HttpStatus,
+  UnauthorizedException,
 } from "@nestjs/common";
 import { Observable } from "rxjs";
 import { IncomingMessage } from "http";
 import { FastifyRequest } from "fastify";
 import { RedisService } from "../../shared/redis/redis.service";
-import { ApiException } from "../ApiException";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -29,15 +29,14 @@ export class AuthGuard implements CanActivate {
     const sessionId = request.headers["session-id"];
 
     if (!sessionId) {
-      throw new ApiException(
-        HttpStatus.UNAUTHORIZED,
-        "session-id header is required",
-      );
+      throw new UnauthorizedException({
+        message: "session-id header is required",
+      });
     }
 
     const session = await this.redisService.getSession(sessionId);
     if (!session) {
-      throw new ApiException(HttpStatus.UNAUTHORIZED, "Invalid session-id");
+      throw new UnauthorizedException({ message: "Invalid session-id" });
     }
 
     request.params.session = session;

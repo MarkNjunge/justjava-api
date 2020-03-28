@@ -1,4 +1,10 @@
-import { Injectable, HttpStatus } from "@nestjs/common";
+import {
+  Injectable,
+  HttpStatus,
+  NotFoundException,
+  BadRequestException,
+  InternalServerErrorException,
+} from "@nestjs/common";
 import { PaymentEntity } from "../../../shared/payments/entities/Payment.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -9,7 +15,6 @@ import * as moment from "moment";
 import { RequestMpesaDto } from "./dto/RequestMpesa.dto";
 import { SessionDto } from "../../../client/auth/dto/Session.dto";
 import { OrderEntity } from "../../orders/entities/Order.entity";
-import { ApiException } from "../../../common/ApiException";
 import { PaymentMethod } from "../../payments/models/PaymentMethod";
 import { PaymentStatus } from "../../payments/models/PaymentStatus";
 import { StkCallbackDto } from "./dto/StkCallback.dto";
@@ -42,14 +47,14 @@ export class MpesaService {
   ): Promise<ApiResponseDto> {
     const order = await this.ordersRepository.findOne({ id: dto.orderId });
     if (!order) {
-      throw new ApiException(HttpStatus.NOT_FOUND, "Order does not exist");
+      throw new NotFoundException({ message: "Order does not exist" });
     }
 
     if (order.paymentMethod !== PaymentMethod.MPESA) {
-      throw new ApiException(
-        HttpStatus.BAD_REQUEST,
-        "Order does not use M-Pesa as a payment method. Change the PaymentMethodFirst.",
-      );
+      throw new BadRequestException({
+        message:
+          "Order does not use M-Pesa as a payment method. Change the PaymentMethodFirst.",
+      });
     }
 
     const authHeader = await this.getAuthorizationHeader();
@@ -100,11 +105,10 @@ export class MpesaService {
         message: e.message,
         responseMessage: e.response ? e.response.data.errorMessage : e.message,
       };
-      throw new ApiException(
-        HttpStatus.INTERNAL_SERVER_ERROR,
-        "Unable to initiate payment",
-        { ...error },
-      );
+      throw new InternalServerErrorException({
+        message: "Unable to initiate payment",
+        meta: { ...error },
+      });
     }
   }
 

@@ -1,9 +1,8 @@
-import { Injectable, HttpStatus } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserEntity } from "./entities/User.entity";
 import { Repository } from "typeorm";
 import { UserDto } from "./dto/User.dto";
-import { ApiException } from "../../common/ApiException";
 import { SaveAddressDto } from "./dto/SaveAddress.dto";
 import { SessionDto } from "../../client/auth/dto/Session.dto";
 import { AddressEntity } from "./entities/Address.entity";
@@ -27,7 +26,7 @@ export class UsersService {
   async getUserById(id: number): Promise<UserDto> {
     const user = await this.usersRepository.findOne({ where: { id } });
     if (!user) {
-      throw new ApiException(HttpStatus.NOT_FOUND, "User not found", { id });
+      throw new NotFoundException({ message: "User not found", meta: { id } });
     } else {
       return user;
     }
@@ -74,9 +73,12 @@ export class UsersService {
       .getOne();
 
     if (!address) {
-      throw new ApiException(HttpStatus.NOT_FOUND, "Address not found", {
-        reason:
-          "Either the address does not exist, or exists but does not belong to the user",
+      throw new NotFoundException({
+        message: "Address not found",
+        meta: {
+          reason:
+            "Either the address does not exist, or exists but does not belong to the user",
+        },
       });
     }
 

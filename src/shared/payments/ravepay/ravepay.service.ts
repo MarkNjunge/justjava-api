@@ -1,11 +1,14 @@
-import { Injectable, HttpStatus } from "@nestjs/common";
+import {
+  Injectable,
+  HttpStatus,
+  InternalServerErrorException,
+} from "@nestjs/common";
 import * as axios from "axios";
 import * as forge from "node-forge";
 import { config } from "../../../common/Config";
 import { InitiatePaymentDto } from "../../../shared/payments/card/dto/InitiatePayment.dto";
 import { UserDto } from "../../../shared/users/dto/User.dto";
 import * as moment from "moment";
-import { ApiException } from "../../../common/ApiException";
 
 @Injectable()
 export class RavepayService {
@@ -36,11 +39,10 @@ export class RavepayService {
     );
 
     if (initializeResponse.data.data.chargeResponseCode !== "02") {
-      throw new ApiException(
-        HttpStatus.INTERNAL_SERVER_ERROR,
-        "Error making payment",
-        { message: initializeResponse.data.message },
-      );
+      throw new InternalServerErrorException({
+        message: "Error making payment",
+        meta: { message: initializeResponse.data.message },
+      });
     }
 
     return initializeResponse.data;
@@ -57,11 +59,10 @@ export class RavepayService {
     );
 
     if (verificationResponse.data.data.data.responsecode !== "00") {
-      throw new ApiException(
-        HttpStatus.INTERNAL_SERVER_ERROR,
-        "Error validating payment",
-        { message: verificationResponse.data.message },
-      );
+      throw new InternalServerErrorException({
+        message: "Error validating payment",
+        meta: { message: verificationResponse.data.message },
+      });
     }
 
     return verificationResponse.data;
