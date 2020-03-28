@@ -6,7 +6,13 @@ import {
   Param,
   Body,
 } from "@nestjs/common";
-import { ApiOperation, ApiResponse, ApiTags, ApiHeader } from "@nestjs/swagger";
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiHeader,
+  ApiSecurity,
+} from "@nestjs/swagger";
 import { ApiResponseDto } from "../../common/dto/ApiResponse.dto";
 import { AuthGuard } from "../../common/guards/auth.guard";
 import { RequestMpesaDto } from "../../shared/payments/mpesa/dto/RequestMpesa.dto";
@@ -24,10 +30,10 @@ export class PaymentsController {
 
   @Post("mpesa/request")
   @HttpCode(200)
-  @UseGuards(AuthGuard)
-  @ApiHeader({ name: "session-id" })
   @ApiOperation({ summary: "Requset an M-Pesa payment" })
   @ApiResponse({ status: 200, type: ApiResponseDto })
+  @UseGuards(AuthGuard)
+  @ApiSecurity("session-id")
   async mpesaRequest(@Param("session") session, @Body() dto: RequestMpesaDto) {
     return this.mpesaService.request(session, dto);
   }
@@ -44,8 +50,8 @@ export class PaymentsController {
   @HttpCode(200)
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: "Initiate a card payment" })
-  @ApiHeader({ name: "session-id" })
   @ApiResponse({ status: 200, type: ApiResponseDto })
+  @ApiSecurity("session-id")
   async cardInitiate(@Param("session") s, @Body() dto: InitiatePaymentDto) {
     return this.cardService.initiate(s, dto);
   }

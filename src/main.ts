@@ -73,6 +73,16 @@ function intializeSwagger(app: NestFastifyApplication) {
       "https://justjava.store",
       "contact@marknjunge.com",
     )
+    .addSecurity("session-id", {
+      type: "apiKey",
+      in: "header",
+      name: "session-id",
+    })
+    .addSecurity("admin-key", {
+      type: "apiKey",
+      in: "header",
+      name: "admin-key",
+    })
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
