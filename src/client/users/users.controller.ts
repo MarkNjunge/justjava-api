@@ -39,25 +39,6 @@ export class UsersController {
     private readonly ordersService: OrdersService,
   ) {}
 
-  @Get("")
-  @UseGuards(AdminGuard)
-  @ApiOperation({ summary: "Get all users" })
-  @ApiHeader({ name: "admin-key" })
-  @ApiResponse({ status: 200, type: UserDto, isArray: true })
-  async getAllUsers() {
-    return this.usersService.getAllUsers();
-  }
-
-  @Get(":id")
-  @UseGuards(AdminGuard)
-  @ApiOperation({ summary: "Get user by id" })
-  @ApiHeader({ name: "admin-key" })
-  @ApiResponse({ status: 200, type: UserDto })
-  @ApiResponse({ status: 404, type: ApiResponseDto })
-  async getUserById(@Param("id") id: number) {
-    return this.usersService.getUserById(id);
-  }
-
   @Get("current")
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: "Get the current user" })
