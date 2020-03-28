@@ -15,7 +15,7 @@ export class UserDto {
   @ApiProperty()
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   mobileNumber: string;
 
   @ApiProperty({ enum: SignInMethod })
