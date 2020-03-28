@@ -18,6 +18,6 @@
   },
   "rulesDirectory": [],
   "linterOptions": {
-    "exclude": ["src/migration/*"]
+    "exclude": ["src/db/migration/*"]
   }
 }

@@ -122,7 +122,7 @@ export class initial1580192312721 implements MigrationInterface {
 
   private async seedData(queryRunner: QueryRunner): Promise<any> {
     await queryRunner.query(`
-    INSERT INTO public.products ("name",slug,description,price,image,product_type,product_status,created_at) VALUES 
+    INSERT INTO public.products ("name",slug,description,price,image,product_type,product_status,created_at) VALUES
     ('Americano','americano','Italian espresso gets the American treatment; hot water fills the cup for a rich alternative to drip coffee.
     Made from water and espresso.',120,'https://res.cloudinary.com/marknjunge/image/upload/v1572600845/justjava/products/americano.jpg','coffee','enabled',1574605132)
     ,('Cappuccino','cappuccino','A single, perfectly extracted shot of espresso is marbled with freshly steamed milk to create this coffeehouse staple.
@@ -142,7 +142,7 @@ export class initial1580192312721 implements MigrationInterface {
     `);
 
     await queryRunner.query(`
-    INSERT INTO public.product_choices ("name","position",quantity_min,quantity_max,product_id) VALUES 
+    INSERT INTO public.product_choices ("name","position",quantity_min,quantity_max,product_id) VALUES
     ('Single, double or triple',0,1,1,1)
     ,('Toppings',0,0,-1,1)
     ,('Single, double or triple',0,1,1,2)
@@ -154,7 +154,7 @@ export class initial1580192312721 implements MigrationInterface {
     ,('Toppings',0,0,-1,4)
     ,('Single, double or triple',0,1,1,5)
     ;
-    INSERT INTO public.product_choices ("name","position",quantity_min,quantity_max,product_id) VALUES 
+    INSERT INTO public.product_choices ("name","position",quantity_min,quantity_max,product_id) VALUES
     ('Type of milk',0,0,1,5)
     ,('Toppings',0,0,-1,5)
     ,('Single, double or triple',0,1,1,6)
@@ -166,13 +166,13 @@ export class initial1580192312721 implements MigrationInterface {
     ,('Single, double or triple',0,1,1,8)
     ,('Type of milk',0,0,1,8)
     ;
-    INSERT INTO public.product_choices ("name","position",quantity_min,quantity_max,product_id) VALUES 
+    INSERT INTO public.product_choices ("name","position",quantity_min,quantity_max,product_id) VALUES
     ('Toppings',0,0,-1,8)
     ;
     `);
 
     await queryRunner.query(`
-    INSERT INTO public.product_choice_options ("name",description,price,choice_id) VALUES 
+    INSERT INTO public.product_choice_options ("name",description,price,choice_id) VALUES
     ('Triple','Three shots of coffee',80,1)
     ,('Double','Two shots of coffee',40,1)
     ,('Single','A single shot of coffee',0,1)
@@ -184,7 +184,7 @@ export class initial1580192312721 implements MigrationInterface {
     ,('Triple','Three shots of coffee',80,3)
     ,('Double','Two shots of coffee',40,3)
     ;
-    INSERT INTO public.product_choice_options ("name",description,price,choice_id) VALUES 
+    INSERT INTO public.product_choice_options ("name",description,price,choice_id) VALUES
     ('Single','A single shot of coffee',0,3)
     ,('Skim milk',NULL,20,4)
     ,('Soy milk',NULL,20,4)
@@ -196,7 +196,7 @@ export class initial1580192312721 implements MigrationInterface {
     ,('Triple','Three shots of coffee',80,6)
     ,('Double','Two shots of coffee',40,6)
     ;
-    INSERT INTO public.product_choice_options ("name",description,price,choice_id) VALUES 
+    INSERT INTO public.product_choice_options ("name",description,price,choice_id) VALUES
     ('Single','A single shot of coffee',0,6)
     ,('Mini marshmallows',NULL,60,7)
     ,('Mint',NULL,30,7)
@@ -208,7 +208,7 @@ export class initial1580192312721 implements MigrationInterface {
     ,('Single','A single shot of coffee',0,8)
     ,('Mini marshmallows',NULL,60,9)
     ;
-    INSERT INTO public.product_choice_options ("name",description,price,choice_id) VALUES 
+    INSERT INTO public.product_choice_options ("name",description,price,choice_id) VALUES
     ('Mint',NULL,30,9)
     ,('Nutmeg (powdered)',NULL,30,9)
     ,('Chocolate (curls)',NULL,30,9)
@@ -220,7 +220,7 @@ export class initial1580192312721 implements MigrationInterface {
     ,('Soy milk',NULL,20,11)
     ,('Mini marshmallows',NULL,60,12)
     ;
-    INSERT INTO public.product_choice_options ("name",description,price,choice_id) VALUES 
+    INSERT INTO public.product_choice_options ("name",description,price,choice_id) VALUES
     ('Mint',NULL,30,12)
     ,('Nutmeg (powdered)',NULL,30,12)
     ,('Chocolate (curls)',NULL,30,12)
@@ -232,7 +232,7 @@ export class initial1580192312721 implements MigrationInterface {
     ,('Soy milk',NULL,20,14)
     ,('Mini marshmallows',NULL,60,15)
     ;
-    INSERT INTO public.product_choice_options ("name",description,price,choice_id) VALUES 
+    INSERT INTO public.product_choice_options ("name",description,price,choice_id) VALUES
     ('Mint',NULL,30,15)
     ,('Nutmeg (powdered)',NULL,30,15)
     ,('Chocolate (curls)',NULL,30,15)
@@ -244,7 +244,7 @@ export class initial1580192312721 implements MigrationInterface {
     ,('Soy milk',NULL,20,17)
     ,('Mini marshmallows',NULL,60,18)
     ;
-    INSERT INTO public.product_choice_options ("name",description,price,choice_id) VALUES 
+    INSERT INTO public.product_choice_options ("name",description,price,choice_id) VALUES
     ('Mint',NULL,30,18)
     ,('Nutmeg (powdered)',NULL,30,18)
     ,('Chocolate (curls)',NULL,30,18)
@@ -256,7 +256,7 @@ export class initial1580192312721 implements MigrationInterface {
     ,('Soy milk',NULL,20,20)
     ,('Mini marshmallows',NULL,60,21)
     ;
-    INSERT INTO public.product_choice_options ("name",description,price,choice_id) VALUES 
+    INSERT INTO public.product_choice_options ("name",description,price,choice_id) VALUES
     ('Mint',NULL,30,21)
     ,('Nutmeg (powdered)',NULL,30,21)
     ,('Chocolate (curls)',NULL,30,21)
