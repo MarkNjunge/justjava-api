@@ -1,4 +1,4 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 import {
   ValidateNested,
   IsOptional,
@@ -10,19 +10,19 @@ import { PlaceOrderItemDto } from "./PlaceOrderItem.dto";
 import { PaymentMethod } from "../../payments/models/PaymentMethod";
 
 export class PlaceOrderDto {
-  @ApiModelProperty()
+  @ApiProperty()
   @IsNotEmpty()
   addressId: number;
 
-  @ApiModelProperty({ required: false })
+  @ApiProperty({ required: false })
   @IsOptional()
   additionalComments: string;
 
-  @ApiModelProperty({ enum: PaymentMethod })
+  @ApiProperty({ enum: PaymentMethod })
   @IsEnum(PaymentMethod)
   paymentMethod: PaymentMethod;
 
-  @ApiModelProperty({ isArray: true, type: PlaceOrderItemDto })
+  @ApiProperty({ isArray: true, type: PlaceOrderItemDto })
   @ValidateNested({ each: true })
   @Type(() => PlaceOrderItemDto)
   items: PlaceOrderItemDto[];

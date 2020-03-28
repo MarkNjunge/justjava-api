@@ -1,12 +1,12 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty } from "class-validator";
 
 export class PlaceOrderItemOptionDto {
-  @ApiModelProperty()
+  @ApiProperty()
   @IsNotEmpty()
   choiceId: number;
 
-  @ApiModelProperty()
+  @ApiProperty()
   @IsNotEmpty()
   optionId: number;
 }

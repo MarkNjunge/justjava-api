@@ -1,16 +1,16 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsOptional } from "class-validator";
 
 export class CreateProductChoiceOptionDto {
   @IsNotEmpty()
-  @ApiModelProperty()
+  @ApiProperty()
   name: string;
 
   @IsOptional()
-  @ApiModelProperty()
+  @ApiProperty()
   description: string;
 
   @IsNotEmpty()
-  @ApiModelProperty()
+  @ApiProperty()
   price: number;
 }

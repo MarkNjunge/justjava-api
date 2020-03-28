@@ -1,11 +1,11 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 import { UserDto } from "../../../shared/users/dto/User.dto";
 import { SessionDto } from "./Session.dto";
 
 export class LoginResponseDto {
-  @ApiModelProperty()
+  @ApiProperty()
   user: UserDto;
 
-  @ApiModelProperty()
+  @ApiProperty()
   session: SessionDto;
 }

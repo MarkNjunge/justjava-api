@@ -1,18 +1,18 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 import { PlaceOrderItemOptionDto } from "./PlaceOrderItemOption.dto";
 
 export class PlaceOrderItemDto {
-  @ApiModelProperty()
+  @ApiProperty()
   @IsNotEmpty()
   productId: number;
 
-  @ApiModelProperty()
+  @ApiProperty()
   @IsNotEmpty()
   quantity: number;
 
-  @ApiModelProperty({ isArray: true, type: PlaceOrderItemOptionDto })
+  @ApiProperty({ isArray: true, type: PlaceOrderItemOptionDto })
   @IsNotEmpty()
   @ValidateNested({ each: true })
   @Type(() => PlaceOrderItemOptionDto)

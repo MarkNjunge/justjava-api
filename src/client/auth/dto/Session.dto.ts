@@ -1,13 +1,13 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class SessionDto {
-  @ApiModelProperty()
+  @ApiProperty()
   userId: number;
 
-  @ApiModelProperty()
+  @ApiProperty()
   sessionId: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   lastUseDate: number;
 
   constructor(userId: number, sessionId: string, lastUseDate: number) {

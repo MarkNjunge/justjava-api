@@ -1,29 +1,29 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 import { SignInMethod } from "../../../client/auth/models/SignInMethod";
 import { AddressDto } from "./Address.dto";
 
 export class UserDto {
-  @ApiModelProperty()
+  @ApiProperty()
   id: number;
 
-  @ApiModelProperty()
+  @ApiProperty()
   firstName: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   lastName: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   email: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   mobileNumber: string;
 
-  @ApiModelProperty({ enum: SignInMethod })
+  @ApiProperty({ enum: SignInMethod })
   signInMethod: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   createdAt: number;
 
-  @ApiModelProperty({ type: AddressDto, isArray: true })
+  @ApiProperty({ type: AddressDto, isArray: true })
   addresses: AddressDto[];
 }

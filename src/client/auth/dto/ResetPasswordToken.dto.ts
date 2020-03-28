@@ -1,12 +1,12 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty } from "class-validator";
 
 export class ResetPasswordTokenDto {
   @IsNotEmpty()
-  @ApiModelProperty()
+  @ApiProperty()
   email: string;
 
   @IsNotEmpty()
-  @ApiModelProperty()
+  @ApiProperty()
   token: string;
 }

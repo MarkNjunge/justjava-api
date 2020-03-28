@@ -1,4 +1,4 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 import {
   IsNotEmpty,
   IsEnum,
@@ -12,34 +12,34 @@ import { Type } from "class-transformer";
 
 export class CreateProductDto {
   @IsNotEmpty()
-  @ApiModelProperty()
+  @ApiProperty()
   name: string;
 
   @IsNotEmpty()
-  @ApiModelProperty()
+  @ApiProperty()
   description: string;
 
   @IsNotEmpty()
   @Min(0, { message: "Products can't sell for a less than 0" })
-  @ApiModelProperty()
+  @ApiProperty()
   price: number;
 
   @IsNotEmpty()
-  @ApiModelProperty()
+  @ApiProperty()
   image: string;
 
   @IsNotEmpty()
   @IsEnum(ProductType)
-  @ApiModelProperty({ enum: ProductType })
+  @ApiProperty({ enum: ProductType })
   type: string;
 
   @IsNotEmpty()
   @IsEnum(ProductStatus)
-  @ApiModelProperty({ enum: ProductStatus })
+  @ApiProperty({ enum: ProductStatus })
   status: string;
 
   @IsOptional()
-  @ApiModelProperty({ type: [CreateProductChoiceDto], required: false })
+  @ApiProperty({ type: [CreateProductChoiceDto], required: false })
   @ValidateNested({ each: true })
   @Type(() => CreateProductChoiceDto)
   choices: CreateProductChoiceDto[];

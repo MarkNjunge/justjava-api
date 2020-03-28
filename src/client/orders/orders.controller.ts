@@ -11,12 +11,12 @@ import {
   Put,
 } from "@nestjs/common";
 import {
-  ApiUseTags,
+  ApiTags,
   ApiOperation,
   ApiOkResponse,
   ApiCreatedResponse,
-  ApiImplicitHeader,
-  ApiImplicitQuery,
+  ApiHeader,
+  ApiQuery,
 } from "@nestjs/swagger";
 import { OrdersService } from "../../shared/orders/orders.service";
 import { OrderValidationError } from "../../shared/orders/dto/OrderValidationError.dto";
@@ -26,14 +26,14 @@ import { PlaceOrderDto } from "../../shared/orders/dto/PlaceOrder.dto";
 import { OrderDto } from "../../shared/orders/dto/Order.dto";
 
 @Controller("orders")
-@ApiUseTags("orders")
+@ApiTags("orders")
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Get(":id")
   @UseGuards(AuthGuard)
-  @ApiOperation({ title: "Get order by id" })
-  @ApiImplicitHeader({ name: "session-id" })
+  @ApiOperation({ summary: "Get order by id" })
+  @ApiHeader({ name: "session-id" })
   @ApiOkResponse({ type: OrderDto })
   async getOrderById(@Param("session") session, @Param("id") id: number) {
     return this.ordersService.getOrderById(session, id);
@@ -41,7 +41,7 @@ export class OrdersController {
 
   @Post("/verify")
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ title: "Verify an order's items and choices are valid" })
+  @ApiOperation({ summary: "Verify an order's items and choices are valid" })
   @ApiOkResponse({ type: OrderValidationError, isArray: true })
   async verify(@Body() dto: VerifyOrderDto): Promise<OrderValidationError[]> {
     return this.ordersService.verifyOrderItems(dto);
@@ -50,8 +50,8 @@ export class OrdersController {
   @Post("/place")
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
-  @ApiImplicitHeader({ name: "session-id" })
-  @ApiOperation({ title: "Place an order" })
+  @ApiHeader({ name: "session-id" })
+  @ApiOperation({ summary: "Place an order" })
   @ApiCreatedResponse({ type: OrderDto, isArray: true })
   async placeOrder(
     @Param("session") s,
@@ -63,8 +63,8 @@ export class OrdersController {
   @Put("/:id/cancel")
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiImplicitHeader({ name: "session-id" })
-  @ApiOperation({ title: "Cancel an order" })
+  @ApiHeader({ name: "session-id" })
+  @ApiOperation({ summary: "Cancel an order" })
   async cancelOrder(@Param("session") s, @Param("id") id: string) {
     await this.ordersService.cancelOrder(s, id);
   }

@@ -1,44 +1,44 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty } from "class-validator";
 
 export class InitiatePaymentDto {
-  @ApiModelProperty()
+  @ApiProperty()
   @IsNotEmpty()
   orderId: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   @IsNotEmpty()
   cardNo: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   @IsNotEmpty()
   cvv: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   @IsNotEmpty()
   expiryMonth: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   @IsNotEmpty()
   expiryYear: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   @IsNotEmpty()
   billingZip: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   @IsNotEmpty()
   billingCity: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   @IsNotEmpty()
   billingAddress: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   @IsNotEmpty()
   billingState: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   @IsNotEmpty()
   billingCountry: string;
 }

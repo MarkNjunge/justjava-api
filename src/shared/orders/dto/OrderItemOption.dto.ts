@@ -1,21 +1,21 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class OrderItemOptionDto {
-  @ApiModelProperty()
+  @ApiProperty()
   id: number;
 
-  @ApiModelProperty()
+  @ApiProperty()
   choiceId: number;
 
-  @ApiModelProperty()
+  @ApiProperty()
   choiceName: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   optionId: number;
 
-  @ApiModelProperty()
+  @ApiProperty()
   optionName: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   optionPrice: number;
 }

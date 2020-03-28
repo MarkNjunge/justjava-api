@@ -1,4 +1,4 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 
 export enum ProductType {
   COFFEE = "coffee",
@@ -12,30 +12,30 @@ export enum ProductStatus {
 }
 
 export class ProductDto {
-  @ApiModelProperty()
+  @ApiProperty()
   id: number;
 
-  @ApiModelProperty()
+  @ApiProperty()
   name: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   slug: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   description: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   price: number;
 
-  @ApiModelProperty()
+  @ApiProperty()
   image: string;
 
-  @ApiModelProperty({ enum: ProductType })
+  @ApiProperty({ enum: ProductType })
   type: string;
 
-  @ApiModelProperty({ enum: ProductStatus })
+  @ApiProperty({ enum: ProductStatus })
   status: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   createdAt: number;
 }

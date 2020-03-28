@@ -1,16 +1,16 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty } from "class-validator";
 
 export class CloudinaryInfoDto {
   @IsNotEmpty()
-  @ApiModelProperty()
+  @ApiProperty()
   url: string;
 
   @IsNotEmpty()
-  @ApiModelProperty()
+  @ApiProperty()
   publicId: string;
 
   @IsNotEmpty()
-  @ApiModelProperty()
+  @ApiProperty()
   tags: string[];
 }

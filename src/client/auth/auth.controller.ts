@@ -11,12 +11,7 @@ import {
   Patch,
 } from "@nestjs/common";
 import { LoginGoogleDto } from "./dto/LoginGoogle.dto";
-import {
-  ApiOperation,
-  ApiResponse,
-  ApiUseTags,
-  ApiImplicitHeader,
-} from "@nestjs/swagger";
+import { ApiOperation, ApiResponse, ApiTags, ApiHeader } from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
 import { FastifyReply } from "fastify";
 import { ServerResponse } from "http";
@@ -31,14 +26,14 @@ import { RequestResetPasswordDto } from "./dto/RequestResetPassword.dto";
 import { ResetPasswordDto } from "./dto/ResetPassword.dto";
 
 @Controller("auth")
-@ApiUseTags("auth")
+@ApiTags("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post("/google")
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    title:
+    summary:
       "Authenticate with Google. Signs in if there is an account, creates an account if not.",
   })
   @ApiResponse({ status: 200, type: LoginResponseDto })
@@ -60,7 +55,7 @@ export class AuthController {
   }
 
   @Post("/signup")
-  @ApiOperation({ title: "Create an account" })
+  @ApiOperation({ summary: "Create an account" })
   @ApiResponse({ status: HttpStatus.CREATED, type: LoginResponseDto })
   @ApiResponse({
     status: HttpStatus.CONFLICT,
@@ -86,7 +81,7 @@ export class AuthController {
   }
 
   @Post("/signin")
-  @ApiOperation({ title: "Sign into an account" })
+  @ApiOperation({ summary: "Sign into an account" })
   @ApiResponse({ status: 200, type: LoginResponseDto })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
@@ -118,9 +113,9 @@ export class AuthController {
 
   @Delete("/signout")
   @UseGuards(AuthGuard)
-  @ApiOperation({ title: "Sign out of a session" })
+  @ApiOperation({ summary: "Sign out of a session" })
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiImplicitHeader({ name: "session-id" })
+  @ApiHeader({ name: "session-id" })
   @ApiResponse({ status: 204 })
   async signOut(@Param("session") session) {
     await this.authService.signOut(session);
@@ -128,8 +123,8 @@ export class AuthController {
 
   @Patch("/changePassword")
   @UseGuards(AuthGuard)
-  @ApiOperation({ title: "Change password" })
-  @ApiImplicitHeader({ name: "session-id" })
+  @ApiOperation({ summary: "Change password" })
+  @ApiHeader({ name: "session-id" })
   @ApiResponse({ status: 200, type: ApiResponseDto })
   async changePassword(
     @Param("session") session,
@@ -139,14 +134,14 @@ export class AuthController {
   }
 
   @Post("/requestPasswordReset")
-  @ApiOperation({ title: "Request password reset email" })
+  @ApiOperation({ summary: "Request password reset email" })
   @ApiResponse({ status: 200, type: ApiResponseDto })
   async requestPasswordReset(@Body() dto: RequestResetPasswordDto) {
     return this.authService.requestPasswordReset(dto);
   }
 
   @Post("/resetPassword")
-  @ApiOperation({ title: "Reset password using token" })
+  @ApiOperation({ summary: "Reset password using token" })
   @ApiResponse({ status: 200, type: ApiResponseDto })
   async resetPassword(@Body() dto: ResetPasswordDto) {
     return this.authService.resetPassword(dto);

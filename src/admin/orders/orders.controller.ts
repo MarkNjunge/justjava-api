@@ -9,26 +9,26 @@ import {
   Put,
 } from "@nestjs/common";
 import {
-  ApiUseTags,
+  ApiTags,
   ApiOperation,
   ApiOkResponse,
-  ApiImplicitHeader,
-  ApiImplicitQuery,
+  ApiHeader,
+  ApiQuery,
 } from "@nestjs/swagger";
 import { OrdersService } from "../../shared/orders/orders.service";
 import { OrderDto } from "../../shared/orders/dto/Order.dto";
 import { AdminGuard } from "../../common/guards/admin.guard";
 
 @Controller("admin/orders")
-@ApiUseTags("orders")
+@ApiTags("orders")
 @UseGuards(AdminGuard)
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Get()
-  @ApiOperation({ title: "Query for orders" })
-  @ApiImplicitHeader({ name: "admin-key", required: true })
-  @ApiImplicitQuery({ name: "userId", required: false })
+  @ApiOperation({ summary: "Query for orders" })
+  @ApiHeader({ name: "admin-key", required: true })
+  @ApiQuery({ name: "userId", required: false })
   @ApiOkResponse({ type: OrderDto, isArray: true })
   async query(@Query("userId") userId): Promise<OrderDto> {
     if (typeof userId === "object") {
@@ -39,8 +39,8 @@ export class OrdersController {
 
   @Put("/:id/cancelAdmin")
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiImplicitHeader({ name: "admin-key" })
-  @ApiOperation({ title: "Cancel an order as an admin" })
+  @ApiHeader({ name: "admin-key" })
+  @ApiOperation({ summary: "Cancel an order as an admin" })
   async cancelOrderAdmin(@Param("id") id: string) {
     await this.ordersService.cancelOrderAdmin(id);
   }

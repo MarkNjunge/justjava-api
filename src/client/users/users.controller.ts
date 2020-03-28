@@ -13,10 +13,10 @@ import {
 } from "@nestjs/common";
 import { AdminGuard } from "../../common/guards/admin.guard";
 import {
-  ApiImplicitHeader,
+  ApiHeader,
   ApiResponse,
   ApiOperation,
-  ApiUseTags,
+  ApiTags,
   ApiOkResponse,
 } from "@nestjs/swagger";
 import { UserDto } from "../../shared/users/dto/User.dto";
@@ -32,7 +32,7 @@ import { UpdateUserDto } from "../../shared/users/dto/UpdateUser.dto";
 import { UpdateFcmTokenDto } from "../../shared/users/dto/UpdateFcmToken.dto";
 
 @Controller("users")
-@ApiUseTags("users")
+@ApiTags("users")
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
@@ -41,8 +41,8 @@ export class UsersController {
 
   @Get("")
   @UseGuards(AdminGuard)
-  @ApiOperation({ title: "Get all users" })
-  @ApiImplicitHeader({ name: "admin-key" })
+  @ApiOperation({ summary: "Get all users" })
+  @ApiHeader({ name: "admin-key" })
   @ApiResponse({ status: 200, type: UserDto, isArray: true })
   async getAllUsers() {
     return this.usersService.getAllUsers();
@@ -50,8 +50,8 @@ export class UsersController {
 
   @Get(":id")
   @UseGuards(AdminGuard)
-  @ApiOperation({ title: "Get user by id" })
-  @ApiImplicitHeader({ name: "admin-key" })
+  @ApiOperation({ summary: "Get user by id" })
+  @ApiHeader({ name: "admin-key" })
   @ApiResponse({ status: 200, type: UserDto })
   @ApiResponse({ status: 404, type: ApiResponseDto })
   async getUserById(@Param("id") id: number) {
@@ -60,8 +60,8 @@ export class UsersController {
 
   @Get("current")
   @UseGuards(AuthGuard)
-  @ApiOperation({ title: "Get the current user" })
-  @ApiImplicitHeader({ name: "session-id" })
+  @ApiOperation({ summary: "Get the current user" })
+  @ApiHeader({ name: "session-id" })
   @ApiResponse({ status: 200, type: UserDto })
   @ApiResponse({ status: 404, type: ApiResponseDto })
   async getCurrentUser(@Param("session") s) {
@@ -72,8 +72,8 @@ export class UsersController {
   @Patch("current")
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ title: "Update a user's details" })
-  @ApiImplicitHeader({ name: "session-id" })
+  @ApiOperation({ summary: "Update a user's details" })
+  @ApiHeader({ name: "session-id" })
   @ApiResponse({ status: 204 })
   async updateUser(@Param("session") session, @Body() dto: UpdateUserDto) {
     await this.usersService.updateUser(session, dto);
@@ -82,8 +82,8 @@ export class UsersController {
   @Patch("current/fcm")
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ title: "Update a user's Firebase messaging token" })
-  @ApiImplicitHeader({ name: "session-id" })
+  @ApiOperation({ summary: "Update a user's Firebase messaging token" })
+  @ApiHeader({ name: "session-id" })
   @ApiResponse({ status: 204 })
   async updateFcmToken(
     @Param("session") session,
@@ -95,8 +95,8 @@ export class UsersController {
   @Delete("current")
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ title: "Delete a user" })
-  @ApiImplicitHeader({ name: "session-id" })
+  @ApiOperation({ summary: "Delete a user" })
+  @ApiHeader({ name: "session-id" })
   @ApiResponse({ status: 204 })
   async deleteUser(@Param("session") session) {
     await this.usersService.deleteUser(session);
@@ -104,8 +104,8 @@ export class UsersController {
 
   @Post("/current/addresses")
   @UseGuards(AuthGuard)
-  @ApiOperation({ title: "Save a new address" })
-  @ApiImplicitHeader({ name: "session-id" })
+  @ApiOperation({ summary: "Save a new address" })
+  @ApiHeader({ name: "session-id" })
   @ApiResponse({ status: 201, type: AddressDto })
   @ApiResponse({ status: 404, type: ApiResponseDto })
   async saveAddress(@Body() dto: SaveAddressDto, @Param("session") session) {
@@ -115,8 +115,8 @@ export class UsersController {
   @Put("/current/addresses/:id")
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ title: "Update an address" })
-  @ApiImplicitHeader({ name: "session-id" })
+  @ApiOperation({ summary: "Update an address" })
+  @ApiHeader({ name: "session-id" })
   @ApiResponse({ status: 204 })
   @ApiResponse({ status: 404, type: ApiResponseDto })
   async updateAddress(
@@ -130,8 +130,8 @@ export class UsersController {
   @Delete("/current/addresses/:id")
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ title: "Delete an address" })
-  @ApiImplicitHeader({ name: "session-id" })
+  @ApiOperation({ summary: "Delete an address" })
+  @ApiHeader({ name: "session-id" })
   @ApiResponse({ status: 204 })
   @ApiResponse({ status: 404, type: ApiResponseDto })
   async deleteAddress(@Param("id") id: number, @Param("session") session) {
@@ -140,8 +140,8 @@ export class UsersController {
 
   @Get("/current/orders")
   @UseGuards(AuthGuard)
-  @ApiOperation({ title: "Query for orders" })
-  @ApiImplicitHeader({ name: "session-id", required: true })
+  @ApiOperation({ summary: "Query for orders" })
+  @ApiHeader({ name: "session-id", required: true })
   @ApiOkResponse({ type: OrderDto, isArray: true })
   async query(@Param("session") session): Promise<OrderDto> {
     return this.ordersService.query(session.userId);

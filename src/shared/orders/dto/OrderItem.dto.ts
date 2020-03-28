@@ -1,25 +1,25 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 import { OrderItemOptionDto } from "./OrderItemOption.dto";
 
 export class OrderItemDto {
-  @ApiModelProperty()
+  @ApiProperty()
   id: number;
 
-  @ApiModelProperty()
+  @ApiProperty()
   productId: number;
 
-  @ApiModelProperty()
+  @ApiProperty()
   productName: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   productBasePrice: number;
 
-  @ApiModelProperty()
+  @ApiProperty()
   totalPrice: number;
 
-  @ApiModelProperty()
+  @ApiProperty()
   quantity: number;
 
-  @ApiModelProperty({ isArray: true, type: OrderItemOptionDto })
+  @ApiProperty({ isArray: true, type: OrderItemOptionDto })
   option: OrderItemOptionDto[];
 }

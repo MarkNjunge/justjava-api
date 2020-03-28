@@ -68,8 +68,11 @@ function intializeSwagger(app: NestFastifyApplication) {
   const options = new DocumentBuilder()
     .setTitle("JustJava API")
     .setDescription("JustJava API")
-    .setContactEmail("contact@marknjunge.com")
-    .setSchemes(process.env.NODE_ENV === "production" ? "https" : "http")
+    .setContact(
+      "Mark Njung'e",
+      "https://justjava.store",
+      "contact@marknjunge.com",
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, options);

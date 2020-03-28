@@ -2,9 +2,9 @@ import { Controller, Post, Req, Get, Param, UseGuards } from "@nestjs/common";
 import {
   ApiOperation,
   ApiConsumes,
-  ApiImplicitHeader,
+  ApiHeader,
   ApiResponse,
-  ApiUseTags,
+  ApiTags,
 } from "@nestjs/swagger";
 import { UploadImageDto } from "./dto/UploadImage.dto";
 import { ApiImplicitFormData } from "../../common/decorators/api-imlicit-form-data.decorator";
@@ -13,14 +13,14 @@ import { CloudinaryInfoDto } from "./dto/CloudinaryInfo.dto";
 import { AdminGuard } from "../../common/guards/admin.guard";
 
 @Controller("admin/images")
-@ApiUseTags("images")
+@ApiTags("images")
 @UseGuards(AdminGuard)
 export class ImagesController {
   constructor(private readonly imageService: ImagesService) {}
 
   @Post("/upload")
-  @ApiImplicitHeader({ name: "admin-key" })
-  @ApiOperation({ title: "Upload an image to Cloudinary" })
+  @ApiHeader({ name: "admin-key" })
+  @ApiOperation({ summary: "Upload an image to Cloudinary" })
   @ApiConsumes("multipart/form-data")
   @ApiImplicitFormData({ name: "name", required: true, type: String })
   @ApiImplicitFormData({
@@ -45,16 +45,16 @@ export class ImagesController {
   }
 
   @Get("/")
-  @ApiOperation({ title: "Get all images on Cloudinary" })
-  @ApiImplicitHeader({ name: "admin-key" })
+  @ApiOperation({ summary: "Get all images on Cloudinary" })
+  @ApiHeader({ name: "admin-key" })
   @ApiResponse({ status: 201, type: CloudinaryInfoDto, isArray: true })
   async getAllResource(): Promise<CloudinaryInfoDto[]> {
     return this.imageService.getAllResources();
   }
 
   @Get("/:publicId")
-  @ApiOperation({ title: "Get a specific image on Cloudinary" })
-  @ApiImplicitHeader({ name: "admin-key" })
+  @ApiOperation({ summary: "Get a specific image on Cloudinary" })
+  @ApiHeader({ name: "admin-key" })
   @ApiResponse({ status: 201, type: CloudinaryInfoDto })
   async getResourceByPublicId(
     @Param("publicId") publicId: string,

@@ -1,16 +1,16 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsOptional } from "class-validator";
 
 export class SaveAddressDto {
   @IsNotEmpty()
-  @ApiModelProperty()
+  @ApiProperty()
   streetAddress: string;
 
   @IsOptional()
-  @ApiModelProperty({ required: false })
+  @ApiProperty({ required: false })
   deliveryInstructions: string;
 
   @IsNotEmpty()
-  @ApiModelProperty()
+  @ApiProperty()
   latLng: string;
 }

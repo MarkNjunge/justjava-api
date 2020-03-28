@@ -1,16 +1,16 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty } from "class-validator";
 
 export class VerifyOrderItemOptionDto {
-  @ApiModelProperty()
+  @ApiProperty()
   @IsNotEmpty()
   choiceId: number;
 
-  @ApiModelProperty()
+  @ApiProperty()
   @IsNotEmpty()
   optionId: number;
 
-  @ApiModelProperty()
+  @ApiProperty()
   @IsNotEmpty()
   optionPrice: number;
 }

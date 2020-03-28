@@ -1,13 +1,13 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class ApiResponseDto {
-  @ApiModelProperty()
+  @ApiProperty()
   httpStatus: number;
 
-  @ApiModelProperty()
+  @ApiProperty()
   message: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   meta?: any;
 
   constructor(httpStatus: number, message: string, meta?: any) {

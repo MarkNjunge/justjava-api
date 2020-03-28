@@ -1,16 +1,16 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty } from "class-validator";
 
 export class UploadImageDto {
   @IsNotEmpty()
-  @ApiModelProperty()
+  @ApiProperty()
   name: string;
 
   @IsNotEmpty()
-  @ApiModelProperty()
+  @ApiProperty()
   folder: string;
 
   @IsNotEmpty()
-  @ApiModelProperty()
+  @ApiProperty()
   tags: string;
 }

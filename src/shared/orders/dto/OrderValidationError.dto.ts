@@ -1,24 +1,24 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 import { OrderValidationErrorModel } from "./OrderValidationErrorModel.dto";
 import { OrderValidationErrorType } from "./OrderValidationErrorType.dto";
 
 export class OrderValidationError {
-  @ApiModelProperty()
+  @ApiProperty()
   index: number;
 
-  @ApiModelProperty()
+  @ApiProperty()
   itemId: number;
 
-  @ApiModelProperty({ enum: OrderValidationErrorModel })
+  @ApiProperty({ enum: OrderValidationErrorModel })
   errorModel: OrderValidationErrorModel;
 
-  @ApiModelProperty({ enum: OrderValidationErrorType })
+  @ApiProperty({ enum: OrderValidationErrorType })
   errorType: OrderValidationErrorType;
 
-  @ApiModelProperty()
+  @ApiProperty()
   errorString: string;
 
-  @ApiModelProperty({ nullable: true })
+  @ApiProperty({ nullable: true })
   newPrice?: number;
 
   constructor(

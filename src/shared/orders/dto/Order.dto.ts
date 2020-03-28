@@ -1,37 +1,37 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 import { PaymentMethod } from "../../payments/models/PaymentMethod";
 import { OrderPaymentStatus } from "../models/OrderPaymentStatus";
 import { OrderStatus } from "../models/OrderStatus";
 import { OrderItemDto } from "./OrderItem.dto";
 
 export class OrderDto {
-  @ApiModelProperty()
+  @ApiProperty()
   id: string;
 
-  @ApiModelProperty({ nullable: true })
+  @ApiProperty({ nullable: true })
   additionalComments: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   totalPrice: number;
 
-  @ApiModelProperty()
+  @ApiProperty()
   datePlaced: number;
 
-  @ApiModelProperty({ enum: OrderStatus })
+  @ApiProperty({ enum: OrderStatus })
   status: string;
 
-  @ApiModelProperty({ enum: PaymentMethod })
+  @ApiProperty({ enum: PaymentMethod })
   paymentMethod: string;
 
-  @ApiModelProperty({ enum: OrderPaymentStatus })
+  @ApiProperty({ enum: OrderPaymentStatus })
   paymentStatus: string;
 
-  @ApiModelProperty({ nullable: true })
+  @ApiProperty({ nullable: true })
   userId: number;
 
-  @ApiModelProperty({ nullable: true })
+  @ApiProperty({ nullable: true })
   addressId: number;
 
-  @ApiModelProperty({ isArray: true, type: OrderItemDto })
+  @ApiProperty({ isArray: true, type: OrderItemDto })
   items: OrderItemDto[];
 }

@@ -1,15 +1,15 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class AddressDto {
-  @ApiModelProperty()
+  @ApiProperty()
   id: number;
 
-  @ApiModelProperty()
+  @ApiProperty()
   streetAddress: string;
 
-  @ApiModelProperty({ nullable: true })
+  @ApiProperty({ nullable: true })
   deliveryInstructions: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   latLng: string;
 }

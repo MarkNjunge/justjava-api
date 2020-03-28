@@ -1,12 +1,12 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty } from "class-validator";
 
 export class RequestMpesaDto {
-  @ApiModelProperty()
+  @ApiProperty()
   @IsNotEmpty()
   mobileNumber: string;
 
-  @ApiModelProperty()
+  @ApiProperty()
   @IsNotEmpty()
   orderId: string;
 }
