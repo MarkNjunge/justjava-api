@@ -1,8 +1,7 @@
 import { ApiModelProperty } from "@nestjs/swagger";
-import { PaymentMethod } from "../../payments/models/PaymentMethod";
+import { PaymentMethod } from "../../../payments/models/PaymentMethod";
 import { OrderPaymentStatus } from "../models/OrderPaymentStatus";
 import { OrderStatus } from "../models/OrderStatus";
-import { AddressDto } from "../../users/dto/Address.dto";
 import { OrderItemDto } from "./OrderItem.dto";
 
 export class OrderDto {

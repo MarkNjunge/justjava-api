@@ -11,7 +11,7 @@ import {
   HttpStatus,
   Patch,
 } from "@nestjs/common";
-import { AdminGuard } from "../common/guards/admin.guard";
+import { AdminGuard } from "../../common/guards/admin.guard";
 import {
   ApiImplicitHeader,
   ApiResponse,
@@ -19,17 +19,17 @@ import {
   ApiUseTags,
   ApiOkResponse,
 } from "@nestjs/swagger";
-import { UserDto } from "./dto/User.dto";
-import { AuthGuard } from "../common/guards/auth.guard";
-import { ApiResponseDto } from "../common/dto/ApiResponse.dto";
-import { AddressDto } from "./dto/Address.dto";
-import { SaveAddressDto } from "./dto/SaveAddress.dto";
-import { UsersService } from "./users.service";
-import { SessionDto } from "../client/auth/dto/Session.dto";
-import { OrderDto } from "../orders/dto/Order.dto";
-import { OrdersService } from "../orders/orders.service";
-import { UpdateUserDto } from "./dto/UpdateUser.dto";
-import { UpdateFcmTokenDto } from "./dto/UpdateFcmToken.dto";
+import { UserDto } from "../../shared/users/dto/User.dto";
+import { AuthGuard } from "../../common/guards/auth.guard";
+import { ApiResponseDto } from "../../common/dto/ApiResponse.dto";
+import { AddressDto } from "../../shared/users/dto/Address.dto";
+import { SaveAddressDto } from "../../shared/users/dto/SaveAddress.dto";
+import { UsersService } from "../../shared/users/users.service";
+import { SessionDto } from "../../client/auth/dto/Session.dto";
+import { OrderDto } from "../../shared/orders/dto/Order.dto";
+import { OrdersService } from "../../shared/orders/orders.service";
+import { UpdateUserDto } from "../../shared/users/dto/UpdateUser.dto";
+import { UpdateFcmTokenDto } from "../../shared/users/dto/UpdateFcmToken.dto";
 
 @Controller("users")
 @ApiUseTags("users")

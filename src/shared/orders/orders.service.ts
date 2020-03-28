@@ -1,15 +1,15 @@
 import { Injectable, HttpStatus } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { ProductEntity } from "../shared/products/entities/Product.entity";
+import { ProductEntity } from "../products/entities/Product.entity";
 import { OrderValidationError } from "./dto/OrderValidationError.dto";
 import { OrderValidationErrorModel } from "./dto/OrderValidationErrorModel.dto";
 import { OrderValidationErrorType } from "./dto/OrderValidationErrorType.dto";
 import { VerifyOrderDto } from "./dto/VerifyOrder.dto";
 import { PlaceOrderDto } from "./dto/PlaceOrder.dto";
-import { SessionDto } from "../client/auth/dto/Session.dto";
+import { SessionDto } from "../../client/auth/dto/Session.dto";
 import { UserEntity } from "../users/entities/User.entity";
-import { ApiException } from "../common/ApiException";
+import { ApiException } from "../../common/ApiException";
 import { OrderEntity } from "./entities/Order.entity";
 import { OrderDto } from "./dto/Order.dto";
 import { OrderStatus } from "./models/OrderStatus";

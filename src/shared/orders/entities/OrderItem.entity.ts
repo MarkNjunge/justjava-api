@@ -9,7 +9,7 @@ import {
 import { OrderEntity } from "./Order.entity";
 import { OrderItemOptionsEntity } from "./OrderItemOptions.entity";
 import { PlaceOrderItemDto } from "../dto/PlaceOrderItem.dto";
-import { ProductEntity } from "../../shared/products/entities/Product.entity";
+import { ProductEntity } from "../../products/entities/Product.entity";
 
 @Entity({ name: "order_items" })
 export class OrderItemEntity {

@@ -1,5 +1,5 @@
 import { ApiModelProperty } from "@nestjs/swagger";
-import { SignInMethod } from "../../client/auth/models/SignInMethod";
+import { SignInMethod } from "../../../client/auth/models/SignInMethod";
 import { AddressDto } from "./Address.dto";
 
 export class UserDto {

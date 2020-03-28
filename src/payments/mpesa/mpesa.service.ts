@@ -8,7 +8,7 @@ import * as axios from "axios";
 import * as moment from "moment";
 import { RequestMpesaDto } from "./dto/RequestMpesa.dto";
 import { SessionDto } from "../../client/auth/dto/Session.dto";
-import { OrderEntity } from "../../orders/entities/Order.entity";
+import { OrderEntity } from "../../shared/orders/entities/Order.entity";
 import { ApiException } from "../../common/ApiException";
 import { PaymentMethod } from "../models/PaymentMethod";
 import { PaymentStatus } from "../models/PaymentStatus";
@@ -16,9 +16,9 @@ import { ApiResponseDto } from "../../common/dto/ApiResponse.dto";
 import { StkCallbackDto } from "./dto/StkCallback.dto";
 import { NotificationsService } from "../../notifications/notifications.service";
 import { NotificationReason } from "../../notifications/model/NotificationReason";
-import { UserEntity } from "../../users/entities/User.entity";
+import { UserEntity } from "../../shared/users/entities/User.entity";
 import { CustomLogger } from "../../common/CustomLogger";
-import { OrderPaymentStatus } from "../../orders/models/OrderPaymentStatus";
+import { OrderPaymentStatus } from "../../shared/orders/models/OrderPaymentStatus";
 
 @Injectable()
 export class MpesaService {

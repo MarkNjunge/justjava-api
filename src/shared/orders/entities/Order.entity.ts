@@ -13,7 +13,7 @@ import { OrderItemEntity } from "./OrderItem.entity";
 import { PlaceOrderDto } from "../dto/PlaceOrder.dto";
 import { OrderStatus } from "../models/OrderStatus";
 import { OrderPaymentStatus } from "../models/OrderPaymentStatus";
-import { ProductEntity } from "../../shared/products/entities/Product.entity";
+import { ProductEntity } from "../../products/entities/Product.entity";
 import * as moment from "moment";
 import * as shortid from "shortid";
 

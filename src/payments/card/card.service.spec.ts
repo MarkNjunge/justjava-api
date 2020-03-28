@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { CardService } from "./card.service";
-import { OrderEntity } from "../../orders/entities/Order.entity";
-import { UserEntity } from "../../users/entities/User.entity";
+import { OrderEntity } from "../../shared/orders/entities/Order.entity";
+import { UserEntity } from "../../shared/users/entities/User.entity";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { PaymentEntity } from "../entities/Payment.entity";
 import { Repository } from "typeorm";

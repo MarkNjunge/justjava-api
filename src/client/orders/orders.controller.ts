@@ -18,31 +18,17 @@ import {
   ApiImplicitHeader,
   ApiImplicitQuery,
 } from "@nestjs/swagger";
-import { OrdersService } from "./orders.service";
-import { OrderValidationError } from "./dto/OrderValidationError.dto";
-import { VerifyOrderDto } from "./dto/VerifyOrder.dto";
-import { AuthGuard } from "../common/guards/auth.guard";
-import { PlaceOrderDto } from "./dto/PlaceOrder.dto";
-import { OrderDto } from "./dto/Order.dto";
-import { AdminGuard } from "../common/guards/admin.guard";
+import { OrdersService } from "../../shared/orders/orders.service";
+import { OrderValidationError } from "../../shared/orders/dto/OrderValidationError.dto";
+import { VerifyOrderDto } from "../../shared/orders/dto/VerifyOrder.dto";
+import { AuthGuard } from "../../common/guards/auth.guard";
+import { PlaceOrderDto } from "../../shared/orders/dto/PlaceOrder.dto";
+import { OrderDto } from "../../shared/orders/dto/Order.dto";
 
 @Controller("orders")
 @ApiUseTags("orders")
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
-
-  @Get()
-  @UseGuards(AdminGuard)
-  @ApiOperation({ title: "Query for orders" })
-  @ApiImplicitHeader({ name: "admin-key", required: true })
-  @ApiImplicitQuery({ name: "userId", required: false })
-  @ApiOkResponse({ type: OrderDto, isArray: true })
-  async query(@Query("userId") userId): Promise<OrderDto> {
-    if (typeof userId === "object") {
-      userId = undefined;
-    }
-    return this.ordersService.query(userId);
-  }
 
   @Get(":id")
   @UseGuards(AuthGuard)
@@ -81,14 +67,5 @@ export class OrdersController {
   @ApiOperation({ title: "Cancel an order" })
   async cancelOrder(@Param("session") s, @Param("id") id: string) {
     await this.ordersService.cancelOrder(s, id);
-  }
-
-  @Put("/:id/cancelAdmin")
-  @UseGuards(AdminGuard)
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiImplicitHeader({ name: "admin-key" })
-  @ApiOperation({ title: "Cancel an order as an admin" })
-  async cancelOrderAdmin(@Param("id") id: string) {
-    await this.ordersService.cancelOrderAdmin(id);
   }
 }
