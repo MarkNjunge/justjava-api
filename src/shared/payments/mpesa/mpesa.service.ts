@@ -1,24 +1,24 @@
 import { Injectable, HttpStatus } from "@nestjs/common";
-import { PaymentEntity } from "../entities/Payment.entity";
+import { PaymentEntity } from "../../../shared/payments/entities/Payment.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { RedisService } from "../../shared/redis/redis.service";
-import { config } from "../../common/Config";
+import { RedisService } from "../../redis/redis.service";
+import { config } from "../../../common/Config";
 import * as axios from "axios";
 import * as moment from "moment";
 import { RequestMpesaDto } from "./dto/RequestMpesa.dto";
-import { SessionDto } from "../../client/auth/dto/Session.dto";
-import { OrderEntity } from "../../shared/orders/entities/Order.entity";
-import { ApiException } from "../../common/ApiException";
-import { PaymentMethod } from "../models/PaymentMethod";
-import { PaymentStatus } from "../models/PaymentStatus";
-import { ApiResponseDto } from "../../common/dto/ApiResponse.dto";
+import { SessionDto } from "../../../client/auth/dto/Session.dto";
+import { OrderEntity } from "../../orders/entities/Order.entity";
+import { ApiException } from "../../../common/ApiException";
+import { PaymentMethod } from "../../payments/models/PaymentMethod";
+import { PaymentStatus } from "../../payments/models/PaymentStatus";
 import { StkCallbackDto } from "./dto/StkCallback.dto";
+import { CustomLogger } from "../../../common/CustomLogger";
+import { UserEntity } from "../../users/entities/User.entity";
 import { NotificationsService } from "../../notifications/notifications.service";
+import { ApiResponseDto } from "../../../common/dto/ApiResponse.dto";
+import { OrderPaymentStatus } from "../../orders/models/OrderPaymentStatus";
 import { NotificationReason } from "../../notifications/model/NotificationReason";
-import { UserEntity } from "../../shared/users/entities/User.entity";
-import { CustomLogger } from "../../common/CustomLogger";
-import { OrderPaymentStatus } from "../../shared/orders/models/OrderPaymentStatus";
 
 @Injectable()
 export class MpesaService {

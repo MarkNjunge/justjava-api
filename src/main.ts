@@ -13,7 +13,7 @@ import {
 import * as fastifyRateLimit from "fastify-rate-limit";
 import * as fileUpload from "fastify-file-upload";
 import { RedisService } from "./shared/redis/redis.service";
-import { NotificationsService } from "./notifications/notifications.service";
+import { NotificationsService } from "./shared/notifications/notifications.service";
 
 async function bootstrap() {
   initializeWinston();

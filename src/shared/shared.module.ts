@@ -9,6 +9,11 @@ import { UsersService } from "./users/users.service";
 import { AddressEntity } from "./users/entities/Address.entity";
 import { OrdersService } from "./orders/orders.service";
 import { OrderEntity } from "./orders/entities/Order.entity";
+import { CardService } from "./payments/card/card.service";
+import { MpesaService } from "./payments/mpesa/mpesa.service";
+import { RavepayService } from "./payments/ravepay/ravepay.service";
+import { PaymentEntity } from "./payments/entities/Payment.entity";
+import { NotificationsService } from "./notifications/notifications.service";
 
 @Module({
   imports: [
@@ -17,6 +22,7 @@ import { OrderEntity } from "./orders/entities/Order.entity";
       UserEntity,
       AddressEntity,
       OrderEntity,
+      PaymentEntity,
     ]),
   ],
   providers: [
@@ -25,6 +31,10 @@ import { OrderEntity } from "./orders/entities/Order.entity";
     EmailService,
     UsersService,
     OrdersService,
+    CardService,
+    MpesaService,
+    RavepayService,
+    NotificationsService,
   ],
   exports: [
     ProductsService,
@@ -32,6 +42,10 @@ import { OrderEntity } from "./orders/entities/Order.entity";
     EmailService,
     UsersService,
     OrdersService,
+    CardService,
+    MpesaService,
+    RavepayService,
+    NotificationsService,
   ],
 })
 export class SharedModule {}

@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import * as axios from "axios";
-import { config } from "../common/Config";
+import { config } from "../../common/Config";
 import * as admin from "firebase-admin";
-import { CustomLogger } from "../common/CustomLogger";
+import { CustomLogger } from "../../common/CustomLogger";
 import { NotificationReason } from "./model/NotificationReason";
 
 @Injectable()

@@ -7,7 +7,7 @@ import {
 } from "class-validator";
 import { Type } from "class-transformer";
 import { PlaceOrderItemDto } from "./PlaceOrderItem.dto";
-import { PaymentMethod } from "../../../payments/models/PaymentMethod";
+import { PaymentMethod } from "../../payments/models/PaymentMethod";
 
 export class PlaceOrderDto {
   @ApiModelProperty()
