@@ -22,6 +22,8 @@ import { VerifyOrderDto } from "../../shared/orders/dto/VerifyOrder.dto";
 import { AuthGuard } from "../../common/guards/auth.guard";
 import { PlaceOrderDto } from "../../shared/orders/dto/PlaceOrder.dto";
 import { OrderDto } from "../../shared/orders/dto/Order.dto";
+import { ChangePaymentMethodDto } from "../../shared/orders/dto/ChangePaymentMethod.dto";
+import { ApiResponseDto } from "../../common/dto/ApiResponse.dto";
 
 @Controller("orders")
 @ApiTags("orders")
@@ -33,7 +35,7 @@ export class OrdersController {
   @Get(":id")
   @ApiOperation({ summary: "Get order by id" })
   @ApiOkResponse({ type: OrderDto })
-  async getOrderById(@Param("session") session, @Param("id") id: number) {
+  async getOrderById(@Param("session") session, @Param("id") id: string) {
     return this.ordersService.getOrderById(session, id);
   }
 
@@ -54,6 +56,18 @@ export class OrdersController {
     @Body() dto: PlaceOrderDto,
   ): Promise<OrderDto> {
     return this.ordersService.placeOrder(s, dto);
+  }
+
+  @Post(":id/paymentMethod")
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: "Change the payment method of an order" })
+  @ApiCreatedResponse({ type: ApiResponseDto })
+  async changePaymentMethod(
+    @Param("session") s,
+    @Param("id") id: string,
+    @Body() dto: ChangePaymentMethodDto,
+  ): Promise<ApiResponseDto> {
+    return this.ordersService.changePaymentMethod(s, id, dto);
   }
 
   @Put("/:id/cancel")

@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+  HttpStatus,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { ProductEntity } from "../products/entities/Product.entity";
@@ -12,6 +17,9 @@ import { UserEntity } from "../users/entities/User.entity";
 import { OrderEntity } from "./entities/Order.entity";
 import { OrderDto } from "./dto/Order.dto";
 import { OrderStatus } from "./models/OrderStatus";
+import { ChangePaymentMethodDto } from "./dto/ChangePaymentMethod.dto";
+import { OrderPaymentStatus } from "./models/OrderPaymentStatus";
+import { ApiResponseDto } from "../../common/dto/ApiResponse.dto";
 
 @Injectable()
 export class OrdersService {
@@ -34,7 +42,7 @@ export class OrdersService {
     }
   }
 
-  async getOrderById(session: SessionDto, id: number) {
+  async getOrderById(session: SessionDto, id: string) {
     const order = await this.ordersRepository.findOne({
       where: { id, user: { id: session.userId } },
     });
@@ -161,6 +169,41 @@ export class OrdersService {
     delete order.address;
 
     return (order as unknown) as OrderDto;
+  }
+
+  async changePaymentMethod(
+    session: SessionDto,
+    id: string,
+    dto: ChangePaymentMethodDto,
+  ): Promise<ApiResponseDto> {
+    const order = await this.ordersRepository.findOne({
+      where: { id, user: { id: session.userId } },
+    });
+
+    if (!order) {
+      throw new NotFoundException({
+        message: "Order not found",
+        meta: {
+          reason: "Order either does not exist or does not belong to the user",
+        },
+      });
+    }
+
+    if (order.paymentStatus === OrderPaymentStatus.PAID) {
+      throw new BadRequestException({
+        message: "Order has already been paid for.",
+        meta: {
+          reason:
+            "Payment method cannot be changed for orders that have already been paid for.",
+        },
+      });
+    }
+
+    await this.ordersRepository.update(
+      { id },
+      { paymentMethod: dto.paymentMethod },
+    );
+    return { httpStatus: HttpStatus.OK, message: "Payment method updated" };
   }
 
   async cancelOrder(session: SessionDto, id: string) {
