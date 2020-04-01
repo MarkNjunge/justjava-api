@@ -50,13 +50,6 @@ export class MpesaService {
       throw new NotFoundException({ message: "Order does not exist" });
     }
 
-    if (order.paymentMethod !== PaymentMethod.MPESA) {
-      throw new BadRequestException({
-        message:
-          "Order does not use M-Pesa as a payment method. Change the PaymentMethodFirst.",
-      });
-    }
-
     const authHeader = await this.getAuthorizationHeader();
     const timestamp = moment().format("YYYYMMDDHHmmss");
     const shortcode = "174379";
@@ -145,6 +138,7 @@ export class MpesaService {
       await this.ordersRepository.update(
         { id: payment.orderId },
         {
+          paymentMethod: PaymentMethod.MPESA,
           paymentStatus: OrderPaymentStatus.PAID,
         },
       );

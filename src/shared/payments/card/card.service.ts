@@ -52,12 +52,6 @@ export class CardService {
     if (!order) {
       throw new NotFoundException({ message: "Order does not exist" });
     }
-    if (order.paymentMethod !== PaymentMethod.CARD) {
-      throw new BadRequestException({
-        message:
-          "Order does not use card as a payment method. Change the PaymentMethod first.",
-      });
-    }
 
     this.logger.debug("Initiating Ravepay request");
     const initiateResponse = await this.ravepayService.initiate(
@@ -98,7 +92,10 @@ export class CardService {
 
     await this.ordersRepository.update(
       { id: dto.orderId },
-      { paymentStatus: OrderPaymentStatus.PAID },
+      {
+        paymentMethod: PaymentMethod.CARD,
+        paymentStatus: OrderPaymentStatus.PAID,
+      },
     );
     this.logger.debug(`Updated order ${dto.orderId} to PAID`);
 
