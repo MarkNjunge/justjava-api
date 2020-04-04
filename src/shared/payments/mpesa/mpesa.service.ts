@@ -116,62 +116,79 @@ export class MpesaService {
     });
 
     if (parsedBody.resultCode === "0") {
-      this.logger.debug(
-        `Payment ${parsedBody.checkoutRequestId} was completed successfully`,
-      );
-
-      const updated = {
-        status: PaymentStatus.COMPLETED,
-        paymentResult: parsedBody.resultDesc,
-        paymentRef: parsedBody.mpesaReceiptNumber,
-        payerRef: parsedBody.phoneNumber,
-        dateUpdated: moment().unix(),
-        rawResult: JSON.stringify(body),
-      };
-      await this.paymentsRepository.update(
-        { transactionRef: parsedBody.checkoutRequestId },
-        updated,
-      );
-      this.logger.debug(`Updated payment ${parsedBody.checkoutRequestId}`);
-
-      await this.ordersRepository.update(
-        { id: payment.orderId },
-        {
-          paymentMethod: PaymentMethod.MPESA,
-          paymentStatus: OrderPaymentStatus.PAID,
-        },
-      );
-      this.logger.debug(`Updated order ${payment.orderId} to PAID`);
-
-      this.notificationService.send(
-        user.fcmToken,
-        NotificationReason.PAYMENT_COMPLETED,
-        "Payment completed",
-        { orderId: payment.orderId },
-      );
+      this.setPaymentCompleted(body, parsedBody, payment, user);
     } else {
-      this.logger.debug(
-        `Payment ${parsedBody.checkoutRequestId} failed with reason '${parsedBody.resultDesc}')`,
-      );
-
-      const updated = {
-        status: PaymentStatus.CANCELLED,
-        paymentResult: parsedBody.resultDesc,
-        dateUpdated: moment().unix(),
-      };
-      await this.paymentsRepository.update(
-        { transactionRef: parsedBody.checkoutRequestId },
-        updated,
-      );
-      this.logger.debug(`Updated payment ${parsedBody.checkoutRequestId}`);
-
-      this.notificationService.send(
-        user.fcmToken,
-        NotificationReason.PAYMENT_CANCELLED,
-        "Payment cancelled",
-        { orderId: payment.orderId },
-      );
+      this.setPaymentErrored(parsedBody, payment, user);
     }
+  }
+
+  private async setPaymentCompleted(
+    body,
+    parsedBody: StkCallbackDto,
+    payment: PaymentEntity,
+    user: UserEntity,
+  ) {
+    this.logger.debug(
+      `Payment ${parsedBody.checkoutRequestId} was completed successfully`,
+    );
+
+    const updated = {
+      status: PaymentStatus.COMPLETED,
+      paymentResult: parsedBody.resultDesc,
+      paymentRef: parsedBody.mpesaReceiptNumber,
+      payerRef: parsedBody.phoneNumber,
+      dateUpdated: moment().unix(),
+      rawResult: JSON.stringify(body),
+    };
+    await this.paymentsRepository.update(
+      { transactionRef: parsedBody.checkoutRequestId },
+      updated,
+    );
+    this.logger.debug(`Updated payment ${parsedBody.checkoutRequestId}`);
+
+    await this.ordersRepository.update(
+      { id: payment.orderId },
+      {
+        paymentMethod: PaymentMethod.MPESA,
+        paymentStatus: OrderPaymentStatus.PAID,
+      },
+    );
+    this.logger.debug(`Updated order ${payment.orderId} to PAID`);
+
+    this.notificationService.send(
+      user.fcmToken,
+      NotificationReason.PAYMENT_COMPLETED,
+      "Payment completed",
+      { orderId: payment.orderId },
+    );
+  }
+
+  private async setPaymentErrored(
+    parsedBody: StkCallbackDto,
+    payment: PaymentEntity,
+    user: UserEntity,
+  ) {
+    this.logger.debug(
+      `Payment ${parsedBody.checkoutRequestId} failed with reason '${parsedBody.resultDesc}')`,
+    );
+
+    const updated = {
+      status: PaymentStatus.CANCELLED,
+      paymentResult: parsedBody.resultDesc,
+      dateUpdated: moment().unix(),
+    };
+    await this.paymentsRepository.update(
+      { transactionRef: parsedBody.checkoutRequestId },
+      updated,
+    );
+    this.logger.debug(`Updated payment ${parsedBody.checkoutRequestId}`);
+
+    this.notificationService.send(
+      user.fcmToken,
+      NotificationReason.PAYMENT_CANCELLED,
+      "Payment cancelled",
+      { orderId: payment.orderId },
+    );
   }
 
   private async getAuthorizationHeader(): Promise<string> {
