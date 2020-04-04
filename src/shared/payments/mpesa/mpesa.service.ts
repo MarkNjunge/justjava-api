@@ -23,6 +23,7 @@ import { NotificationsService } from "../../notifications/notifications.service"
 import { ApiResponseDto } from "../../../common/dto/ApiResponse.dto";
 import { OrderPaymentStatus } from "../../orders/models/OrderPaymentStatus";
 import { NotificationReason } from "../../notifications/model/NotificationReason";
+import { OrderStatus } from "../../../shared/orders/models/OrderStatus";
 
 @Injectable()
 export class MpesaService {
@@ -149,6 +150,7 @@ export class MpesaService {
     await this.ordersRepository.update(
       { id: payment.orderId },
       {
+        status: OrderStatus.CONFIRMED,
         paymentMethod: PaymentMethod.MPESA,
         paymentStatus: OrderPaymentStatus.PAID,
       },
