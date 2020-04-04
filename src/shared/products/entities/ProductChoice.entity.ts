@@ -27,25 +27,17 @@ export class ProductChoiceEntity {
   @Column({ name: "quantity_max" })
   qtyMax: number;
 
-  @ManyToOne(
-    type => ProductEntity,
-    product => product.choices,
-    {
-      nullable: false,
-      onDelete: "CASCADE",
-    },
-  )
+  @ManyToOne(() => ProductEntity, product => product.choices, {
+    nullable: false,
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "product_id" })
   product: ProductEntity;
 
-  @OneToMany(
-    type => ProductChoiceOptionEntity,
-    option => option.choice,
-    {
-      eager: true,
-      cascade: true,
-    },
-  )
+  @OneToMany(() => ProductChoiceOptionEntity, option => option.choice, {
+    eager: true,
+    cascade: true,
+  })
   options: ProductChoiceOptionEntity[];
 
   static fromDto(dto: CreateProductChoiceDto): ProductChoiceEntity {

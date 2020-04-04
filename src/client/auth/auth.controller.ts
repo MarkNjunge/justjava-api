@@ -49,9 +49,7 @@ export class AuthController {
   ) {
     const response = await this.authService.signInGoogle(dto.idToken);
 
-    const sessionExpiry = moment()
-      .add(1, "year")
-      .unix();
+    const sessionExpiry = moment().add(1, "year").unix();
     res.header(
       "Set-Cookie",
       `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`,
@@ -75,9 +73,7 @@ export class AuthController {
     dto.email = dto.email.toLowerCase();
     const response = await this.authService.signUp(dto);
 
-    const sessionExpiry = moment()
-      .add(1, "year")
-      .unix();
+    const sessionExpiry = moment().add(1, "year").unix();
     res.header(
       "Set-Cookie",
       `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`,
@@ -106,9 +102,7 @@ export class AuthController {
     dto.email = dto.email.toLowerCase();
     const response = await this.authService.signIn(dto);
 
-    const sessionExpiry = moment()
-      .add(1, "year")
-      .unix();
+    const sessionExpiry = moment().add(1, "year").unix();
     res.header(
       "Set-Cookie",
       `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`,

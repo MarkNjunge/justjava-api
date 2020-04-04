@@ -10,7 +10,6 @@ import {
   ApiOperation,
   ApiResponse,
   ApiTags,
-  ApiHeader,
   ApiSecurity,
 } from "@nestjs/swagger";
 import { ApiResponseDto } from "../../common/dto/ApiResponse.dto";

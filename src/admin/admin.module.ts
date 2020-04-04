@@ -8,7 +8,12 @@ import { OrdersController } from "./orders/orders.controller";
 
 @Module({
   imports: [SharedModule],
-  controllers: [ProductsController, ImagesController, UsersController, OrdersController],
+  controllers: [
+    ProductsController,
+    ImagesController,
+    UsersController,
+    OrdersController,
+  ],
   providers: [ImagesService],
 })
 export class AdminModule {}

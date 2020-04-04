@@ -21,7 +21,7 @@ export class AddressEntity {
   @Column({ name: "lat_lng" })
   latLng: string;
 
-  @ManyToOne(type => UserEntity, user => user.addresses, {
+  @ManyToOne(() => UserEntity, user => user.addresses, {
     nullable: false,
     onDelete: "CASCADE",
   })

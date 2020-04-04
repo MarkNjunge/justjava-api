@@ -35,19 +35,13 @@ describe("AppController (e2e)", () => {
     await app.init();
 
     // Wait for fastify
-    await app
-      .getHttpAdapter()
-      .getInstance()
-      .ready();
+    await app.getHttpAdapter().getInstance().ready();
 
     server = app.getHttpServer();
   });
 
   it("GET /", () => {
-    return request(server)
-      .get("/")
-      .expect(200)
-      .expect(appService.getHello());
+    return request(server).get("/").expect(200).expect(appService.getHello());
   });
 
   afterAll(async () => {

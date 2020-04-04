@@ -40,34 +40,26 @@ export class OrderEntity {
   @Column({ name: "payment_status" })
   paymentStatus: OrderPaymentStatus;
 
-  @ManyToOne(
-    type => UserEntity,
-    user => user.orders,
-    {
-      onDelete: "SET NULL",
-    },
-  )
+  @ManyToOne(() => UserEntity, user => user.orders, {
+    onDelete: "SET NULL",
+  })
   @JoinColumn({ name: "user_id" })
   user: UserEntity;
 
   @RelationId((order: OrderEntity) => order.user)
   userId: number;
 
-  @ManyToOne(type => AddressEntity, { onDelete: "SET NULL" })
+  @ManyToOne(() => AddressEntity, { onDelete: "SET NULL" })
   @JoinColumn({ name: "user_address_id" })
   address: AddressEntity;
 
   @RelationId((order: OrderEntity) => order.address)
   addressId: number;
 
-  @OneToMany(
-    type => OrderItemEntity,
-    item => item.order,
-    {
-      eager: true,
-      cascade: true,
-    },
-  )
+  @OneToMany(() => OrderItemEntity, item => item.order, {
+    eager: true,
+    cascade: true,
+  })
   items: OrderItemEntity[];
 
   static fromDto(
@@ -82,10 +74,7 @@ export class OrderEntity {
     const totalPrice = items.map(i => i.totalPrice).reduce((acc, c) => acc + c);
 
     const entity = new OrderEntity();
-    (entity.id = shortid
-      .generate()
-      .toUpperCase()
-      .replace(/-|_/g, "")),
+    (entity.id = shortid.generate().toUpperCase().replace(/-|_/g, "")),
       (entity.additionalComments = dto.additionalComments);
     entity.totalPrice = totalPrice;
     entity.datePlaced = moment().unix();

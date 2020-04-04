@@ -24,10 +24,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const request = ctx.getRequest<FastifyRequest<IncomingMessage>>();
 
     // Get the location where the error was thrown from to use as a logging tag
-    const stackTop = e.stack
-      .split("\n")[1]
-      .split("at ")[1]
-      .split(" ")[0];
+    const stackTop = e.stack.split("\n")[1].split("at ")[1].split(" ")[0];
 
     const status =
       e instanceof HttpException

@@ -16,14 +16,10 @@ export class OrderItemEntity {
   @PrimaryGeneratedColumn("increment")
   id: number;
 
-  @ManyToOne(
-    type => OrderEntity,
-    order => order.items,
-    {
-      nullable: false,
-      onDelete: "CASCADE",
-    },
-  )
+  @ManyToOne(() => OrderEntity, order => order.items, {
+    nullable: false,
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "order_id" })
   order: OrderEntity;
 
@@ -42,14 +38,10 @@ export class OrderItemEntity {
   @Column({ name: "quantity" })
   quantity: number;
 
-  @OneToMany(
-    type => OrderItemOptionsEntity,
-    option => option.item,
-    {
-      eager: true,
-      cascade: true,
-    },
-  )
+  @OneToMany(() => OrderItemOptionsEntity, option => option.item, {
+    eager: true,
+    cascade: true,
+  })
   options: OrderItemOptionsEntity[];
 
   static fromDto(

@@ -31,23 +31,15 @@ export class UserEntity {
   @Column({ type: "bigint", name: "created_at" })
   createdAt: number;
 
-  @OneToMany(
-    type => AddressEntity,
-    address => address.user,
-    {
-      eager: true,
-      cascade: true,
-    },
-  )
+  @OneToMany(() => AddressEntity, address => address.user, {
+    eager: true,
+    cascade: true,
+  })
   addresses: AddressEntity[];
 
-  @OneToMany(
-    type => OrderEntity,
-    order => order.user,
-    {
-      eager: false,
-      cascade: false,
-    },
-  )
+  @OneToMany(() => OrderEntity, order => order.user, {
+    eager: false,
+    cascade: false,
+  })
   orders: OrderEntity[];
 }

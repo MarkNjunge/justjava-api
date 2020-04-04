@@ -15,5 +15,5 @@ jobs:
           CI: true
         run: |
           yarn install
-          yarn lint
+          yarn lint:no-fix
           # yarn test

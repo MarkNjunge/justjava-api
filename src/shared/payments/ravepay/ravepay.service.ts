@@ -1,8 +1,5 @@
-import {
-  Injectable,
-  HttpStatus,
-  InternalServerErrorException,
-} from "@nestjs/common";
+/* eslint-disable @typescript-eslint/camelcase */
+import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import * as axios from "axios";
 import * as forge from "node-forge";
 import { config } from "../../../common/Config";

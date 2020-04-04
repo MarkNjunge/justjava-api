@@ -40,14 +40,10 @@ export class ProductEntity {
   @Column({ type: "bigint", name: "created_at" })
   createdAt: number;
 
-  @OneToMany(
-    type => ProductChoiceEntity,
-    choice => choice.product,
-    {
-      eager: true,
-      cascade: true,
-    },
-  )
+  @OneToMany(() => ProductChoiceEntity, choice => choice.product, {
+    eager: true,
+    cascade: true,
+  })
   choices: ProductChoiceEntity[];
 
   static fromDto(dto: CreateProductDto): ProductEntity {

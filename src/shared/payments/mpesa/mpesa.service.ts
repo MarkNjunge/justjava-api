@@ -2,7 +2,6 @@ import {
   Injectable,
   HttpStatus,
   NotFoundException,
-  BadRequestException,
   InternalServerErrorException,
 } from "@nestjs/common";
 import { PaymentEntity } from "../../../shared/payments/entities/Payment.entity";

@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  HttpStatus,
-  NotFoundException,
-  BadRequestException,
-} from "@nestjs/common";
+import { Injectable, HttpStatus, NotFoundException } from "@nestjs/common";
 import { SessionDto } from "../../../client/auth/dto/Session.dto";
 import { InitiatePaymentDto } from "./dto/InitiatePayment.dto";
 import { UserEntity } from "../../../shared/users/entities/User.entity";

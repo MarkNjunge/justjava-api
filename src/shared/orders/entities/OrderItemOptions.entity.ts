@@ -14,14 +14,10 @@ export class OrderItemOptionsEntity {
   @PrimaryGeneratedColumn("increment")
   id: number;
 
-  @ManyToOne(
-    type => OrderItemEntity,
-    item => item.options,
-    {
-      nullable: false,
-      onDelete: "CASCADE",
-    },
-  )
+  @ManyToOne(() => OrderItemEntity, item => item.options, {
+    nullable: false,
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "order_item_id" })
   item: OrderItemEntity;
 
