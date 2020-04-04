@@ -73,7 +73,6 @@
     "eslint-plugin-import": "^2.20.2",
     "husky": "^2.2.0",
     "jest": "^23.6.0",
-    "nodemon": "^1.18.9",
     "prettier": "^2.0.2",
     "start-server-webpack-plugin": "^2.2.5",
     "supertest": "^3.4.1",
