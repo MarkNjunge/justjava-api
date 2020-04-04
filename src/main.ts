@@ -15,6 +15,8 @@ import * as fileUpload from "fastify-file-upload";
 import { RedisService } from "./shared/redis/redis.service";
 import { NotificationsService } from "./shared/notifications/notifications.service";
 
+declare const module: any;
+
 async function bootstrap() {
   initializeWinston();
   const logger = new CustomLogger("Application");
@@ -61,6 +63,11 @@ async function bootstrap() {
   await app.listen(config.port, "0.0.0.0").then(() => {
     logger.log(`Started on port ${config.port}`);
   });
+
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
 }
 bootstrap();
 
