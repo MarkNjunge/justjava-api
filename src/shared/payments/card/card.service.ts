@@ -127,7 +127,7 @@ export class CardService {
     this.logger.debug(`Updated order ${dto.orderId} to PAID`);
 
     this.notificationService.send(
-      user.fcmToken,
+      user,
       NotificationReason.PAYMENT_COMPLETED,
       "Payment completed",
       { orderId: dto.orderId },

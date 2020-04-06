@@ -158,7 +158,7 @@ export class MpesaService {
     this.logger.debug(`Updated order ${payment.orderId} to PAID`);
 
     this.notificationService.send(
-      user.fcmToken,
+      user,
       NotificationReason.PAYMENT_COMPLETED,
       "Payment completed",
       { orderId: payment.orderId },
@@ -186,7 +186,7 @@ export class MpesaService {
     this.logger.debug(`Updated payment ${parsedBody.checkoutRequestId}`);
 
     this.notificationService.send(
-      user.fcmToken,
+      user,
       NotificationReason.PAYMENT_CANCELLED,
       "Payment cancelled",
       { orderId: payment.orderId },

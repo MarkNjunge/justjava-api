@@ -14,6 +14,7 @@ import { MpesaService } from "./payments/mpesa/mpesa.service";
 import { RavepayService } from "./payments/ravepay/ravepay.service";
 import { PaymentEntity } from "./payments/entities/Payment.entity";
 import { NotificationsService } from "./notifications/notifications.service";
+import { NotificationEntity } from "./notifications/entity/Notification.entity";
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { NotificationsService } from "./notifications/notifications.service";
       AddressEntity,
       OrderEntity,
       PaymentEntity,
+      NotificationEntity,
     ]),
   ],
   providers: [
