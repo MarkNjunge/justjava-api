@@ -15,6 +15,7 @@ import { OrderPaymentStatus } from "../../orders/models/OrderPaymentStatus";
 import { CustomLogger } from "../../../common/CustomLogger";
 import { NotificationsService } from "../../notifications/notifications.service";
 import { NotificationReason } from "../../notifications/model/NotificationReason";
+import { CheckCardDto } from "./dto/CheckCard.dto";
 
 @Injectable()
 export class CardService {
@@ -33,7 +34,11 @@ export class CardService {
     this.logger = new CustomLogger("CardService");
   }
 
-  async initiate(session: SessionDto, dto: InitiatePaymentDto) {
+  async checkCard(
+    session: SessionDto,
+    dto: CheckCardDto,
+  ): Promise<ApiResponseDto> {
+    this.logger.debug("Checking authorization method for card");
     const user = await this.usersRepository.findOne({
       where: { id: session.userId },
     });
@@ -49,7 +54,33 @@ export class CardService {
     }
 
     this.logger.debug("Initiating Ravepay request");
-    const initiateResponse = await this.ravepayService.initiate(
+    const response = await this.ravepayService.checkCard(
+      dto,
+      order.totalPrice,
+      user,
+    );
+    this.logger.debug(`Card uses ${response} verification`);
+
+    return { httpStatus: 200, message: response };
+  }
+
+  async initiateAddressPayment(session: SessionDto, dto: InitiatePaymentDto) {
+    const user = await this.usersRepository.findOne({
+      where: { id: session.userId },
+    });
+    if (!user) {
+      throw new NotFoundException({ message: "User does not exist" });
+    }
+
+    const order = await this.ordersRepository.findOne({
+      where: { id: dto.orderId },
+    });
+    if (!order) {
+      throw new NotFoundException({ message: "Order does not exist" });
+    }
+
+    this.logger.debug("Initiating Ravepay request");
+    const initiateResponse = await this.ravepayService.initiateAddressPayment(
       dto,
       order.totalPrice,
       user,
@@ -71,6 +102,7 @@ export class CardService {
     this.logger.debug(`Initiating verification for ${flwRef}`);
     const verificationResponse = await this.ravepayService.verify(
       initiateResponse.data.flwRef,
+      "1234",
     );
     this.logger.debug(`Verification for ${flwRef} successful`);
 

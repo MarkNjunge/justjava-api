@@ -1,17 +1,88 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { Injectable, InternalServerErrorException } from "@nestjs/common";
+import {
+  Injectable,
+  InternalServerErrorException,
+  HttpException,
+  NotImplementedException,
+} from "@nestjs/common";
 import * as axios from "axios";
 import * as forge from "node-forge";
 import { config } from "../../../common/Config";
 import { InitiatePaymentDto } from "../../../shared/payments/card/dto/InitiatePayment.dto";
 import { UserDto } from "../../../shared/users/dto/User.dto";
 import * as moment from "moment";
+import { CheckCardDto } from "../card/dto/CheckCard.dto";
 
 @Injectable()
 export class RavepayService {
-  async initiate(dto: InitiatePaymentDto, amount: number, user: UserDto) {
-    const baseBody = this.makeBaseBody(dto, amount, user);
-    const initializeBody = {
+  async checkCard(
+    dto: CheckCardDto,
+    amount: number,
+    user: UserDto,
+  ): Promise<string> {
+    const body = this.makeBaseBody(
+      dto.cardNumber,
+      dto.cvv,
+      dto.expiryMonth,
+      dto.expiryYear,
+      dto.orderId,
+      amount,
+      user,
+    );
+
+    const encryptedBody = this.encrypt(
+      config.rave.encryptionKey,
+      JSON.stringify(body),
+    );
+
+    try {
+      const response = await axios.default.post(
+        "https://ravesandboxapi.flutterwave.com/flwv3-pug/getpaidx/api/charge",
+        {
+          PBFPubKey: config.rave.publicKey,
+          client: encryptedBody,
+          alg: "3DES-24",
+        },
+      );
+
+      if (response.data.data.chargeResponseCode === "02") {
+        // TODO Handle verification requirement
+      }
+
+      switch (response.data.data.suggested_auth) {
+        case "NOAUTH_INTERNATIONAL":
+          return "ADDRESS_VERIFICATION";
+        case "PIN":
+          // developer.flutterwave.com/v2.0/reference#section-using-a-local-mastercardverve-ie-card-issued-in-nigeria
+          throw new NotImplementedException({
+            message:
+              "Unable to complete payment. Pin verification not implemented.",
+          });
+        default:
+          throw new NotImplementedException({
+            message: "Unable to complete payment. Unknown card type.",
+          });
+      }
+    } catch (e) {
+      this.handleRequestError(e);
+    }
+  }
+
+  async initiateAddressPayment(
+    dto: InitiatePaymentDto,
+    amount: number,
+    user: UserDto,
+  ) {
+    const baseBody = this.makeBaseBody(
+      dto.cardNo,
+      dto.cvv,
+      dto.expiryMonth,
+      dto.expiryYear,
+      dto.orderId,
+      amount,
+      user,
+    );
+    const body = {
       ...baseBody,
       suggested_auth: "NOAUTH_INTERNATIONAL",
       billingzip: dto.billingZip,
@@ -21,43 +92,48 @@ export class RavepayService {
       billingcountry: dto.billingCountry,
     };
 
-    const initializeEncryptedBody = this.encrypt(
+    const encryptedBody = this.encrypt(
       config.rave.encryptionKey,
-      JSON.stringify(initializeBody),
+      JSON.stringify(body),
     );
 
-    const initializeResponse = await axios.default.post(
-      "https://ravesandboxapi.flutterwave.com/flwv3-pug/getpaidx/api/charge",
-      {
-        PBFPubKey: config.rave.publicKey,
-        client: initializeEncryptedBody,
-        alg: "3DES-24",
-      },
-    );
+    try {
+      const response = await axios.default.post(
+        "https://ravesandboxapi.flutterwave.com/flwv3-pug/getpaidx/api/charge",
+        {
+          PBFPubKey: config.rave.publicKey,
+          client: encryptedBody,
+          alg: "3DES-24",
+        },
+      );
 
-    if (initializeResponse.data.data.chargeResponseCode !== "02") {
-      throw new InternalServerErrorException({
-        message: "Error making payment",
-        meta: { message: initializeResponse.data.message },
-      });
+      if (response.data.data.chargeResponseCode !== "02") {
+        throw new InternalServerErrorException({
+          message: "Unable to complete payment",
+          meta: { message: response.data.message },
+        });
+      }
+
+      console.log(response.data);
+      return response.data;
+    } catch (e) {
+      this.handleRequestError(e);
     }
-
-    return initializeResponse.data;
   }
 
-  async verify(flwRef: string) {
+  async verify(flwRef: string, otp: string) {
     const verificationResponse = await axios.default.post(
       "https://ravesandboxapi.flutterwave.com/flwv3-pug/getpaidx/api/validatecharge",
       {
         PBFPubKey: config.rave.publicKey,
         transaction_reference: flwRef,
-        otp: "1234",
+        otp,
       },
     );
 
     if (verificationResponse.data.data.data.responsecode !== "00") {
       throw new InternalServerErrorException({
-        message: "Error validating payment",
+        message: "Unable to complete payment",
         meta: { message: verificationResponse.data.message },
       });
     }
@@ -65,20 +141,27 @@ export class RavepayService {
     return verificationResponse.data;
   }
 
-  private makeBaseBody(dto: InitiatePaymentDto, amount: number, user: UserDto) {
-    const txRef = `MC-${dto.orderId}-${moment().unix()}`;
+  private makeBaseBody(
+    cardNumber: string,
+    cvv: string,
+    expiryMonth: string,
+    expiryYear: string,
+    orderId: string,
+    amount: number,
+    user: UserDto,
+  ) {
+    const txRef = `ORDER-${orderId}-${moment().unix()}`;
     return {
       PBFPubKey: config.rave.publicKey,
-      cardno: dto.cardNo,
-      cvv: dto.cvv,
-      expirymonth: dto.expiryMonth,
-      expiryyear: dto.expiryYear,
+      cardno: cardNumber,
+      cvv,
+      expirymonth: expiryMonth,
+      expiryyear: expiryYear,
       currency: "KES",
       country: "KE",
       amount,
       email: user.email,
       firstname: user.firstName,
-      lastname: user.lastName,
       txRef,
     };
   }
@@ -93,5 +176,23 @@ export class RavepayService {
     cipher.finish();
     const encrypted = cipher.output;
     return forge.util.encode64(encrypted.getBytes());
+  }
+
+  private handleRequestError(e) {
+    let statusCode = 500;
+    let message = e.message;
+
+    if (e.response) {
+      statusCode = e.response.status;
+      message = e.response.data.message;
+    }
+
+    throw new HttpException(
+      {
+        message: "Unable to complete payment",
+        meta: { message },
+      },
+      statusCode,
+    );
   }
 }
