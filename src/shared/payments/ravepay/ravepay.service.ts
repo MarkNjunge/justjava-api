@@ -114,7 +114,6 @@ export class RavepayService {
         });
       }
 
-      console.log(response.data);
       return response.data;
     } catch (e) {
       this.handleRequestError(e);
