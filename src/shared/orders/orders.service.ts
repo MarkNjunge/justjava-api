@@ -20,9 +20,15 @@ import { OrderStatus } from "./models/OrderStatus";
 import { ChangePaymentMethodDto } from "./dto/ChangePaymentMethod.dto";
 import { OrderPaymentStatus } from "./models/OrderPaymentStatus";
 import { ApiResponseDto } from "../../common/dto/ApiResponse.dto";
+import { UpdateOrderStatusDto } from "./dto/UpdateOrderStatus.dto";
+import { CustomLogger } from "../../common/CustomLogger";
+import { NotificationsService } from "../notifications/notifications.service";
+import { NotificationReason } from "../notifications/model/NotificationReason";
 
 @Injectable()
 export class OrdersService {
+  private logger = new CustomLogger("OrdersService");
+
   constructor(
     @InjectRepository(OrderEntity)
     private readonly ordersRepository: Repository<OrderEntity>,
@@ -30,6 +36,7 @@ export class OrdersService {
     private readonly productsRepository: Repository<ProductEntity>,
     @InjectRepository(UserEntity)
     private readonly usersRepository: Repository<UserEntity>,
+    private readonly notificationService: NotificationsService,
   ) {}
 
   async query(userId?: string): Promise<OrderDto> {
@@ -223,6 +230,24 @@ export class OrdersService {
     await this.ordersRepository.update(
       { id },
       { status: OrderStatus.CANCELLED },
+    );
+  }
+
+  async updateOrderStatus(id: string, dto: UpdateOrderStatusDto) {
+    this.logger.debug(`Updating order ${id} to ${dto.orderStatus}`);
+    const order = await this.ordersRepository.findOne({
+      where: { id },
+    });
+    const user = await await this.usersRepository.findOne({ id: order.userId });
+
+    await this.ordersRepository.update({ id }, { status: dto.orderStatus });
+    this.logger.debug(`Order ${id} updated to ${dto.orderStatus}`);
+
+    await this.notificationService.send(
+      user,
+      NotificationReason.ORDER_STATUS_UPDATED,
+      "Order status updated",
+      { orderId: id, orderStatus: dto.orderStatus },
     );
   }
 
