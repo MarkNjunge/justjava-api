@@ -21,6 +21,7 @@ export interface Config {
   rave: Rave;
   datadog: Datadog;
   mailgun: Mailgun;
+  queue: Queue;
 }
 
 interface RateLimit {
@@ -74,6 +75,11 @@ interface Mailgun {
   domain: string;
   apiKey: string;
   from: string;
+}
+
+interface Queue {
+  redisUrl: string;
+  serviceName: string;
 }
 
 export const config: Config = configPackage;

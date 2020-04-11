@@ -16,6 +16,8 @@ import { CustomLogger } from "../../../common/CustomLogger";
 import { NotificationsService } from "../../notifications/notifications.service";
 import { NotificationReason } from "../../notifications/model/NotificationReason";
 import { CheckCardDto } from "./dto/CheckCard.dto";
+import { OrderStatus } from "../../orders/models/OrderStatus";
+import { QueueService } from "../../queue/queue.service";
 
 @Injectable()
 export class CardService {
@@ -30,6 +32,7 @@ export class CardService {
     private readonly usersRepository: Repository<UserEntity>,
     private readonly ravepayService: RavepayService,
     private readonly notificationService: NotificationsService,
+    private readonly queueService: QueueService,
   ) {
     this.logger = new CustomLogger("CardService");
   }
@@ -120,11 +123,14 @@ export class CardService {
     await this.ordersRepository.update(
       { id: dto.orderId },
       {
+        status: OrderStatus.CONFIRMED,
         paymentMethod: PaymentMethod.CARD,
         paymentStatus: OrderPaymentStatus.PAID,
       },
     );
     this.logger.debug(`Updated order ${dto.orderId} to PAID`);
+
+    this.queueService.startOrderSequence(payment.orderId);
 
     this.notificationService.send(
       user,

@@ -23,7 +23,8 @@ import { NotificationsService } from "../../notifications/notifications.service"
 import { ApiResponseDto } from "../../../common/dto/ApiResponse.dto";
 import { OrderPaymentStatus } from "../../orders/models/OrderPaymentStatus";
 import { NotificationReason } from "../../notifications/model/NotificationReason";
-import { OrderStatus } from "../../../shared/orders/models/OrderStatus";
+import { OrderStatus } from "../../orders/models/OrderStatus";
+import { QueueService } from "../../queue/queue.service";
 
 @Injectable()
 export class MpesaService {
@@ -39,6 +40,7 @@ export class MpesaService {
     private readonly usersRepository: Repository<UserEntity>,
     private readonly redisService: RedisService,
     private readonly notificationService: NotificationsService,
+    private readonly queueService: QueueService,
   ) {}
 
   async request(
@@ -156,6 +158,8 @@ export class MpesaService {
       },
     );
     this.logger.debug(`Updated order ${payment.orderId} to PAID`);
+
+    this.queueService.startOrderSequence(payment.orderId);
 
     this.notificationService.send(
       user,

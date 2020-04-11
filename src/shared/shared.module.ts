@@ -15,6 +15,7 @@ import { RavepayService } from "./payments/ravepay/ravepay.service";
 import { PaymentEntity } from "./payments/entities/Payment.entity";
 import { NotificationsService } from "./notifications/notifications.service";
 import { NotificationEntity } from "./notifications/entity/Notification.entity";
+import { QueueService } from "./queue/queue.service";
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { NotificationEntity } from "./notifications/entity/Notification.entity";
     MpesaService,
     RavepayService,
     NotificationsService,
+    QueueService,
   ],
   exports: [
     ProductsService,
@@ -48,6 +50,7 @@ import { NotificationEntity } from "./notifications/entity/Notification.entity";
     MpesaService,
     RavepayService,
     NotificationsService,
+    QueueService,
   ],
 })
 export class SharedModule {}
