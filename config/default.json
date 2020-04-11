@@ -54,6 +54,8 @@
   },
   "queue": {
     "redisUrl": "redis://:password@host:port/0",
-    "serviceName": "dev.justjava"
+    "serviceName": "dev.justjava",
+    "mpesaCheckDelay": 30000,
+    "maxMpesaCheckAttempts": 5
   }
 }

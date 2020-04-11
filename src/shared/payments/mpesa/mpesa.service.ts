@@ -3,6 +3,8 @@ import {
   HttpStatus,
   NotFoundException,
   InternalServerErrorException,
+  Inject,
+  forwardRef,
 } from "@nestjs/common";
 import { PaymentEntity } from "../../../shared/payments/entities/Payment.entity";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -25,6 +27,7 @@ import { OrderPaymentStatus } from "../../orders/models/OrderPaymentStatus";
 import { NotificationReason } from "../../notifications/model/NotificationReason";
 import { OrderStatus } from "../../orders/models/OrderStatus";
 import { QueueService } from "../../queue/queue.service";
+import { QueryRequestResponseDto } from "./dto/QueryRequestResponse.dto";
 
 @Injectable()
 export class MpesaService {
@@ -40,6 +43,7 @@ export class MpesaService {
     private readonly usersRepository: Repository<UserEntity>,
     private readonly redisService: RedisService,
     private readonly notificationService: NotificationsService,
+    @Inject(forwardRef(() => QueueService))
     private readonly queueService: QueueService,
   ) {}
 
@@ -94,6 +98,8 @@ export class MpesaService {
 
       await this.paymentsRepository.save(payment);
 
+      this.queueService.scheduleCheckMpesaPayment(res.data.CheckoutRequestID);
+
       return new ApiResponseDto(HttpStatus.OK, "Payment initialized");
     } catch (e) {
       const error = {
@@ -122,6 +128,63 @@ export class MpesaService {
       this.setPaymentCompleted(body, parsedBody, payment, user);
     } else {
       this.setPaymentErrored(parsedBody, payment, user);
+    }
+  }
+
+  async checkPaymentStatus(checkoutRequestId: string): Promise<boolean> {
+    const authHeader = await this.getAuthorizationHeader();
+    const shortcode = "174379";
+    const timestamp = moment().format("YYYYMMDDHHmmss");
+    const passKey =
+      "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
+    const password = Buffer.from(`${shortcode}${passKey}${timestamp}`).toString(
+      "base64",
+    );
+    const body = {
+      BusinessShortCode: shortcode,
+      Password: password,
+      Timestamp: timestamp,
+      CheckoutRequestID: checkoutRequestId,
+    };
+    try {
+      const res = await axios.default.post(
+        `${this.safaricomBaseUrl}/mpesa/stkpushquery/v1/query`,
+        body,
+        { headers: { Authorization: authHeader } },
+      );
+      const data: QueryRequestResponseDto = res.data;
+
+      const payment = await this.paymentsRepository.findOne({
+        transactionRef: checkoutRequestId,
+      });
+
+      const user = await this.usersRepository.findOne({
+        id: payment.initializedBy,
+      });
+
+      const parsedBody: StkCallbackDto = {
+        checkoutRequestId,
+        merchantRequestId: data.MerchantRequestID,
+        resultCode: data.ResultCode,
+        resultDesc: data.ResultDesc,
+      };
+      if (data.ResultCode === "0") {
+        await this.setPaymentCompleted(body, parsedBody, payment, user);
+      } else {
+        await this.setPaymentErrored(parsedBody, payment, user);
+      }
+
+      return true;
+    } catch (e) {
+      if (e.response) {
+        if (!e.response.data.errorMessage.includes("processed")) {
+          this.logger.error(e.response.data.errorMessage);
+        }
+      } else {
+        this.logger.error(e.message, e.stack);
+      }
+
+      return false;
     }
   }
 

@@ -80,6 +80,8 @@ interface Mailgun {
 interface Queue {
   redisUrl: string;
   serviceName: string;
+  mpesaCheckDelay: number;
+  maxMpesaCheckAttempts: number;
 }
 
 export const config: Config = configPackage;
