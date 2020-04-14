@@ -11,7 +11,7 @@ export interface Config {
   corsMethods: string;
   corsHeaders: string;
   validatorForbidUnknown: boolean;
-  loggerTimestampFormat: string;
+  logging: Logging;
   adminKey: string;
   cloudinary: CloudinaryConfig;
   db: DbConfig;
@@ -28,6 +28,12 @@ interface RateLimit {
   enabled: boolean;
   max: number;
   timeWindow: string;
+}
+
+interface Logging {
+  timestampFormat: string;
+  sensitiveParams: string[];
+  replacementString: string;
 }
 
 interface CloudinaryConfig {

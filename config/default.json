@@ -11,7 +11,26 @@
   "corsMethods": "*",
   "corsHeaders": "*",
   "validatorForbidUnknown": true,
-  "loggerTimestampFormat": "YYYY-MM-DD HH:mm:ss.SSS",
+  "logging": {
+    "timestampFormat": "YYYY-MM-DD HH:mm:ss.SSS",
+    "sensitiveParams": [
+      "session-id",
+      "admin-key",
+      "password",
+      "idToken",
+      "billingAddress",
+      "billingCity",
+      "billingCountry",
+      "billingState",
+      "billingZip",
+      "cardNo",
+      "cvv",
+      "expiryMonth",
+      "expiryYear"
+    ],
+
+    "replacementString": "REDACTED"
+  },
   "adminKey": "admin_key",
   "cloudinary": {
     "cloudName": "cloudinary_cloud_name",

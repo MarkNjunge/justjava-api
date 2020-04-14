@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, Length, IsCreditCard, IsNumber } from "class-validator";
+import { IsNotEmpty, Length, IsCreditCard } from "class-validator";
 
 export class CheckCardDto {
   @ApiProperty()

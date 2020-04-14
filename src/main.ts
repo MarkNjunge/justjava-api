@@ -14,6 +14,7 @@ import * as fastifyRateLimit from "fastify-rate-limit";
 import * as fileUpload from "fastify-file-upload";
 import { RedisService } from "./shared/redis/redis.service";
 import { NotificationsService } from "./shared/notifications/notifications.service";
+import { requestTimeMiddleware } from "./common/middleware/request-time.middleware";
 
 declare const module: any;
 
@@ -51,6 +52,7 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalInterceptors(new LoggingInterceptor());
   app.useGlobalPipes(new ValidationPipe());
+  app.use(requestTimeMiddleware);
 
   const redis = await app.get<RedisService>(RedisService);
   redis.connect();

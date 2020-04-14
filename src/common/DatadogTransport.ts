@@ -16,47 +16,22 @@ export class DatadogTransport extends Transport {
       this.emit("logged", info);
     });
 
-    const name = info.message.split("[")[1].split("]")[0];
-    const message = info.message.split(`[${name}]`)[1].trim();
+    let body = {
+      ...info.data,
+      message: info.message.split("] ")[1],
+      timestamp: info.timestamp,
+      level: info.level,
+    };
 
-    let body: any = { name, message, level: info.level };
-
-    // TODO Use optional chaining when available.
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining#Browser_compatibility
-    if (info.meta) {
-      if (info.meta.stacktrace != null) {
-        body = {
-          ...body,
-          error: {
-            stack: info.meta.stacktrace,
-          },
-        };
-      }
-    }
-
-    // Add request/response details if log is a route log
-    if (name === "ROUTE") {
-      const method = message.split(" ")[0];
-      const urlPath = message.split(method)[1].split(" - ")[0].trim();
-      const statusCode = parseInt(
-        message.split(urlPath)[1].split(" - ")[1].trim(),
-        10,
-      );
-
+    if (info.data.stacktrace) {
       body = {
         ...body,
-        method,
-        urlPath,
-        statusCode,
+        error: {
+          stack: info.data.stacktrace,
+        },
       };
 
-      const durationMatch = message.match(/\d*ms/g);
-      if (durationMatch !== null) {
-        body = {
-          ...body,
-          duration: parseInt(durationMatch[0].split("ms")[0], 10),
-        };
-      }
+      delete body.stacktrace;
     }
 
     await axios.default({

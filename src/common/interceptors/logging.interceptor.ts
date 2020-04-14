@@ -9,7 +9,6 @@ import { tap } from "rxjs/operators";
 import { CustomLogger } from "../CustomLogger";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { ServerResponse, IncomingMessage } from "http";
-import * as moment from "moment";
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
@@ -23,29 +22,8 @@ export class LoggingInterceptor implements NestInterceptor {
     const request = ctx.getRequest<FastifyRequest<IncomingMessage>>();
     const response = ctx.getResponse<FastifyReply<ServerResponse>>();
 
-    const requestTime = moment().valueOf();
-
-    // Add request time to params to be used in exception filters
-    request.params.requestTime = requestTime;
-
     return next
       .handle()
-      .pipe(
-        tap(() =>
-          this.logger.logRoute(request, response.res.statusCode, requestTime),
-        ),
-      );
-  }
-
-  private buildLogMessage(
-    request: FastifyRequest<IncomingMessage>,
-    response: FastifyReply<ServerResponse>,
-    requestTime: number,
-  ) {
-    const method = request.req.method;
-    const url = request.req.url;
-    const totalTime = moment().valueOf() - requestTime;
-
-    return `${method} ${url} - ${response.res.statusCode} - ${totalTime}ms`;
+      .pipe(tap(data => this.logger.logRoute(request, response, data)));
   }
 }

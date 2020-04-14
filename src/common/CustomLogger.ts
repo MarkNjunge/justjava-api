@@ -2,49 +2,79 @@ import { LoggerService } from "@nestjs/common";
 import * as winston from "winston";
 import * as moment from "moment";
 import { config } from "./Config";
-import { FastifyRequest } from "fastify";
-import { IncomingMessage } from "http";
+import { FastifyRequest, FastifyReply } from "fastify";
+import { IncomingMessage, ServerResponse } from "http";
 import { DatadogTransport } from "./DatadogTransport";
+import { removeSensitiveParams } from "./logging/remove-sensitive";
 
 export class CustomLogger implements LoggerService {
   constructor(private readonly name: string = "Application") {}
 
-  log(message: string, name?: string) {
-    winston.info(`[${name || this.name}] ${message}`);
+  log(message: string, name?: string, data?: any) {
+    const tag = name || this.name;
+    data = removeSensitiveParams({ ...data, tag });
+    winston.info({ message: `[${tag}] ${message}`, data });
   }
-  error(message: string, trace?: string, name?: string) {
-    winston.error({
-      message: `[${name || this.name}] ${message}`,
-      meta: {
-        stacktrace: trace,
-      },
-    });
+  error(message: string, name?: string, data?: any) {
+    const tag = name || this.name;
+    data = removeSensitiveParams({ ...data, tag });
+    winston.error({ message: `[${tag}] ${message}`, data });
   }
-  warn(message: string, name?: string) {
-    winston.warn(`[${name || this.name}] ${message}`);
+  warn(message: string, name?: string, data?: any) {
+    const tag = name || this.name;
+    data = removeSensitiveParams({ ...data, tag });
+    winston.warn({ message: `[${tag}] ${message}`, data });
   }
-  debug(message: string, name?: string) {
-    winston.debug(`[${name || this.name}] ${message}`);
+  debug(message: string, name?: string, data?: any) {
+    const tag = name || this.name;
+    data = removeSensitiveParams({ ...data, tag });
+    winston.debug({ message: `[${tag}] ${message}`, data });
   }
-  verbose(message: string, name?: string) {
-    winston.verbose(`[${name || this.name}] ${message}`);
+  verbose(message: string, name?: string, data?: any) {
+    const tag = name || this.name;
+    data = removeSensitiveParams({ ...data, tag });
+    winston.verbose({ message: `[${tag}] ${message}`, data });
   }
   logRoute(
     request: FastifyRequest<IncomingMessage>,
-    statusCode: number,
-    requestTime: number = null,
+    response: FastifyReply<ServerResponse>,
+    responseBody?: any,
   ) {
+    const statusCode = response.res.statusCode;
     const method = request.req.method;
     const url = request.req.url;
+    const tag = "ROUTE";
+    const requestTime = request.headers["x-request-time"];
+    const requestTimeISO = moment(requestTime).toISOString();
+    const duration = Date.now() - requestTime;
 
-    if (requestTime != null) {
-      const totalTime = moment().valueOf() - requestTime;
-      const message = `${method} ${url} - ${statusCode} - ${totalTime}ms`;
-      winston.info(`[ROUTE] ${message}`);
-    } else {
-      const message = `${method} ${url} - ${statusCode}`;
-      winston.info(`[ROUTE] ${message}`);
+    let data: any = {
+      tag,
+      request: {
+        url,
+        method,
+        requestTime: requestTimeISO,
+        ip: request.headers["x-forwarded-for"] || request.ip,
+        query: Object.assign({}, request.query),
+        body: Object.assign({}, request.body),
+      },
+      response: {
+        duration,
+        statusCode,
+        body: responseBody,
+      },
+    };
+    if (request.params.session) {
+      data = {
+        ...data,
+        userId: request.params.session.userId,
+      };
     }
+    data = removeSensitiveParams(data);
+
+    const message = `${method} ${url} - ${statusCode} - ${duration}ms`;
+
+    winston.info({ message: `[${tag}] ${message}`, data });
   }
 }
 
@@ -53,7 +83,7 @@ export function initializeWinston() {
 
   const myFormat = printf(({ level, message, logTimestamp }) => {
     const m = moment(logTimestamp);
-    const formattedTimestamp = m.format(config.loggerTimestampFormat);
+    const formattedTimestamp = m.format(config.logging.timestampFormat);
     return `${formattedTimestamp} | ${level}: ${message}`;
   });
 

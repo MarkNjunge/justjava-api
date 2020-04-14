@@ -26,10 +26,12 @@ export class AllExceptionsFilter implements ExceptionFilter {
     // Get the location where the error was thrown from to use as a logging tag
     const stackTop = e.stack.split("\n")[1].split("at ")[1].split(" ")[0];
 
+    // Get the correct http status
     const status =
       e instanceof HttpException
         ? e.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
+    response.res.statusCode = status;
     const message = e.message;
     const logMessage: ApiResponseDto = {
       httpStatus: status,
@@ -40,8 +42,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
       logMessage.meta = (e.getResponse() as any).meta;
     }
 
-    this.logger.error(message, e.stack, stackTop);
-    this.logger.logRoute(request, status, null);
+    this.logger.error(message, stackTop, { stacktrace: e.stack });
+    this.logger.logRoute(request, response, { ...logMessage });
 
     response.status(status).send({
       ...logMessage,
