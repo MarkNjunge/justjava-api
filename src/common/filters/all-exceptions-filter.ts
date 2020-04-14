@@ -8,37 +8,37 @@ import {
 import { FastifyReply, FastifyRequest } from "fastify";
 import { ServerResponse, IncomingMessage } from "http";
 import { CustomLogger } from "../CustomLogger";
-import * as moment from "moment";
+import { ApiResponseDto } from "../dto/ApiResponse.dto";
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   logger: CustomLogger;
 
   constructor() {
-    this.logger = new CustomLogger("HttpExceptionFilter");
+    this.logger = new CustomLogger("AllExceptionsFilter");
   }
 
   catch(e: HttpException | Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<FastifyReply<ServerResponse>>();
     const request = ctx.getRequest<FastifyRequest<IncomingMessage>>();
+
+    // Get the location where the error was thrown from to use as a logging tag
+    const stackTop = e.stack.split("\n")[1].split("at ")[1].split(" ")[0];
+
     const status =
       e instanceof HttpException
         ? e.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
-
-    // Get the location where the error was thrown from to use as a logging tag
-    const stackTop = e.stack
-      .split("\n")[1]
-      .split("at ")[1]
-      .split(" ")[0];
-    const message = e.message.message || e.message;
-    const meta = e.message.meta;
-    const logMessage = {
-      status,
+    const message = e.message;
+    const logMessage: ApiResponseDto = {
+      httpStatus: status,
       message,
-      meta,
     };
+
+    if (e instanceof HttpException && (e.getResponse() as any).meta) {
+      logMessage.meta = (e.getResponse() as any).meta;
+    }
 
     this.logger.error(message, e.stack, stackTop);
     this.logger.logRoute(request, status, null);

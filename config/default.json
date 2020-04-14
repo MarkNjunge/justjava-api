@@ -51,5 +51,11 @@
     "domain": "your-mailgun-domain",
     "apiKey": "key-abc123",
     "from": "Name <address@mail.example.com>"
+  },
+  "queue": {
+    "redisUrl": "redis://:password@host:port/0",
+    "serviceName": "dev.justjava",
+    "mpesaCheckDelay": 30000,
+    "maxMpesaCheckAttempts": 5
   }
 }

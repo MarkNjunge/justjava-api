@@ -21,8 +21,6 @@ services:
     image: postgres:11.2
     container_name: justjava-api_pgsql
     restart: always
-    ports:
-      - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -35,8 +33,6 @@ services:
     image: bitnami/redis:5.0
     container_name: justjava-api_redis
     restart: always
-    ports:
-      - "6379:6379"
     environment:
       - REDIS_PASSWORD=redis
     volumes:

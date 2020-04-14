@@ -12,8 +12,10 @@ import {
 } from "@nestjs/platform-fastify";
 import * as fastifyRateLimit from "fastify-rate-limit";
 import * as fileUpload from "fastify-file-upload";
-import { RedisService } from "./redis/redis.service";
-import { NotificationsService } from "./notifications/notifications.service";
+import { RedisService } from "./shared/redis/redis.service";
+import { NotificationsService } from "./shared/notifications/notifications.service";
+
+declare const module: any;
 
 async function bootstrap() {
   initializeWinston();
@@ -61,6 +63,11 @@ async function bootstrap() {
   await app.listen(config.port, "0.0.0.0").then(() => {
     logger.log(`Started on port ${config.port}`);
   });
+
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
 }
 bootstrap();
 
@@ -68,8 +75,21 @@ function intializeSwagger(app: NestFastifyApplication) {
   const options = new DocumentBuilder()
     .setTitle("JustJava API")
     .setDescription("JustJava API")
-    .setContactEmail("contact@marknjunge.com")
-    .setSchemes(process.env.NODE_ENV === "production" ? "https" : "http")
+    .setContact(
+      "Mark Njung'e",
+      "https://justjava.store",
+      "contact@marknjunge.com",
+    )
+    .addSecurity("session-id", {
+      type: "apiKey",
+      in: "header",
+      name: "session-id",
+    })
+    .addSecurity("admin-key", {
+      type: "apiKey",
+      in: "header",
+      name: "admin-key",
+    })
     .build();
 
   const document = SwaggerModule.createDocument(app, options);

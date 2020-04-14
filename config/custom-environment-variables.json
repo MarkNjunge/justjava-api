@@ -45,5 +45,9 @@
     "domain": "MAILGUN_DOMAIN",
     "apiKey": "MAILGUN_API_KEY",
     "from": "MAILGUN_FROM"
+  },
+  "queue": {
+    "redisUrl": "QUEUE_REDIS_URL",
+    "serviceName": "QUEUE_SERVICE_NAME"
   }
 }

@@ -1,3 +1,19 @@
+# 1.2.0
+
+- Update images endpoint to be under /admin
+- Remove mobile number requirement
+- Remove restriction to pay using the initial payment method
+- Add endpoint to change payment method
+- Change order to confirmed after payment is compelted
+- Update card payments endpoints
+  - Add endpoint to check card verification method
+  - Add endpoint for address verified cards
+  - Deprecate payments/card/initiate
+- Save notifications to db
+- Add admin api to update order status
+- Add auto-updating of order status
+- Periodically check status of pending M-Pesa payments
+
 # 1.1.1
 
 - Ignore ETIMEDOUT error from IoRedis.

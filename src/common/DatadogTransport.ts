@@ -8,7 +8,6 @@ export class DatadogTransport extends Transport {
   constructor(opts) {
     super(opts);
 
-    // tslint:disable-next-line:max-line-length
     this.apiUrl = `https://http-intake.logs.datadoghq.com/v1/input?service=${config.datadog.service}&ddsource=${config.datadog.source}&host=${config.datadog.host}&ddtags=`;
   }
 
@@ -38,15 +37,9 @@ export class DatadogTransport extends Transport {
     // Add request/response details if log is a route log
     if (name === "ROUTE") {
       const method = message.split(" ")[0];
-      const urlPath = message
-        .split(method)[1]
-        .split(" - ")[0]
-        .trim();
+      const urlPath = message.split(method)[1].split(" - ")[0].trim();
       const statusCode = parseInt(
-        message
-          .split(urlPath)[1]
-          .split(" - ")[1]
-          .trim(),
+        message.split(urlPath)[1].split(" - ")[1].trim(),
         10,
       );
 

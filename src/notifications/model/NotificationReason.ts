@@ -1,4 +1,0 @@
-export enum NotificationReason {
-  PAYMENT_COMPLETED = "PAYMENT_COMPLETED",
-  PAYMENT_CANCELLED = "PAYMENT_CANCELLED",
-}

@@ -39,6 +39,8 @@ steps:
         DATADOG_API_KEY=${_DATADOG_API_KEY},
         MAILGUN_API_KEY=${_MAILGUN_API_KEY},
         MAILGUN_FROM=${_MAILGUN_FROM}",
+        QUEUE_REDIS_URL=${_QUEUE_REDIS_URL}",
+        QUEUE_SERVICE_NAME=${_QUEUE_SERVICE_NAME}",
       ]
 images:
   - gcr.io/$PROJECT_ID/justjava-api
