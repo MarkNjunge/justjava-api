@@ -15,6 +15,7 @@ import * as fileUpload from "fastify-file-upload";
 import { RedisService } from "./shared/redis/redis.service";
 import { NotificationsService } from "./shared/notifications/notifications.service";
 import { requestTimeMiddleware } from "./common/middleware/request-time.middleware";
+import { SetCookiesInterceptor } from "./common/interceptors/set-cookies.interceptor";
 
 declare const module: any;
 
@@ -51,6 +52,7 @@ async function bootstrap() {
 
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalInterceptors(new LoggingInterceptor());
+  app.useGlobalInterceptors(new SetCookiesInterceptor());
   app.useGlobalPipes(new ValidationPipe());
   app.use(requestTimeMiddleware);
 

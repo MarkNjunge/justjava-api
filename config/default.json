@@ -15,6 +15,7 @@
     "timestampFormat": "YYYY-MM-DD HH:mm:ss.SSS",
     "sensitiveParams": [
       "session-id",
+      "sessionId",
       "admin-key",
       "password",
       "idToken",

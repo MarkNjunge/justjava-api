@@ -9,6 +9,7 @@ import {
   UseGuards,
   Param,
   Patch,
+  Req,
 } from "@nestjs/common";
 import { LoginGoogleDto } from "./dto/LoginGoogle.dto";
 import {
@@ -43,19 +44,13 @@ export class AuthController {
       "Authenticate with Google. Signs in if there is an account, creates an account if not.",
   })
   @ApiResponse({ status: 200, type: LoginResponseDto })
-  async signInGoogle(
-    @Body() dto: LoginGoogleDto,
-    @Res() res: FastifyReply<ServerResponse>,
-  ) {
+  async signInGoogle(@Req() req, @Body() dto: LoginGoogleDto) {
     const response = await this.authService.signInGoogle(dto.idToken);
 
     const sessionExpiry = moment().add(1, "year").unix();
-    res.header(
-      "Set-Cookie",
-      `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`,
-    );
+    req._cookies = `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`;
 
-    res.send(response);
+    return response;
   }
 
   @Post("/signup")
@@ -66,20 +61,14 @@ export class AuthController {
     type: ApiResponseDto,
     description: "The email address is already in use",
   })
-  async signUp(
-    @Body() dto: SignUpDto,
-    @Res() res: FastifyReply<ServerResponse>,
-  ) {
+  async signUp(@Req() req, @Body() dto: SignUpDto) {
     dto.email = dto.email.toLowerCase();
     const response = await this.authService.signUp(dto);
 
     const sessionExpiry = moment().add(1, "year").unix();
-    res.header(
-      "Set-Cookie",
-      `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`,
-    );
+    req._cookies = `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`;
 
-    res.send(response);
+    return response;
   }
 
   @Post("/signin")
@@ -95,20 +84,14 @@ export class AuthController {
     type: ApiResponseDto,
     description: "Email address uses Google Sign In | Incorrect password",
   })
-  async signIn(
-    @Body() dto: SignInDto,
-    @Res() res: FastifyReply<ServerResponse>,
-  ) {
+  async signIn(@Req() req, @Body() dto: SignInDto) {
     dto.email = dto.email.toLowerCase();
     const response = await this.authService.signIn(dto);
 
     const sessionExpiry = moment().add(1, "year").unix();
-    res.header(
-      "Set-Cookie",
-      `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`,
-    );
+    req._cookies = `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`;
 
-    res.status(200).send(response);
+    return response;
   }
 
   @Delete("/signout")
