@@ -7,7 +7,7 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from "@nestjs/platform-fastify";
-import { initializeWinston } from "../src/common/CustomLogger";
+import { initializeWinston } from "../src/common/logging/CustomLogger";
 
 describe("AppController (e2e)", () => {
   let app: INestApplication;

@@ -1,11 +1,11 @@
 import { LoggerService } from "@nestjs/common";
 import * as winston from "winston";
 import * as moment from "moment";
-import { config } from "./Config";
+import { config } from "../Config";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { IncomingMessage, ServerResponse } from "http";
 import { DatadogTransport } from "./DatadogTransport";
-import { removeSensitiveParams } from "./logging/remove-sensitive";
+import { removeSensitiveParams } from "./remove-sensitive";
 
 export class CustomLogger implements LoggerService {
   constructor(private readonly name: string = "Application") {}

@@ -19,7 +19,7 @@ import { OrderEntity } from "../../orders/entities/Order.entity";
 import { PaymentMethod } from "../../payments/models/PaymentMethod";
 import { PaymentStatus } from "../../payments/models/PaymentStatus";
 import { StkCallbackDto } from "./dto/StkCallback.dto";
-import { CustomLogger } from "../../../common/CustomLogger";
+import { CustomLogger } from "../../../common/logging/CustomLogger";
 import { UserEntity } from "../../users/entities/User.entity";
 import { NotificationsService } from "../../notifications/notifications.service";
 import { ApiResponseDto } from "../../../common/dto/ApiResponse.dto";

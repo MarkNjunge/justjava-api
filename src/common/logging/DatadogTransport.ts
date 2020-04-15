@@ -1,6 +1,6 @@
 import * as axios from "axios";
 import * as Transport from "winston-transport";
-import { config } from "./Config";
+import { config } from "../Config";
 
 export class DatadogTransport extends Transport {
   private apiUrl = "";

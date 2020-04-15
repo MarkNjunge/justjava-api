@@ -12,7 +12,7 @@ import { PaymentMethod } from "../models/PaymentMethod";
 import { PaymentStatus } from "../models/PaymentStatus";
 import { ApiResponseDto } from "../../../common/dto/ApiResponse.dto";
 import { OrderPaymentStatus } from "../../orders/models/OrderPaymentStatus";
-import { CustomLogger } from "../../../common/CustomLogger";
+import { CustomLogger } from "../../../common/logging/CustomLogger";
 import { NotificationsService } from "../../notifications/notifications.service";
 import { NotificationReason } from "../../notifications/model/NotificationReason";
 import { CheckCardDto } from "./dto/CheckCard.dto";

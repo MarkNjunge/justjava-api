@@ -2,7 +2,7 @@ import { Injectable, Inject, forwardRef } from "@nestjs/common";
 import * as Bull from "bull";
 import { InjectRepository } from "@nestjs/typeorm";
 import { config } from "../../common/Config";
-import { CustomLogger } from "../../common/CustomLogger";
+import { CustomLogger } from "../../common/logging/CustomLogger";
 import { PaymentEntity } from "../payments/entities/Payment.entity";
 import { Repository } from "typeorm";
 import { PaymentStatus } from "../payments/models/PaymentStatus";

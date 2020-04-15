@@ -7,7 +7,7 @@ import {
 } from "@nestjs/common";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { ServerResponse, IncomingMessage } from "http";
-import { CustomLogger } from "../CustomLogger";
+import { CustomLogger } from "../logging/CustomLogger";
 import { ApiResponseDto } from "../dto/ApiResponse.dto";
 
 @Catch()

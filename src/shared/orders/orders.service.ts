@@ -21,7 +21,7 @@ import { ChangePaymentMethodDto } from "./dto/ChangePaymentMethod.dto";
 import { OrderPaymentStatus } from "./models/OrderPaymentStatus";
 import { ApiResponseDto } from "../../common/dto/ApiResponse.dto";
 import { UpdateOrderStatusDto } from "./dto/UpdateOrderStatus.dto";
-import { CustomLogger } from "../../common/CustomLogger";
+import { CustomLogger } from "../../common/logging/CustomLogger";
 import { NotificationsService } from "../notifications/notifications.service";
 import { NotificationReason } from "../notifications/model/NotificationReason";
 

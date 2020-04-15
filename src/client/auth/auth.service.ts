@@ -25,7 +25,7 @@ import { ChangePasswordDto } from "./dto/ChangePassword.dto";
 import { ApiResponseDto } from "../../common/dto/ApiResponse.dto";
 import { EmailService } from "../../shared/email/email.service";
 import { RequestResetPasswordDto } from "./dto/RequestResetPassword.dto";
-import { CustomLogger } from "../../common/CustomLogger";
+import { CustomLogger } from "../../common/logging/CustomLogger";
 import { ResetPasswordDto } from "./dto/ResetPassword.dto";
 
 @Injectable()
