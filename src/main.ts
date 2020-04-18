@@ -1,5 +1,5 @@
 import { NestFactory } from "@nestjs/core";
-import { CustomLogger, initializeWinston } from "./common/CustomLogger";
+import { CustomLogger, initializeWinston } from "./common/logging/CustomLogger";
 import { AppModule } from "./app.module";
 import { AllExceptionsFilter } from "./common/filters/all-exceptions-filter";
 import { LoggingInterceptor } from "./common/interceptors/logging.interceptor";
@@ -14,6 +14,8 @@ import * as fastifyRateLimit from "fastify-rate-limit";
 import * as fileUpload from "fastify-file-upload";
 import { RedisService } from "./shared/redis/redis.service";
 import { NotificationsService } from "./shared/notifications/notifications.service";
+import { requestTimeMiddleware } from "./common/middleware/request-time.middleware";
+import { SetCookiesInterceptor } from "./common/interceptors/set-cookies.interceptor";
 
 declare const module: any;
 
@@ -50,7 +52,9 @@ async function bootstrap() {
 
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalInterceptors(new LoggingInterceptor());
+  app.useGlobalInterceptors(new SetCookiesInterceptor());
   app.useGlobalPipes(new ValidationPipe());
+  app.use(requestTimeMiddleware);
 
   const redis = await app.get<RedisService>(RedisService);
   redis.connect();

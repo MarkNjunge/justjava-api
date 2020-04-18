@@ -5,25 +5,21 @@ import {
   CallHandler,
 } from "@nestjs/common";
 import { Observable } from "rxjs";
-import { tap } from "rxjs/operators";
-import { CustomLogger } from "../logging/CustomLogger";
+import { IncomingMessage, ServerResponse } from "http";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { ServerResponse, IncomingMessage } from "http";
+import { tap } from "rxjs/operators";
 
 @Injectable()
-export class LoggingInterceptor implements NestInterceptor {
-  logger: CustomLogger;
-
-  constructor() {
-    this.logger = new CustomLogger("ROUTE");
-  }
+export class SetCookiesInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const ctx = context.switchToHttp();
     const request = ctx.getRequest<FastifyRequest<IncomingMessage>>();
     const response = ctx.getResponse<FastifyReply<ServerResponse>>();
 
-    return next
-      .handle()
-      .pipe(tap(data => this.logger.logRoute(request, response, data)));
+    return next.handle().pipe(
+      tap(() => {
+        response.header("Set-Cookie", (request as any)._cookies);
+      }),
+    );
   }
 }

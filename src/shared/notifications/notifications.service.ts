@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import * as axios from "axios";
 import { config } from "../../common/Config";
 import * as admin from "firebase-admin";
-import { CustomLogger } from "../../common/CustomLogger";
+import { CustomLogger } from "../../common/logging/CustomLogger";
 import { NotificationReason } from "./model/NotificationReason";
 import { UserEntity } from "../users/entities/User.entity";
 import { NotificationEntity } from "./entity/Notification.entity";
