@@ -1,3 +1,7 @@
+# 1.2.1
+
+- Improve logging
+
 # 1.2.0
 
 - Update images endpoint to be under /admin
