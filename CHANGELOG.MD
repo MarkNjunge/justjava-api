@@ -1,3 +1,10 @@
+# 1.2.2
+
+- Fix bug with authentication (1a89bf3)  
+  `removeSensitiveParams(data)` has a side effect of modifying the response body.
+  This causes "session-id" returned during login to change to "REDACTED",
+  making authentication fail.
+
 # 1.2.1
 
 - Improve logging

@@ -55,13 +55,13 @@ export class CustomLogger implements LoggerService {
         method,
         requestTime: requestTimeISO,
         ip: request.headers["x-forwarded-for"] || request.ip,
-        query: Object.assign({}, request.query),
-        body: Object.assign({}, request.body),
+        // query: Object.assign({}, request.query),
+        // body: Object.assign({}, request.body),
       },
       response: {
         duration,
         statusCode,
-        body: responseBody,
+        // body: responseBody,
       },
     };
     if (request.params.session) {
@@ -70,7 +70,7 @@ export class CustomLogger implements LoggerService {
         userId: request.params.session.userId,
       };
     }
-    data = removeSensitiveParams(data);
+    // data = removeSensitiveParams(data);
 
     const message = `${method} ${url} - ${statusCode} - ${duration}ms`;
 
