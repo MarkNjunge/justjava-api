@@ -121,4 +121,8 @@ export class RedisService {
       return null;
     }
   }
+
+  async deletePasswordResetToken(token: string) {
+    await this.redis.del(`justjava:password:${token}`);
+  }
 }

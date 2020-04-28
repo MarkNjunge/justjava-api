@@ -297,6 +297,8 @@ export class AuthService {
     );
     this.logger.debug(`Reset password for user ${resetToken.email}`);
 
+    await this.redisService.deletePasswordResetToken(dto.token);
+
     return { httpStatus: 200, message: "Password changed successfully" };
   }
 
