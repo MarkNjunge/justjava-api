@@ -18,13 +18,15 @@ Live master branch: https://api.justjava.store/
 
 Used to store the API's data.
 
-1. Create a PostgreSQL database and get the url in the form `postgres://username:password@host:port/database`;
+1. Create a PostgreSQL database
+2. Get the url in the form `postgres://username:password@host:port/database`
 
 ### Redis
 
 Used to store sessions.
 
-1. Create a Redis instance and get the url in the form `redis://:password@host:port/0`
+1. Create a Redis instance
+2. Get the url in the form `redis://:password@host:port/0`
 
 ### Firebase
 
@@ -34,13 +36,6 @@ Used for notifications.
 2. Create and download a [service account key](https://console.firebase.google.com/project/_/settings/serviceaccounts/adminsdk)
 3. Upload it to a public url.
 
-### Datadog (optional)
-
-Used for logs
-
-1. Create an account on [Datadog](https://app.datadoghq.com/)
-2. Create an [API key](https://docs.datadoghq.com/account_management/api-app-keys/)
-
 ### GCP Project (optional)
 
 Used for Google Sign In.
@@ -49,13 +44,6 @@ Used for Google Sign In.
 2. Create [OAuth client ID credentials](https://console.cloud.google.com/apis/credentials) with "Web Application" as the application type.
 3. Take note of the client ID.
 
-### Cloudinary (optional)
-
-Used for image upload.
-
-1. Create a [Cloudinary Account](https://cloudinary.com/users/register/free).
-2. Get the "Cloud name", "API Key" and "API Secret" from the [console](https://cloudinary.com/console).
-
 ### Safaricom Developer Account (optional)
 
 Used for M-Pesa payments
@@ -63,6 +51,27 @@ Used for M-Pesa payments
 1. Create an account on [Daraja](https://developer.safaricom.co.ke/).
 2. Create an app.
 3. Get the `consumerKey` and `consumeSecret`.
+
+### JustJava worker (optional)
+
+Used to automatically update the order status when a payment has been completed.
+
+1. Clone the repository [MarkNjunge/justjava-worker](https://github.com/MarkNjunge/justjava-worker)
+2. Follow installation instructions.
+
+### Datadog (optional)
+
+Used for logs
+
+1. Create an account on [Datadog](https://app.datadoghq.com/)
+2. Create an [API key](https://docs.datadoghq.com/account_management/api-app-keys/)
+
+### Cloudinary (optional)
+
+Used for image upload.
+
+1. Create a [Cloudinary Account](https://cloudinary.com/users/register/free).
+2. Get the "Cloud name", "API Key" and "API Secret" from the [console](https://cloudinary.com/console).
 
 ### Ravepay Sandbox Account (optional)
 
@@ -88,10 +97,11 @@ Used for sending password reset emails. If this is disabled, the token will be r
 $ git clone https://github.com/MarkNjunge/justjava-api.git
 ```
 
-2. Make a `./config/local.json` or `./.env` file for configuration. See the variable mappings [./config/custom-environment-variables.json](./config/custom-environment-variables.json). If you use a `.env` file, copy the contents of [./.env.sample](./.env.sample)
+2. Make a `./config/local.json` file based on [`./config/default.json`](./config/default.json).  
+   Alternatively, make a `.env` file. See environment variable mappings in [custom-environment-variables.json](./config/custom-environment-variables.json).
 
 ```bash
-$ cp ./config/default.json ./local.json
+$ cp ./config/default.json ./config/local.json
 ```
 
 3. Install dependencies
