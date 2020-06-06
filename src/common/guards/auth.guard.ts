@@ -25,6 +25,13 @@ export class AuthGuard implements CanActivate {
   async validateRequest(
     request: FastifyRequest<IncomingMessage>,
   ): Promise<boolean> {
+    // Skip authentication on certain urls
+    // Prevents needing to specify the guard on all other endpoints in the controller
+    const ignoredUrls = ["/orders/verify"];
+    if (ignoredUrls.includes(request.req.url)) {
+      return true;
+    }
+
     const sessionId = request.headers["session-id"];
 
     if (!sessionId) {
