@@ -1,3 +1,7 @@
+# 1.2.3
+
+- Prevent checking for `session-id` header in `/orders/verify`
+
 # 1.2.2
 
 - Fix bug with authentication (1a89bf3)  
