@@ -40,6 +40,7 @@ export class OrdersController {
   }
 
   @Post("/verify")
+  // Authentication is ignored in auth.guard
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: "Verify an order's items and choices are valid" })
   @ApiOkResponse({ type: OrderValidationError, isArray: true })
