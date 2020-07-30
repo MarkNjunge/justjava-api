@@ -29,7 +29,7 @@
   "dependencies": {
     "@nestjs/common": "^7.0.5",
     "@nestjs/core": "^7.0.5",
-    "@nestjs/platform-fastify": "^7.0.5",
+    "@nestjs/platform-fastify": "^7.3.0",
     "@nestjs/swagger": "^4.5.1",
     "@nestjs/typeorm": "^7.0.0",
     "axios": "^0.19.0",
