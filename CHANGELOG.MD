@@ -1,3 +1,7 @@
+# 1.3.0
+
+- Fix logging request/response bodies while removing sensitive parameters.
+
 # 1.2.3
 
 - Prevent checking for `session-id` header in `/orders/verify`
