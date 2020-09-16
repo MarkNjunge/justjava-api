@@ -1,19 +1,22 @@
 import { config } from "../Config";
 
-export function removeSensitiveParams(data: any): any {
+export function removeSensitiveParams(data: any) {
   return scanAndRemove(data, config.logging.sensitiveParams);
 }
 
 function scanAndRemove(data, sensitive) {
+  const cleanedData: typeof data = {};
   Object.keys(data).forEach(k => {
     if (data[k] instanceof Object) {
-      data[k] = scanAndRemove(data[k], sensitive);
+      cleanedData[k] = scanAndRemove(data[k], sensitive);
     } else {
       if (sensitive.includes(k)) {
-        data[k] = config.logging.replacementString;
+        cleanedData[k] = config.logging.replacementString;
+      } else {
+        cleanedData[k] = data[k];
       }
     }
   });
 
-  return data;
+  return cleanedData;
 }
