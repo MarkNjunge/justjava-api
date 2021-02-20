@@ -41,8 +41,8 @@ export class CustomLogger implements LoggerService {
     responseBody?: any,
   ) {
     const statusCode = response.statusCode;
-    const method = request.req.method;
-    const url = request.req.url;
+    const method = request.method;
+    const url = request.url;
     const tag = "ROUTE";
     const requestTime = request.headers["x-request-time"];
     const requestTimeISO = moment(requestTime).toISOString();
