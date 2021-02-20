@@ -5,7 +5,7 @@ import {
   ConflictException,
   NotFoundException,
 } from "@nestjs/common";
-import { config, trueBool } from "../../../utils/Config";
+import { config } from "../../../utils/Config";
 import { OAuth2Client } from "google-auth-library";
 import { GoogleTokenPayload } from "./models/GoogleTokenPayload";
 import { UserEntity } from "../../shared/users/entities/User.entity";
@@ -259,7 +259,7 @@ export class AuthService {
       token,
     });
 
-    if (trueBool(config.mailgun.enabled) === true) {
+    if (Boolean(config.mailgun.enabled) === true) {
       await this.emailService.sendPasswordResetEmail(
         user.email,
         user.firstName,

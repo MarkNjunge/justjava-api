@@ -91,12 +91,3 @@ interface Queue {
 }
 
 export const config: Config = configPackage;
-
-// Handle dokku setting environment variables as string instead of boolean
-export function trueBool(value: boolean | string) {
-  if (typeof value === "string") {
-    return value === "true" ? true : false;
-  } else if (typeof value === "boolean") {
-    return value;
-  }
-}
