@@ -38,6 +38,8 @@ async function bootstrap() {
   intializeSwagger(app);
 
   if (config.rateLimit.enabled === true) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     app.register(fastifyRateLimit, {
       max: config.rateLimit.max,
       timeWindow: config.rateLimit.timeWindow,

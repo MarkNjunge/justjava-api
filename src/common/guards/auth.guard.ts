@@ -16,14 +16,14 @@ export class AuthGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const request: FastifyRequest<IncomingMessage> = context
+    const request: FastifyRequest = context
       .switchToHttp()
       .getRequest();
     return this.validateRequest(request);
   }
 
   async validateRequest(
-    request: FastifyRequest<IncomingMessage>,
+    request: FastifyRequest,
   ): Promise<boolean> {
     // Skip authentication on certain urls
     // Prevents needing to specify the guard on all other endpoints in the controller
@@ -32,7 +32,7 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    const sessionId = request.headers["session-id"];
+    const sessionId = request.headers["session-id"] as string;
 
     if (!sessionId) {
       throw new UnauthorizedException({
@@ -45,6 +45,8 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException({ message: "Invalid session-id" });
     }
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     request.params.session = session;
     await this.redisService.updateLastUseDate(session);
 

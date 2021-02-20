@@ -36,17 +36,17 @@ export class CustomLogger implements LoggerService {
     winston.verbose({ message: `[${tag}] ${message}`, data });
   }
   logRoute(
-    request: FastifyRequest<IncomingMessage>,
-    response: FastifyReply<ServerResponse>,
+    request: FastifyRequest,
+    response: FastifyReply,
     responseBody?: any,
   ) {
-    const statusCode = response.res.statusCode;
+    const statusCode = response.statusCode;
     const method = request.req.method;
     const url = request.req.url;
     const tag = "ROUTE";
     const requestTime = request.headers["x-request-time"];
     const requestTimeISO = moment(requestTime).toISOString();
-    const duration = Date.now() - requestTime;
+    const duration = Date.now() - parseInt(requestTime as string);
 
     let data: any = {
       tag,
@@ -64,9 +64,13 @@ export class CustomLogger implements LoggerService {
         body: responseBody,
       },
     };
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     if (request.params.session) {
       data = {
         ...data,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         userId: request.params.session.userId,
       };
     }

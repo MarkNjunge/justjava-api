@@ -14,7 +14,7 @@ export class AdminGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const request: FastifyRequest<IncomingMessage> = context
+    const request: FastifyRequest = context
       .switchToHttp()
       .getRequest();
     return validateRequest(request);
@@ -22,7 +22,7 @@ export class AdminGuard implements CanActivate {
 }
 
 async function validateRequest(
-  request: FastifyRequest<IncomingMessage>,
+  request: FastifyRequest,
 ): Promise<boolean> {
   const adminKey = request.headers["admin-key"];
 
