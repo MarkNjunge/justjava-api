@@ -10,13 +10,14 @@ import { config } from "./../Config";
 
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
-  async transform(value: any, { metatype }: ArgumentMetadata) {
+  // eslint-disable-next-line max-lines-per-function
+  async transform<T>(value: T, { metatype }: ArgumentMetadata): Promise<T> {
     // Account for an empty request body
-    if (value == null) {
-      value = {};
+    if (value === null) {
+      value = Object.assign({}, value);
     }
 
-    if (!metatype || !this.toValidate(metatype)) {
+    if (!metatype || !ValidationPipe.toValidate(metatype)) {
       return value;
     }
 
@@ -27,40 +28,43 @@ export class ValidationPipe implements PipeTransform<any> {
       forbidNonWhitelisted: config.validatorForbidUnknown,
     });
 
-    if (errors.length > 0) {
-      // Top-level errors
-      const topLevelErrors = errors
-        .filter(v => v.constraints)
-        .map(error => {
-          return {
-            property: error.property,
-            constraints: Object.values(error.constraints),
-          };
-        });
-
-      // Nested errors
-      const nestedErrors = [];
-      errors
-        .filter(v => !v.constraints)
-        .forEach(error => {
-          const validationErrors = this.getValidationErrorsFromChildren(
-            error.property,
-            error.children,
-          );
-          nestedErrors.push(...validationErrors);
-        });
-
-      throw new BadRequestException({
-        message: "Validation failed",
-        meta: topLevelErrors.concat(nestedErrors),
-      });
+    if (errors.length === 0) {
+      return value;
     }
 
-    return value;
+    // Top-level errors
+    const topLevelErrors = errors
+      // Top-level errors have the constraints here
+      .filter(v => v.constraints)
+      .map(error => ({
+        property: error.property,
+        constraints: Object.values(error.constraints),
+      }));
+
+    // Nested errors
+    const nestedErrors = [];
+    errors
+      // Nested errors do not have constraints here
+      .filter(v => !v.constraints)
+      .forEach(error => {
+        const validationErrors = this.getValidationErrorsFromChildren(
+          error.property,
+          error.children,
+        );
+        nestedErrors.push(...validationErrors);
+      });
+
+    const validationErrors = topLevelErrors.concat(nestedErrors);
+    const errorProperties = validationErrors.map(e => e.property).join(",");
+    throw new BadRequestException({
+      message: `Validation errors with properties [${errorProperties}]`,
+      meta: validationErrors,
+    });
   }
 
-  private toValidate(metatype: any): boolean {
+  private static toValidate(metatype: any): boolean {
     const types: Array<() => any> = [String, Boolean, Number, Array, Object];
+
     return !types.includes(metatype);
   }
 
