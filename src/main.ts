@@ -38,17 +38,17 @@ async function bootstrap() {
 
   intializeSwagger(app);
 
-  // await app.register(helmet, {
-  //   // A custom Content Security Policy config is required in order for swagger to work
-  //   contentSecurityPolicy: {
-  //     directives: {
-  //       defaultSrc: ["'self'"],
-  //       styleSrc: ["'self'", "'unsafe-inline'"],
-  //       imgSrc: ["'self'", "data:", "validator.swagger.io"],
-  //       scriptSrc: ["'self'", "https: 'unsafe-inline'"],
-  //     },
-  //   },
-  // });
+  await app.register(helmet, {
+    // A custom Content Security Policy config is required in order for swagger to work
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:", "validator.swagger.io"],
+        scriptSrc: ["'self'", "https: 'unsafe-inline'"],
+      },
+    },
+  });
 
   if (config.rateLimit.enabled === true) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
