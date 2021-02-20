@@ -1,8 +1,8 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import * as request from "supertest";
-import { AppModule } from "./../src/app.module";
+import { AppModule } from "../src/modules/app/app.module";
 import { INestApplication, HttpServer } from "@nestjs/common";
-import { AppService } from "../src/app/app.service";
+import { AppService } from "../src/modules/app/app.service";
 import {
   FastifyAdapter,
   NestFastifyApplication,

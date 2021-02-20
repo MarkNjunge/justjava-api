@@ -1,18 +1,18 @@
 import { NestFactory } from "@nestjs/core";
-import { CustomLogger, initializeWinston } from "./common/logging/CustomLogger";
-import { AppModule } from "./app.module";
-import { AllExceptionsFilter } from "./common/filters/all-exceptions-filter";
-import { LoggingInterceptor } from "./common/interceptors/logging.interceptor";
-import { ValidationPipe } from "./common/pipes/validation.pipe";
-import { config } from "./common/Config";
+import { CustomLogger, initializeWinston } from "./utils/logging/CustomLogger";
+import { AppModule } from "./modules/app/app.module";
+import { AllExceptionsFilter } from "./filters/all-exceptions-filter";
+import { LoggingInterceptor } from "./interceptors/logging.interceptor";
+import { ValidationPipe } from "./pipes/validation.pipe";
+import { config } from "./utils/Config";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { FastifyAdapter, NestFastifyApplication, } from "@nestjs/platform-fastify";
 import * as fastifyRateLimit from "fastify-rate-limit";
 import * as fileUpload from "fastify-file-upload";
-import { RedisService } from "./shared/redis/redis.service";
-import { NotificationsService } from "./shared/notifications/notifications.service";
-import { requestTimeMiddleware } from "./common/middleware/request-time.middleware";
-import { SetCookiesInterceptor } from "./common/interceptors/set-cookies.interceptor";
+import { RedisService } from "./modules/shared/redis/redis.service";
+import { NotificationsService } from "./modules/shared/notifications/notifications.service";
+import { requestTimeMiddleware } from "./middleware/request-time.middleware";
+import { SetCookiesInterceptor } from "./interceptors/set-cookies.interceptor";
 import { default as helmet } from "fastify-helmet";
 
 bootstrap().catch(e => console.error(e))
