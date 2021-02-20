@@ -68,14 +68,15 @@ export class OrderEntity {
     user: UserEntity,
     address: AddressEntity,
   ) {
-    const items = dto.items.map(i =>
-      OrderItemEntity.fromDto(i, products.filter(p => p.id === i.productId)[0]),
-    );
+    const items = dto.items
+      .map(i => OrderItemEntity.fromDto(i, products.filter(p => p.id === i.productId)[0]));
     const totalPrice = items.map(i => i.totalPrice).reduce((acc, c) => acc + c);
 
     const entity = new OrderEntity();
-    (entity.id = shortid.generate().toUpperCase().replace(/-|_/g, "")),
-      (entity.additionalComments = dto.additionalComments);
+    entity.id = shortid.generate()
+      .toUpperCase()
+      .replace(/-|_/g, "");
+    entity.additionalComments = dto.additionalComments;
     entity.totalPrice = totalPrice;
     entity.datePlaced = dayjs().unix();
     entity.status = OrderStatus.PENDING;

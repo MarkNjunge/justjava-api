@@ -44,9 +44,10 @@ export class OrdersService {
       return (this.ordersRepository.find({
         where: { user: userId },
       }) as unknown) as OrderDto;
-    } else {
-      return (this.ordersRepository.find() as unknown) as OrderDto;
     }
+
+    return (this.ordersRepository.find() as unknown) as OrderDto;
+
   }
 
   async getOrderById(session: SessionDto, id: string) {
@@ -66,6 +67,8 @@ export class OrdersService {
     }
   }
 
+  // TODO Shorten
+  // eslint-disable-next-line max-lines-per-function
   async verifyOrderItems(dto: VerifyOrderDto): Promise<OrderValidationError[]> {
     const errors: OrderValidationError[] = [];
 
@@ -81,7 +84,7 @@ export class OrdersService {
           item.productId,
           OrderValidationErrorModel.PRODUCT,
           OrderValidationErrorType.MISSING,
-          `Product does not exist`,
+          "Product does not exist",
         );
         errors.push(error);
         continue;
@@ -94,7 +97,7 @@ export class OrdersService {
           item.productId,
           OrderValidationErrorModel.PRODUCT,
           OrderValidationErrorType.PRICE_CHANGE,
-          `Product price has changed`,
+          "Product price has changed",
           product.price,
         );
         errors.push(error);
@@ -112,7 +115,7 @@ export class OrdersService {
             itemChoice.choiceId,
             OrderValidationErrorModel.CHOICE,
             OrderValidationErrorType.MISSING,
-            `Choice does not exist`,
+            "Choice does not exist",
           );
           errors.push(error);
           continue;
@@ -129,7 +132,7 @@ export class OrdersService {
             itemChoice.choiceId,
             OrderValidationErrorModel.OPTION,
             OrderValidationErrorType.MISSING,
-            `Option does not exist`,
+            "Option does not exist",
           );
           errors.push(error);
           continue;
@@ -142,7 +145,7 @@ export class OrdersService {
             itemChoice.choiceId,
             OrderValidationErrorModel.OPTION,
             OrderValidationErrorType.PRICE_CHANGE,
-            `Option price has changed`,
+            "Option price has changed",
             option.price,
           );
           errors.push(error);
@@ -158,11 +161,11 @@ export class OrdersService {
       where: { id: session.userId },
     });
     if (!user) {
-      throw new NotFoundException({ message: `User does not exist` });
+      throw new NotFoundException({ message: "User does not exist" });
     }
     const address = user.addresses.filter(a => a.id === dto.addressId)[0];
     if (!address) {
-      throw new NotFoundException({ messge: `Address does not exist` });
+      throw new NotFoundException({ messge: "Address does not exist" });
     }
 
     const productIds = dto.items.map(i => i.productId);
@@ -178,6 +181,8 @@ export class OrdersService {
     return (order as unknown) as OrderDto;
   }
 
+  // TODO Shorten
+  // eslint-disable-next-line max-lines-per-function
   async changePaymentMethod(
     session: SessionDto,
     id: string,
@@ -210,6 +215,7 @@ export class OrdersService {
       { id },
       { paymentMethod: dto.paymentMethod },
     );
+
     return { httpStatus: HttpStatus.OK, message: "Payment method updated" };
   }
 

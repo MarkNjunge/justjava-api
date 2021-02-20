@@ -6,7 +6,7 @@ import { LoggingInterceptor } from "./interceptors/logging.interceptor";
 import { ValidationPipe } from "./pipes/validation.pipe";
 import { config } from "./utils/Config";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
-import { FastifyAdapter, NestFastifyApplication, } from "@nestjs/platform-fastify";
+import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
 import * as fastifyRateLimit from "fastify-rate-limit";
 import * as fileUpload from "fastify-file-upload";
 import { RedisService } from "./modules/shared/redis/redis.service";
@@ -15,8 +15,11 @@ import { requestTimeMiddleware } from "./middleware/request-time.middleware";
 import { SetCookiesInterceptor } from "./interceptors/set-cookies.interceptor";
 import { default as helmet } from "fastify-helmet";
 
-bootstrap().catch(e => console.error(e))
+// eslint-disable-next-line no-console
+bootstrap().catch(e => console.error(e));
 
+// TODO Shorten
+// eslint-disable-next-line max-lines-per-function
 async function bootstrap() {
   initializeWinston();
   const logger = new CustomLogger("Application");
@@ -29,11 +32,13 @@ async function bootstrap() {
     AppModule,
     fastifyAdapter,
     {
-      logger: process.env.NODE_ENV === "production" ? false : logger,
+      logger: process.env.NODE_ENV === "production" ?
+        false :
+        logger,
     },
   );
 
-  await enablePlugins(app)
+  await enablePlugins(app);
   initializeSwagger(app);
 
   app.useGlobalFilters(new AllExceptionsFilter());
@@ -55,7 +60,7 @@ async function bootstrap() {
   });
 }
 
-async function enablePlugins(app: NestFastifyApplication){
+async function enablePlugins(app: NestFastifyApplication) {
   await app.register(helmet, {
     // A custom Content Security Policy config is required in order for swagger to work
     contentSecurityPolicy: {

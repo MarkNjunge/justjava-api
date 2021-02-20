@@ -12,6 +12,8 @@ export class DatadogTransport extends Transport {
     this.apiUrl = `https://http-intake.logs.datadoghq.com/v1/input?service=${config.datadog.service}&ddsource=${config.datadog.source}&host=${config.datadog.host}&ddtags=`;
   }
 
+  // TODO Shorten
+  // eslint-disable-next-line max-lines-per-function
   async log(info, callback) {
     setImmediate(() => {
       this.emit("logged", info);
@@ -34,7 +36,7 @@ export class DatadogTransport extends Transport {
 
       delete body.stacktrace;
     }
-    body = removeSensitiveParams(body)
+    body = removeSensitiveParams(body);
 
     await axios.default({
       method: "POST",

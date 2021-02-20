@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import { Injectable, NotFoundException } from "@nestjs/common";
 import * as cloudinary from "cloudinary";
 import { UploadImageDto } from "./dto/UploadImage.dto";

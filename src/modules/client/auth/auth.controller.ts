@@ -2,7 +2,6 @@ import {
   Controller,
   Post,
   Body,
-  Res,
   HttpCode,
   HttpStatus,
   Delete,
@@ -20,8 +19,6 @@ import {
   ApiSecurity,
 } from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
-import { FastifyReply } from "fastify";
-import { ServerResponse } from "http";
 import { LoginResponseDto } from "./dto/LoginResponse.dto";
 import { SignUpDto } from "./dto/SignUp.dto";
 import { ApiResponseDto } from "../../shared/dto/ApiResponse.dto";
@@ -47,7 +44,9 @@ export class AuthController {
   async signInGoogle(@Req() req, @Body() dto: LoginGoogleDto) {
     const response = await this.authService.signInGoogle(dto.idToken);
 
-    const sessionExpiry = dayjs().add(1, "year").unix();
+    const sessionExpiry = dayjs().add(1, "year")
+      .unix();
+    // eslint-disable-next-line max-len
     req._cookies = `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`;
 
     return response;
@@ -65,7 +64,9 @@ export class AuthController {
     dto.email = dto.email.toLowerCase();
     const response = await this.authService.signUp(dto);
 
-    const sessionExpiry = dayjs().add(1, "year").unix();
+    const sessionExpiry = dayjs().add(1, "year")
+      .unix();
+    // eslint-disable-next-line max-len
     req._cookies = `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`;
 
     return response;
@@ -88,7 +89,9 @@ export class AuthController {
     dto.email = dto.email.toLowerCase();
     const response = await this.authService.signIn(dto);
 
-    const sessionExpiry = dayjs().add(1, "year").unix();
+    const sessionExpiry = dayjs().add(1, "year")
+      .unix();
+    // eslint-disable-next-line max-len
     req._cookies = `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`;
 
     return response;

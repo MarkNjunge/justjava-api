@@ -5,7 +5,6 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import { Observable } from "rxjs";
-import { IncomingMessage } from "http";
 import { FastifyRequest } from "fastify";
 import { RedisService } from "../modules/shared/redis/redis.service";
 
@@ -19,6 +18,7 @@ export class AuthGuard implements CanActivate {
     const request: FastifyRequest = context
       .switchToHttp()
       .getRequest();
+
     return this.validateRequest(request);
   }
 

@@ -7,8 +7,9 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from "@nestjs/platform-fastify";
-import { initializeWinston } from "../src/common/logging/CustomLogger";
+import { initializeWinston } from "../src/utils/logging/CustomLogger";
 
+// eslint-disable-next-line max-lines-per-function
 describe("AppController (e2e)", () => {
   let app: INestApplication;
   const appService = {
@@ -21,7 +22,7 @@ describe("AppController (e2e)", () => {
     initializeWinston();
   });
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     })
@@ -35,16 +36,17 @@ describe("AppController (e2e)", () => {
     await app.init();
 
     // Wait for fastify
-    await app.getHttpAdapter().getInstance().ready();
+    await app.getHttpAdapter().getInstance()
+      .ready();
 
     server = app.getHttpServer();
   });
 
-  it("GET /", () => {
-    return request(server).get("/").expect(200).expect(appService.getHello());
-  });
+  it("GET /", () => request(server).get("/")
+    .expect(200)
+    .expect(appService.getHello()));
 
-  afterAll(async () => {
+  afterAll(async() => {
     await app.close();
   });
 });

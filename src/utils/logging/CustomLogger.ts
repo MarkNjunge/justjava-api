@@ -3,7 +3,6 @@ import * as winston from "winston";
 import * as dayjs from "dayjs";
 import { config } from "../Config";
 import { FastifyRequest, FastifyReply } from "fastify";
-import { IncomingMessage, ServerResponse } from "http";
 import { DatadogTransport } from "./DatadogTransport";
 
 export class CustomLogger implements LoggerService {
@@ -13,22 +12,29 @@ export class CustomLogger implements LoggerService {
     const tag = name || this.name;
     winston.info({ message: `[${tag}] ${message}`, data });
   }
+
   error(message: string, name?: string, data?: any) {
     const tag = name || this.name;
     winston.error({ message: `[${tag}] ${message}`, data });
   }
+
   warn(message: string, name?: string, data?: any) {
     const tag = name || this.name;
     winston.warn({ message: `[${tag}] ${message}`, data });
   }
+
   debug(message: string, name?: string, data?: any) {
     const tag = name || this.name;
     winston.debug({ message: `[${tag}] ${message}`, data });
   }
+
   verbose(message: string, name?: string, data?: any) {
     const tag = name || this.name;
     winston.verbose({ message: `[${tag}] ${message}`, data });
   }
+
+  // TODO Shorten
+  // eslint-disable-next-line max-lines-per-function
   logRoute(
     request: FastifyRequest,
     response: FastifyReply,
@@ -38,7 +44,7 @@ export class CustomLogger implements LoggerService {
     const method = request.method;
     const url = request.url;
     const tag = "ROUTE";
-    const requestTime = parseInt(request.headers["x-request-time"] as string)
+    const requestTime = parseInt(request.headers["x-request-time"] as string);
     const requestTimeISO = dayjs(requestTime).toISOString();
     const duration = dayjs().valueOf() - requestTime;
 
@@ -83,6 +89,7 @@ export function initializeWinston() {
   const myFormat = printf(({ level, message, logTimestamp }) => {
     const m = dayjs(logTimestamp);
     const formattedTimestamp = m.format(config.logging.timestampFormat);
+
     return `${formattedTimestamp} | ${level}: ${message}`;
   });
 

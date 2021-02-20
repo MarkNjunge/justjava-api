@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import {
   Injectable,
   InternalServerErrorException,
@@ -15,6 +14,8 @@ import { CheckCardDto } from "../card/dto/CheckCard.dto";
 
 @Injectable()
 export class RavepayService {
+  // TODO Shorten
+  // eslint-disable-next-line max-lines-per-function
   async checkCard(
     dto: CheckCardDto,
     amount: number,
@@ -50,24 +51,25 @@ export class RavepayService {
       }
 
       switch (response.data.data.suggested_auth) {
-        case "NOAUTH_INTERNATIONAL":
-          return "ADDRESS_VERIFICATION";
-        case "PIN":
-          // developer.flutterwave.com/v2.0/reference#section-using-a-local-mastercardverve-ie-card-issued-in-nigeria
-          throw new NotImplementedException({
-            message:
+      case "NOAUTH_INTERNATIONAL":
+        return "ADDRESS_VERIFICATION";
+      case "PIN":
+        throw new NotImplementedException({
+          message:
               "Unable to complete payment. Pin verification not implemented.",
-          });
-        default:
-          throw new NotImplementedException({
-            message: "Unable to complete payment. Unknown card type.",
-          });
+        });
+      default:
+        throw new NotImplementedException({
+          message: "Unable to complete payment. Unknown card type.",
+        });
       }
     } catch (e) {
       this.handleRequestError(e);
     }
   }
 
+  // TODO Shorten
+  // eslint-disable-next-line max-lines-per-function
   async initiateAddressPayment(
     dto: InitiatePaymentDto,
     amount: number,
@@ -140,6 +142,7 @@ export class RavepayService {
     return verificationResponse.data;
   }
 
+  // eslint-disable-next-line max-params
   private makeBaseBody(
     cardNumber: string,
     cvv: string,
@@ -150,6 +153,7 @@ export class RavepayService {
     user: UserDto,
   ) {
     const txRef = `ORDER-${orderId}-${dayjs().unix()}`;
+
     return {
       PBFPubKey: config.rave.publicKey,
       cardno: cardNumber,
@@ -174,6 +178,7 @@ export class RavepayService {
     cipher.update(forge.util.createBuffer(payload, "utf-8"));
     cipher.finish();
     const encrypted = cipher.output;
+
     return forge.util.encode64(encrypted.getBytes());
   }
 

@@ -6,7 +6,6 @@ import {
   HttpStatus,
 } from "@nestjs/common";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { ServerResponse, IncomingMessage } from "http";
 import { CustomLogger } from "../utils/logging/CustomLogger";
 import { ApiResponseDto } from "../modules/shared/dto/ApiResponse.dto";
 
@@ -28,9 +27,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     // Get the correct http status
     const status =
-      e instanceof HttpException
-        ? e.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR;
+      e instanceof HttpException ?
+        e.getStatus() :
+        HttpStatus.INTERNAL_SERVER_ERROR;
     response.statusCode = status;
     const message = e.message;
     const logMessage: ApiResponseDto = {

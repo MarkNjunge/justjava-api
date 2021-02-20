@@ -46,7 +46,7 @@ export class AuthService {
     const payload = await this.verifyToken(idToken);
     payload.email = payload.email.toLowerCase();
 
-    if (payload == null) {
+    if (payload === null) {
       throw new ForbiddenException({
         message: "Sign in with Google unsuccessful.",
         meta: { reason: "Decoding token failed." },
@@ -57,9 +57,10 @@ export class AuthService {
       where: { email: payload.email },
     });
 
-    const userDto = existing
-      ? ((existing as unknown) as UserDto)
-      : await this.createGoogleUser(payload);
+    // eslint-disable-next-line max-len
+    const userDto = existing ?
+      ((existing as unknown) as UserDto) :
+      await this.createGoogleUser(payload);
 
     const sessionDto = new SessionDto(
       userDto.id,
@@ -109,9 +110,9 @@ export class AuthService {
     });
     if (existing) {
       const msg =
-        existing.signInMethod === SignInMethod.GOOGLE
-          ? "Email aleady is use using Google Sign In."
-          : "Email aleady is use.";
+        existing.signInMethod === SignInMethod.GOOGLE ?
+          "Email aleady is use using Google Sign In." :
+          "Email aleady is use.";
 
       throw new ConflictException({ message: msg });
     }
@@ -184,6 +185,8 @@ export class AuthService {
     await this.redisService.deleteSession(session);
   }
 
+  // TODO Shorten
+  // eslint-disable-next-line max-lines-per-function
   async changePassword(
     session: SessionDto,
     dto: ChangePasswordDto,
@@ -225,6 +228,8 @@ export class AuthService {
     return { httpStatus: 200, message: "Password changed successfully" };
   }
 
+  // TODO Shorten
+  // eslint-disable-next-line max-lines-per-function
   async requestPasswordReset(
     dto: RequestResetPasswordDto,
   ): Promise<ApiResponseDto> {
@@ -236,6 +241,7 @@ export class AuthService {
     // Ensure user exists
     if (!user) {
       this.logger.debug(`There is no user with email ${dto.email}`);
+
       return {
         httpStatus: 200,
         message: "Password reset email sent",
@@ -245,6 +251,7 @@ export class AuthService {
     // Can't reset passwords for google sign in
     if (user.signInMethod === SignInMethod.GOOGLE) {
       this.logger.debug(`User with email ${dto.email} uses Google sign in`);
+
       return {
         httpStatus: 200,
         message: "Password reset email sent",
@@ -271,12 +278,13 @@ export class AuthService {
         httpStatus: 200,
         message: "Password reset email sent",
       } as ApiResponseDto;
-    } else {
-      return {
-        httpStatus: 200,
-        message: token,
-      } as ApiResponseDto;
     }
+
+    return {
+      httpStatus: 200,
+      message: token,
+    } as ApiResponseDto;
+
   }
 
   async resetPassword(dto: ResetPasswordDto) {

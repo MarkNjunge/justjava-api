@@ -10,7 +10,8 @@ import { config } from "../utils/Config";
 
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
-  // eslint-disable-next-line max-lines-per-function
+  // TODO Shorten
+// eslint-disable-next-line max-lines-per-function
   async transform<T>(value: T, { metatype }: ArgumentMetadata): Promise<T> {
     // Account for an empty request body
     if (value === null) {

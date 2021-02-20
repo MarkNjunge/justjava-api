@@ -5,7 +5,6 @@ import {
   ForbiddenException,
 } from "@nestjs/common";
 import { Observable } from "rxjs";
-import { IncomingMessage } from "http";
 import { FastifyRequest } from "fastify";
 import { config } from "../utils/Config";
 
@@ -17,6 +16,7 @@ export class AdminGuard implements CanActivate {
     const request: FastifyRequest = context
       .switchToHttp()
       .getRequest();
+
     return validateRequest(request);
   }
 }

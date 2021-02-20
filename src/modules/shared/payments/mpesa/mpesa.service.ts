@@ -34,6 +34,7 @@ export class MpesaService {
   private safaricomBaseUrl = "https://sandbox.safaricom.co.ke";
   private logger = new CustomLogger("MpesaService");
 
+  // eslint-disable-next-line max-params
   constructor(
     @InjectRepository(PaymentEntity)
     private readonly paymentsRepository: Repository<PaymentEntity>,
@@ -47,6 +48,8 @@ export class MpesaService {
     private readonly queueService: QueueService,
   ) {}
 
+  // TODO Shorten
+  // eslint-disable-next-line max-lines-per-function
   async request(
     session: SessionDto,
     dto: RequestMpesaDto,
@@ -104,7 +107,9 @@ export class MpesaService {
     } catch (e) {
       const error = {
         message: e.message,
-        responseMessage: e.response ? e.response.data.errorMessage : e.message,
+        responseMessage: e.response ?
+          e.response.data.errorMessage :
+          e.message,
       };
       throw new InternalServerErrorException({
         message: "Unable to initiate payment",
@@ -131,6 +136,8 @@ export class MpesaService {
     }
   }
 
+  // TODO Shorten
+  // eslint-disable-next-line max-lines-per-function
   async checkPaymentStatus(checkoutRequestId: string): Promise<boolean> {
     const authHeader = await this.getAuthorizationHeader();
     const shortcode = "174379";
@@ -188,6 +195,8 @@ export class MpesaService {
     }
   }
 
+  // TODO Shorten
+  // eslint-disable-next-line max-lines-per-function
   private async setPaymentCompleted(
     body,
     parsedBody: StkCallbackDto,
@@ -265,24 +274,25 @@ export class MpesaService {
 
     if (token) {
       return `Bearer ${token}`;
-    } else {
-      const key = Buffer.from(
-        `${config.mpesa.consumerKey}:${config.mpesa.consumerSecret}`,
-      ).toString("base64");
-      const authHeader = `Basic ${key}`;
-
-      const res = await axios.default.get(
-        `${this.safaricomBaseUrl}/oauth/v1/generate?grant_type=client_credentials`,
-        {
-          headers: {
-            Authorization: authHeader,
-          },
-        },
-      );
-
-      await this.redisService.saveMpesaAccessToken(res.data);
-      return this.getAuthorizationHeader();
     }
+    const key = Buffer.from(
+      `${config.mpesa.consumerKey}:${config.mpesa.consumerSecret}`,
+    ).toString("base64");
+    const authHeader = `Basic ${key}`;
+
+    const res = await axios.default.get(
+      `${this.safaricomBaseUrl}/oauth/v1/generate?grant_type=client_credentials`,
+      {
+        headers: {
+          Authorization: authHeader,
+        },
+      },
+    );
+
+    await this.redisService.saveMpesaAccessToken(res.data);
+
+    return this.getAuthorizationHeader();
+
   }
 
   private parseCallbackData(responseData): StkCallbackDto {
@@ -297,18 +307,18 @@ export class MpesaService {
     if (parsedData.resultCode === 0) {
       responseData.CallbackMetadata.Item.forEach(element => {
         switch (element.Name) {
-          case "Amount":
-            parsedData.amount = element.Value;
-            break;
-          case "MpesaReceiptNumber":
-            parsedData.mpesaReceiptNumber = element.Value;
-            break;
-          case "TransactionDate":
-            parsedData.transtactionDate = element.Value;
-            break;
-          case "PhoneNumber":
-            parsedData.phoneNumber = element.Value;
-            break;
+        case "Amount":
+          parsedData.amount = element.Value;
+          break;
+        case "MpesaReceiptNumber":
+          parsedData.mpesaReceiptNumber = element.Value;
+          break;
+        case "TransactionDate":
+          parsedData.transtactionDate = element.Value;
+          break;
+        case "PhoneNumber":
+          parsedData.phoneNumber = element.Value;
+          break;
         }
       });
     }

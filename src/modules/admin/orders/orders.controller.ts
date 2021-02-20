@@ -38,6 +38,7 @@ export class OrdersController {
     if (typeof userId === "object") {
       userId = undefined;
     }
+
     return this.ordersService.query(userId);
   }
 
@@ -49,6 +50,7 @@ export class OrdersController {
     @Body() dto: UpdateOrderStatusDto,
   ): Promise<ApiResponseDto> {
     await this.ordersService.updateOrderStatus(id, dto);
+
     return { httpStatus: 200, message: "Order status updated" };
   }
 

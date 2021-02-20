@@ -5,7 +5,6 @@ import {
   CallHandler,
 } from "@nestjs/common";
 import { Observable } from "rxjs";
-import { IncomingMessage, ServerResponse } from "http";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { tap } from "rxjs/operators";
 

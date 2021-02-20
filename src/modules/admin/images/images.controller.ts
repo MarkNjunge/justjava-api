@@ -37,6 +37,7 @@ export class ImagesController {
     const dto: UploadImageDto = req.body;
 
     const result = await this.imageService.upload(imageFile, dto);
+
     return {
       url: result.secure_url,
       publicId: result.public_id,

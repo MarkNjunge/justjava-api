@@ -41,6 +41,7 @@ export class ProductsService {
       });
     } else {
       const entity = ProductEntity.fromDto(dto);
+
       return this.productsRepository.save(entity);
     }
   }

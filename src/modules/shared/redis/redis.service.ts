@@ -21,6 +21,7 @@ export class RedisService {
     this.redis = new IoRedis(config.redis.url, {
       retryStrategy: times => {
         const delay = Math.min(times * 50, 2000);
+
         return delay;
       },
     });
@@ -70,9 +71,10 @@ export class RedisService {
 
     if (res) {
       return JSON.parse(res);
-    } else {
-      return null;
     }
+
+    return null;
+
   }
 
   async updateLastUseDate(session: SessionDto) {
@@ -117,9 +119,10 @@ export class RedisService {
 
     if (res) {
       return JSON.parse(res);
-    } else {
-      return null;
     }
+
+    return null;
+
   }
 
   async deletePasswordResetToken(token: string) {

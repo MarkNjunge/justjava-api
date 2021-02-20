@@ -69,7 +69,7 @@ export class QueueService {
   }
 
   async processMpesaPayments() {
-    this.mpesaPaymentsQueue.process(async (job, done) => {
+    this.mpesaPaymentsQueue.process(async(job, done) => {
       const checkoutRequestId = job.data.checkoutRequestId;
       const attempts = job.data.attempts;
 
@@ -80,6 +80,7 @@ export class QueueService {
           `Payment ${checkoutRequestId} has been checked ${attempts} times. Skipping...`,
         );
         done();
+
         return;
       }
 
@@ -89,6 +90,7 @@ export class QueueService {
 
       if (payment.status !== PaymentStatus.PENDING) {
         done();
+
         return;
       }
 

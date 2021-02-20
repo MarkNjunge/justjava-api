@@ -48,8 +48,7 @@ export class OrderItemEntity {
     dto: PlaceOrderItemDto,
     product: ProductEntity,
   ): OrderItemEntity {
-    const options = dto.options.map(o =>
-      OrderItemOptionsEntity.fromDto(o, product),
+    const options = dto.options.map(o => OrderItemOptionsEntity.fromDto(o, product),
     );
     const optionsTotalPrice = options
       .map(o => o.optionPrice)
@@ -61,9 +60,9 @@ export class OrderItemEntity {
     entity.productBasePrice = product.price;
     entity.totalPrice = (product.price + optionsTotalPrice) * dto.quantity;
     entity.quantity = dto.quantity;
-    entity.options = dto.options.map(o =>
-      OrderItemOptionsEntity.fromDto(o, product),
+    entity.options = dto.options.map(o => OrderItemOptionsEntity.fromDto(o, product),
     );
+
     return entity;
   }
 }

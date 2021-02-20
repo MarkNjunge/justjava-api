@@ -21,6 +21,7 @@ export class OrderValidationError {
   @ApiProperty({ nullable: true })
   newPrice?: number;
 
+  // eslint-disable-next-line max-params
   constructor(
     index: number,
     itemId: number,

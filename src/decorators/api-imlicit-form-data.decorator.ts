@@ -13,11 +13,14 @@ export const ApiImplicitFormData = (metadata: {
   type: any;
 }): MethodDecorator => {
   const param = {
-    name: isNil(metadata.name) ? initialMetadata.name : metadata.name,
+    name: isNil(metadata.name) ?
+      initialMetadata.name :
+      metadata.name,
     in: "formData",
     description: metadata.description || "",
     required: metadata.required || false,
     type: metadata.type,
   };
+
   return createParamDecorator(param, initialMetadata);
 };

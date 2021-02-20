@@ -46,6 +46,7 @@ export class UsersController {
   @ApiResponse({ status: 404, type: ApiResponseDto })
   async getCurrentUser(@Param("session") s) {
     const session = s as SessionDto;
+
     return this.usersService.getUserById(session.userId);
   }
 

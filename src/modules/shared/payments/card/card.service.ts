@@ -23,6 +23,7 @@ import { QueueService } from "../../queue/queue.service";
 export class CardService {
   private logger: CustomLogger;
 
+  // eslint-disable-next-line max-params
   constructor(
     @InjectRepository(PaymentEntity)
     private readonly paymentsRepository: Repository<PaymentEntity>,
@@ -67,6 +68,8 @@ export class CardService {
     return { httpStatus: 200, message: response };
   }
 
+  // TODO Shorten
+  // eslint-disable-next-line max-lines-per-function
   async initiateAddressPayment(session: SessionDto, dto: InitiatePaymentDto) {
     const user = await this.usersRepository.findOne({
       where: { id: session.userId },
