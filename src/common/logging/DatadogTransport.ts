@@ -1,6 +1,7 @@
 import * as axios from "axios";
 import * as Transport from "winston-transport";
 import { config } from "../Config";
+import { removeSensitiveParams } from "./remove-sensitive";
 
 export class DatadogTransport extends Transport {
   private apiUrl = "";
@@ -23,7 +24,7 @@ export class DatadogTransport extends Transport {
       level: info.level,
     };
 
-    if (info.data.stacktrace) {
+    if (info.data && info.data.stacktrace) {
       body = {
         ...body,
         error: {
@@ -33,6 +34,7 @@ export class DatadogTransport extends Transport {
 
       delete body.stacktrace;
     }
+    body = removeSensitiveParams(body)
 
     await axios.default({
       method: "POST",

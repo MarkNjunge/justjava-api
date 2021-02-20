@@ -5,34 +5,28 @@ import { config } from "../Config";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { IncomingMessage, ServerResponse } from "http";
 import { DatadogTransport } from "./DatadogTransport";
-import { removeSensitiveParams } from "./remove-sensitive";
 
 export class CustomLogger implements LoggerService {
   constructor(private readonly name: string = "Application") {}
 
   log(message: string, name?: string, data?: any) {
     const tag = name || this.name;
-    data = removeSensitiveParams({ ...data, tag });
     winston.info({ message: `[${tag}] ${message}`, data });
   }
   error(message: string, name?: string, data?: any) {
     const tag = name || this.name;
-    data = removeSensitiveParams({ ...data, tag });
     winston.error({ message: `[${tag}] ${message}`, data });
   }
   warn(message: string, name?: string, data?: any) {
     const tag = name || this.name;
-    data = removeSensitiveParams({ ...data, tag });
     winston.warn({ message: `[${tag}] ${message}`, data });
   }
   debug(message: string, name?: string, data?: any) {
     const tag = name || this.name;
-    data = removeSensitiveParams({ ...data, tag });
     winston.debug({ message: `[${tag}] ${message}`, data });
   }
   verbose(message: string, name?: string, data?: any) {
     const tag = name || this.name;
-    data = removeSensitiveParams({ ...data, tag });
     winston.verbose({ message: `[${tag}] ${message}`, data });
   }
   logRoute(
@@ -55,12 +49,14 @@ export class CustomLogger implements LoggerService {
         method,
         requestTime: requestTimeISO,
         ip: request.headers["x-forwarded-for"] || request.ip,
+        headers: request.headers,
         query: Object.assign({}, request.query),
         body: Object.assign({}, request.body),
       },
       response: {
         duration,
         statusCode,
+        headers: response.getHeaders(),
         body: responseBody,
       },
     };
@@ -74,7 +70,6 @@ export class CustomLogger implements LoggerService {
         userId: request.params.session.userId,
       };
     }
-    data = removeSensitiveParams(data);
 
     const message = `${method} ${url} - ${statusCode} - ${duration}ms`;
 
@@ -101,15 +96,7 @@ export function initializeWinston() {
     ],
   });
 
-  // Handle dokku setting environment variable as string instead of boolean
-  let datadogEnabled: boolean;
-  if (typeof config.datadog.enabled === "string") {
-    datadogEnabled = config.datadog.enabled === "true" ? true : false;
-  } else if (typeof config.datadog.enabled === "boolean") {
-    datadogEnabled = config.datadog.enabled;
-  }
-
-  if (datadogEnabled === true) {
+  if (Boolean(config.datadog.enabled) === true) {
     winston.add(new DatadogTransport({}));
   }
 }
