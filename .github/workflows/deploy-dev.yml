@@ -17,6 +17,6 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H '178.128.46.40' >> ~/.ssh/known_hosts
+          ssh-keyscan -H '${{ secrets.HOST }}' >> ~/.ssh/known_hosts
       - name: Deploy
-        run: git push dokku@178.128.46.40:dev-justjava develop:master
+        run: git push dokku@${{ secrets.HOST }}:dev-justjava develop:master
