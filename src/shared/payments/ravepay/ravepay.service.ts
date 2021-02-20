@@ -10,7 +10,7 @@ import * as forge from "node-forge";
 import { config } from "../../../common/Config";
 import { InitiatePaymentDto } from "../../../shared/payments/card/dto/InitiatePayment.dto";
 import { UserDto } from "../../../shared/users/dto/User.dto";
-import * as moment from "moment";
+import * as dayjs from "dayjs";
 import { CheckCardDto } from "../card/dto/CheckCard.dto";
 
 @Injectable()
@@ -149,7 +149,7 @@ export class RavepayService {
     amount: number,
     user: UserDto,
   ) {
-    const txRef = `ORDER-${orderId}-${moment().unix()}`;
+    const txRef = `ORDER-${orderId}-${dayjs().unix()}`;
     return {
       PBFPubKey: config.rave.publicKey,
       cardno: cardNumber,

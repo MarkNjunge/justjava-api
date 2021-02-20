@@ -12,7 +12,7 @@ import { Repository } from "typeorm";
 import { RedisService } from "../../redis/redis.service";
 import { config } from "../../../common/Config";
 import * as axios from "axios";
-import * as moment from "moment";
+import * as dayjs from "dayjs";
 import { RequestMpesaDto } from "./dto/RequestMpesa.dto";
 import { SessionDto } from "../../../client/auth/dto/Session.dto";
 import { OrderEntity } from "../../orders/entities/Order.entity";
@@ -57,7 +57,7 @@ export class MpesaService {
     }
 
     const authHeader = await this.getAuthorizationHeader();
-    const timestamp = moment().format("YYYYMMDDHHmmss");
+    const timestamp = dayjs().format("YYYYMMDDHHmmss");
     const shortcode = "174379";
     const passKey =
       "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
@@ -94,7 +94,7 @@ export class MpesaService {
       payment.status = PaymentStatus.PENDING;
       payment.amount = order.totalPrice;
       payment.transactionRef = res.data.CheckoutRequestID;
-      payment.dateCreated = moment().unix();
+      payment.dateCreated = dayjs().unix();
 
       await this.paymentsRepository.save(payment);
 
@@ -134,7 +134,7 @@ export class MpesaService {
   async checkPaymentStatus(checkoutRequestId: string): Promise<boolean> {
     const authHeader = await this.getAuthorizationHeader();
     const shortcode = "174379";
-    const timestamp = moment().format("YYYYMMDDHHmmss");
+    const timestamp = dayjs().format("YYYYMMDDHHmmss");
     const passKey =
       "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
     const password = Buffer.from(`${shortcode}${passKey}${timestamp}`).toString(
@@ -203,7 +203,7 @@ export class MpesaService {
       paymentResult: parsedBody.resultDesc,
       paymentRef: parsedBody.mpesaReceiptNumber,
       payerRef: parsedBody.phoneNumber,
-      dateUpdated: moment().unix(),
+      dateUpdated: dayjs().unix(),
       rawResult: JSON.stringify(body),
     };
     await this.paymentsRepository.update(
@@ -244,7 +244,7 @@ export class MpesaService {
     const updated = {
       status: PaymentStatus.CANCELLED,
       paymentResult: parsedBody.resultDesc,
-      dateUpdated: moment().unix(),
+      dateUpdated: dayjs().unix(),
     };
     await this.paymentsRepository.update(
       { transactionRef: parsedBody.checkoutRequestId },

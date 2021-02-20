@@ -20,7 +20,7 @@ import { LoginResponseDto } from "./dto/LoginResponse.dto";
 import { SignUpDto } from "./dto/SignUp.dto";
 import { PasswordHash } from "../../common/PasswordHash";
 import { SignInDto } from "./dto/SignIn.dto";
-import * as moment from "moment";
+import * as dayjs from "dayjs";
 import { ChangePasswordDto } from "./dto/ChangePassword.dto";
 import { ApiResponseDto } from "../../common/dto/ApiResponse.dto";
 import { EmailService } from "../../shared/email/email.service";
@@ -64,7 +64,7 @@ export class AuthService {
     const sessionDto = new SessionDto(
       userDto.id,
       this.generateSession(),
-      moment().unix(),
+      dayjs().unix(),
     );
     await this.redisService.saveSession(sessionDto);
 
@@ -92,7 +92,7 @@ export class AuthService {
     user.lastName = payload.lastName;
     user.email = payload.email;
     user.signInMethod = SignInMethod.GOOGLE;
-    user.createdAt = moment().unix();
+    user.createdAt = dayjs().unix();
 
     const saved = await this.usersRepository.save(user);
     delete saved.password;
@@ -124,7 +124,7 @@ export class AuthService {
     user.mobileNumber = dto.mobileNumber;
     user.password = PasswordHash.hash(dto.password);
     user.signInMethod = SignInMethod.PASSWORD;
-    user.createdAt = moment().unix();
+    user.createdAt = dayjs().unix();
 
     // Save entity and remove password from object
     const saved = await this.usersRepository.save(user);
@@ -135,7 +135,7 @@ export class AuthService {
     const sessionDto = new SessionDto(
       saved.id,
       this.generateSession(),
-      moment().unix(),
+      dayjs().unix(),
     );
     await this.redisService.saveSession(sessionDto);
 
@@ -173,7 +173,7 @@ export class AuthService {
     const sessionDto = new SessionDto(
       user.id,
       this.generateSession(),
-      moment().unix(),
+      dayjs().unix(),
     );
     await this.redisService.saveSession(sessionDto);
 

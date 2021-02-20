@@ -8,7 +8,7 @@ import {
 } from "typeorm";
 import { ProductChoiceEntity } from "./ProductChoice.entity";
 import { CreateProductDto } from "../dto/CreateProduct.dto";
-import * as moment from "moment";
+import * as dayjs from "dayjs";
 
 @Entity({ name: "products" })
 export class ProductEntity {
@@ -55,7 +55,7 @@ export class ProductEntity {
     product.image = dto.image;
     product.type = dto.type;
     product.status = dto.status;
-    product.createdAt = moment().unix();
+    product.createdAt = dayjs().unix();
     product.choices = dto.choices.map(c => ProductChoiceEntity.fromDto(c));
 
     return product;

@@ -1,6 +1,6 @@
 import { LoggerService } from "@nestjs/common";
 import * as winston from "winston";
-import * as moment from "moment";
+import * as dayjs from "dayjs";
 import { config } from "../Config";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { IncomingMessage, ServerResponse } from "http";
@@ -44,9 +44,9 @@ export class CustomLogger implements LoggerService {
     const method = request.method;
     const url = request.url;
     const tag = "ROUTE";
-    const requestTime = request.headers["x-request-time"];
-    const requestTimeISO = moment(requestTime).toISOString();
-    const duration = Date.now() - parseInt(requestTime as string);
+    const requestTime = parseInt(request.headers["x-request-time"] as string)
+    const requestTimeISO = dayjs(requestTime).toISOString();
+    const duration = dayjs().valueOf() - requestTime;
 
     let data: any = {
       tag,
@@ -86,7 +86,7 @@ export function initializeWinston() {
   const { combine, timestamp, printf, colorize } = winston.format;
 
   const myFormat = printf(({ level, message, logTimestamp }) => {
-    const m = moment(logTimestamp);
+    const m = dayjs(logTimestamp);
     const formattedTimestamp = m.format(config.logging.timestampFormat);
     return `${formattedTimestamp} | ${level}: ${message}`;
   });

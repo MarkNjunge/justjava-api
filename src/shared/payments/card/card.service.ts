@@ -6,7 +6,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { PaymentEntity } from "../entities/Payment.entity";
 import { Repository } from "typeorm";
 import { OrderEntity } from "../../../shared/orders/entities/Order.entity";
-import * as moment from "moment";
+import * as dayjs from "dayjs";
 import { RavepayService } from "../ravepay/ravepay.service";
 import { PaymentMethod } from "../models/PaymentMethod";
 import { PaymentStatus } from "../models/PaymentStatus";
@@ -98,7 +98,7 @@ export class CardService {
     payment.status = PaymentStatus.PENDING;
     payment.amount = order.totalPrice;
     payment.transactionRef = flwRef;
-    payment.dateCreated = moment().unix();
+    payment.dateCreated = dayjs().unix();
     await this.paymentsRepository.save(payment);
     this.logger.debug(`Saved pending payment for order ${dto.orderId}`);
 
@@ -114,7 +114,7 @@ export class CardService {
       paymentResult: verificationResponse.message,
       paymentRef: flwRef,
       payerRef: verificationResponse.data.tx.customer.email,
-      dateUpdated: moment().unix(),
+      dateUpdated: dayjs().unix(),
       rawResult: JSON.stringify(verificationResponse),
     };
     await this.paymentsRepository.update({ transactionRef: flwRef }, updated);

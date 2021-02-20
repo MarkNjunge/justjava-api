@@ -26,7 +26,7 @@ import { LoginResponseDto } from "./dto/LoginResponse.dto";
 import { SignUpDto } from "./dto/SignUp.dto";
 import { ApiResponseDto } from "../../common/dto/ApiResponse.dto";
 import { SignInDto } from "./dto/SignIn.dto";
-import * as moment from "moment";
+import * as dayjs from "dayjs";
 import { AuthGuard } from "../../common/guards/auth.guard";
 import { ChangePasswordDto } from "./dto/ChangePassword.dto";
 import { RequestResetPasswordDto } from "./dto/RequestResetPassword.dto";
@@ -47,7 +47,7 @@ export class AuthController {
   async signInGoogle(@Req() req, @Body() dto: LoginGoogleDto) {
     const response = await this.authService.signInGoogle(dto.idToken);
 
-    const sessionExpiry = moment().add(1, "year").unix();
+    const sessionExpiry = dayjs().add(1, "year").unix();
     req._cookies = `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`;
 
     return response;
@@ -65,7 +65,7 @@ export class AuthController {
     dto.email = dto.email.toLowerCase();
     const response = await this.authService.signUp(dto);
 
-    const sessionExpiry = moment().add(1, "year").unix();
+    const sessionExpiry = dayjs().add(1, "year").unix();
     req._cookies = `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`;
 
     return response;
@@ -88,7 +88,7 @@ export class AuthController {
     dto.email = dto.email.toLowerCase();
     const response = await this.authService.signIn(dto);
 
-    const sessionExpiry = moment().add(1, "year").unix();
+    const sessionExpiry = dayjs().add(1, "year").unix();
     req._cookies = `session-id=${response.session.sessionId}; Expires=${sessionExpiry}; HttpOnly; path=/`;
 
     return response;

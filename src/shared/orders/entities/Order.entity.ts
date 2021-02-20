@@ -14,7 +14,7 @@ import { PlaceOrderDto } from "../dto/PlaceOrder.dto";
 import { OrderStatus } from "../models/OrderStatus";
 import { OrderPaymentStatus } from "../models/OrderPaymentStatus";
 import { ProductEntity } from "../../products/entities/Product.entity";
-import * as moment from "moment";
+import * as dayjs from "dayjs";
 import * as shortid from "shortid";
 
 @Entity({ name: "orders" })
@@ -77,7 +77,7 @@ export class OrderEntity {
     (entity.id = shortid.generate().toUpperCase().replace(/-|_/g, "")),
       (entity.additionalComments = dto.additionalComments);
     entity.totalPrice = totalPrice;
-    entity.datePlaced = moment().unix();
+    entity.datePlaced = dayjs().unix();
     entity.status = OrderStatus.PENDING;
     entity.paymentMethod = dto.paymentMethod;
     entity.paymentStatus = OrderPaymentStatus.UNPAID;
