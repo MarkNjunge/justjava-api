@@ -41,6 +41,7 @@
     "config": "^3.3.3",
     "dotenv": "^8.2.0",
     "fastify-file-upload": "^3.0.0",
+    "fastify-helmet": "^5.2.0",
     "fastify-rate-limit": "^5.2.0",
     "fastify-swagger": "^4.3.1",
     "firebase-admin": "^9.5.0",

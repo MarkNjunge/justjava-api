@@ -3935,6 +3935,14 @@ fastify-formbody@5.0.0:
   dependencies:
     fastify-plugin "^2.3.2"
 
+fastify-helmet@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/fastify-helmet/-/fastify-helmet-5.2.0.tgz#b79a9c97da94a743d478dd3133f9a84693e3188f"
+  integrity sha512-LI4CTeKmXtCRjklsuz0rP4mNDlJOO990s79ZF9tw4vc2JrHzJT3f4mX5zj7QBGBRj9yBHdKyPEBp1RRqx0uDjA==
+  dependencies:
+    fastify-plugin "^3.0.0"
+    helmet "^4.0.0"
+
 fastify-plugin@^2.0.0, fastify-plugin@^2.3.2:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/fastify-plugin/-/fastify-plugin-2.3.4.tgz#b17abdc36a97877d88101fb86ad8a07f2c07de87"
@@ -4716,6 +4724,11 @@ hash-stream-validation@^0.2.2:
   integrity sha512-cMlva5CxWZOrlS/cY0C+9qAzesn5srhFA8IT1VPiHc9bWWBLkJfEUIZr7MWoi89oOOGmpg8ymchaOjiArsGu5A==
   dependencies:
     through2 "^2.0.0"
+
+helmet@^4.0.0:
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/helmet/-/helmet-4.4.1.tgz#a17e1444d81d7a83ddc6e6f9bc6e2055b994efe7"
+  integrity sha512-G8tp0wUMI7i8wkMk2xLcEvESg5PiCitFMYgGRc/PwULB0RVhTP5GFdxOwvJwp9XVha8CuS8mnhmE8I/8dx/pbw==
 
 highlight.js@^10.0.0:
   version "10.6.0"
