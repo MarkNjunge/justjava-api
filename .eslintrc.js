@@ -8,8 +8,7 @@ module.exports = {
   extends: [
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "prettier/@typescript-eslint",
+    "@marknjunge/eslint-config",
   ],
   root: true,
   env: {
@@ -17,7 +16,6 @@ module.exports = {
     jest: true,
   },
   rules: {
-    "arrow-parens": "off",
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",
@@ -25,5 +23,9 @@ module.exports = {
       "error",
       { functions: false, classes: false },
     ],
+    "new-cap": "off",
+    "no-empty-function": ["error", { allow: ["constructors"] }],
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "no-unused-vars": "off"
   },
 };

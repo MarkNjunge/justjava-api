@@ -1,16 +1,18 @@
 # Builder image
-FROM node:12.14.1-alpine3.9 as builder
+FROM node:14.15.3-alpine3.12 as builder
 
 WORKDIR /app
 
 COPY . .
 
-RUN yarn install
+RUN npm install
 
-RUN yarn build
+RUN npm run build
+
+RUN npm prune --production
 
 # Final image
-FROM node:12.14.1-alpine3.9
+FROM node:14.15.3-alpine3.12
 
 WORKDIR /app
 
