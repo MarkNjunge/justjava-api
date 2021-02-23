@@ -1,3 +1,10 @@
+# 1.4.0
+
+- Add [helmet](https://helmetjs.github.io/).
+- Fix logging request data
+- Change validation response format
+- Set to Node 14.15.3
+
 # 1.3.0
 
 - Fix logging request/response bodies while removing sensitive parameters.
