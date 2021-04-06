@@ -25,7 +25,7 @@ async function bootstrap() {
   const logger = new CustomLogger("Application");
   logger.log("****** Starting API ******");
 
-  const fastifyAdapter = new FastifyAdapter();
+  const fastifyAdapter = new FastifyAdapter({ trustProxy: true });
   fastifyAdapter.register(fileUpload);
 
   const app = await NestFactory.create<NestFastifyApplication>(
