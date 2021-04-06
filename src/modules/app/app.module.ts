@@ -18,7 +18,13 @@ import * as path from "path";
       migrationsRun: true,
       synchronize: false,
       extra: {
-        ssl: config.db.ssl,
+        ssl: {
+          require: config.db.ssl,
+          // This accepts a self signed certificate
+          // See node-postgres docs for how to verify
+          // https://node-postgres.com/features/ssl
+          rejectUnauthorized: false,
+        },
       },
       keepConnectionAlive: true,
     }),
