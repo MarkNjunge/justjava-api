@@ -54,7 +54,7 @@ export class CustomLogger implements LoggerService {
         url,
         method,
         requestTime: requestTimeISO,
-        ip: request.headers["x-forwarded-for"] || request.ip,
+        ip: request.headers["x-real-ip"] || request.ip,
         headers: request.headers,
         query: Object.assign({}, request.query),
         body: Object.assign({}, request.body),
