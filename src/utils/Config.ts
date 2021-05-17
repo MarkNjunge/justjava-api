@@ -51,6 +51,8 @@ interface Google {
   clientId: string;
   serviceAccountKeyUrl: string;
   databaseURL: string;
+  projectId: string;
+  imagesBucketName: string;
 }
 
 interface Redis {

@@ -7,11 +7,6 @@
     "timeWindow": "RATE_LIMIT_TIME_WINDOW"
   },
   "adminKey": "ADMIN_KEY",
-  "cloudinary": {
-    "cloudName": "CLOUDINARY_CLOUD_NAME",
-    "apiKey": "CLOUDINARY_API_KEY",
-    "apiSecret": "CLOUDINARY_API_SECRET"
-  },
   "db": {
     "url": "DB_URL",
     "ssl": "DB_SSL"
@@ -19,7 +14,9 @@
   "google": {
     "clientId": "GOOGLE_CLIENT_ID",
     "serviceAccountKeyUrl": "SERVICE_ACCOUNT_KEY_URL",
-    "databaseURL": "FIREBASE_DATABASE_URL"
+    "databaseURL": "FIREBASE_DATABASE_URL",
+    "projectId": "GOOGLE_PROJECT_ID",
+    "imagesBucketName": "IMAGES_BUCKET_NAME"
   },
   "redis": {
     "url": "REDIS_URL"

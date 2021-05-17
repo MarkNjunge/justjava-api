@@ -1,5 +1,4 @@
 import { Injectable } from "@nestjs/common";
-import * as axios from "axios";
 import { config } from "../../../utils/Config";
 import * as admin from "firebase-admin";
 import { CustomLogger } from "../../../utils/logging/CustomLogger";
@@ -8,6 +7,8 @@ import { UserEntity } from "../users/entities/User.entity";
 import { NotificationEntity } from "./entity/Notification.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
+import * as path from "path";
+import * as fs from "fs";
 
 @Injectable()
 export class NotificationsService {
@@ -22,9 +23,14 @@ export class NotificationsService {
 
   async connect() {
     try {
-      const res = await axios.default.get(config.google.serviceAccountKeyUrl);
+      const serviceAccountKeyPath = path.resolve("./service-account-key.json");
+      if (!fs.existsSync(serviceAccountKeyPath)) {
+        throw new Error(`Service account file was expected at '${serviceAccountKeyPath} but was not found`);
+      }
+
+      const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountKeyPath).toString());
       admin.initializeApp({
-        credential: admin.credential.cert(res.data),
+        credential: admin.credential.cert(serviceAccount),
         databaseURL: config.google.databaseURL,
       });
     } catch (e) {

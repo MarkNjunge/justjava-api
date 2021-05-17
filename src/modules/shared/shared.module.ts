@@ -16,6 +16,7 @@ import { PaymentEntity } from "./payments/entities/Payment.entity";
 import { NotificationsService } from "./notifications/notifications.service";
 import { NotificationEntity } from "./notifications/entity/Notification.entity";
 import { QueueService } from "./queue/queue.service";
+import { FilesService } from "./files/files.service";
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { QueueService } from "./queue/queue.service";
     RavepayService,
     NotificationsService,
     QueueService,
+    FilesService,
   ],
   exports: [
     ProductsService,
@@ -51,6 +53,7 @@ import { QueueService } from "./queue/queue.service";
     RavepayService,
     NotificationsService,
     QueueService,
+    FilesService,
   ],
 })
 export class SharedModule {}

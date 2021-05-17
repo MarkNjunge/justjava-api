@@ -33,11 +33,6 @@
     "replacementString": "REDACTED"
   },
   "adminKey": "admin_key",
-  "cloudinary": {
-    "cloudName": "cloudinary_cloud_name",
-    "apiKey": "cloudinary_api_key",
-    "apiSecret": "cloudinary_api_secret"
-  },
   "db": {
     "url": "postgres://username:password@host:port/database",
     "ssl": false
@@ -45,7 +40,9 @@
   "google": {
     "clientId": "google_client_id",
     "serviceAccountKeyUrl": "service_account_key_url.json",
-    "databaseURL": "https://your-project.firebaseio.com"
+    "databaseURL": "https://your-project.firebaseio.com",
+    "projectId": "project_id",
+    "imagesBucketName": "images.justjava.store"
   },
   "redis": {
     "url": "redis://:password@host:port/0"

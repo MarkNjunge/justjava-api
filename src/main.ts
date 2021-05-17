@@ -8,12 +8,16 @@ import { config } from "./utils/Config";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
 import * as fastifyRateLimit from "fastify-rate-limit";
-import * as fileUpload from "fastify-file-upload";
 import { RedisService } from "./modules/shared/redis/redis.service";
 import { NotificationsService } from "./modules/shared/notifications/notifications.service";
 import { requestTimeMiddleware } from "./middleware/request-time.middleware";
 import { SetCookiesInterceptor } from "./interceptors/set-cookies.interceptor";
 import { default as helmet } from "fastify-helmet";
+import * as axios from "axios";
+import * as fs from "fs";
+import * as path from "path";
+import { FilesService } from "./modules/shared/files/files.service";
+import * as fastifyMultipart from "fastify-multipart";
 
 // eslint-disable-next-line no-console
 bootstrap().catch(e => console.error(e));
@@ -25,8 +29,9 @@ async function bootstrap() {
   const logger = new CustomLogger("Application");
   logger.log("****** Starting API ******");
 
+  await downloadServiceAccountKey(logger);
+
   const fastifyAdapter = new FastifyAdapter({ trustProxy: true });
-  fastifyAdapter.register(fileUpload);
 
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
@@ -37,6 +42,7 @@ async function bootstrap() {
         logger,
     },
   );
+  await app.register(fastifyMultipart.default, { attachFieldsToBody: true });
 
   await enablePlugins(app);
   initializeSwagger(app);
@@ -55,9 +61,25 @@ async function bootstrap() {
   );
   await notifications.connect();
 
+  const filesService = await app.get<FilesService>(FilesService);
+  await filesService.connect();
+
   await app.listen(config.port, "0.0.0.0").then(() => {
     logger.log(`App running at http://127.0.0.1:${config.port}`);
   });
+}
+
+async function downloadServiceAccountKey(logger: CustomLogger) {
+  const serviceAccountKeyPath = path.resolve("./service-account-key.json");
+  if (fs.existsSync(serviceAccountKeyPath)) {
+    logger.log("Service account key already downloaded");
+
+    return;
+  }
+  logger.log("Downloading service account key");
+  const res = await axios.default.get(config.google.serviceAccountKeyUrl);
+  fs.writeFileSync(serviceAccountKeyPath, JSON.stringify(res.data));
+  logger.log(`Downloaded service account key to '${serviceAccountKeyPath}'`);
 }
 
 async function enablePlugins(app: NestFastifyApplication) {

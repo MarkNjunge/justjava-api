@@ -1,4 +1,4 @@
-import { Controller, Post, Req, Get, Param, UseGuards } from "@nestjs/common";
+import { Controller, Post, Req, Get, UseGuards, BadRequestException } from "@nestjs/common";
 import {
   ApiOperation,
   ApiConsumes,
@@ -6,11 +6,16 @@ import {
   ApiTags,
   ApiSecurity,
 } from "@nestjs/swagger";
-import { UploadImageDto } from "./dto/UploadImage.dto";
 import { ApiImplicitFormData } from "../../../decorators/api-imlicit-form-data.decorator";
 import { ImagesService } from "./images.service";
-import { CloudinaryInfoDto } from "./dto/CloudinaryInfo.dto";
 import { AdminGuard } from "../../../guards/admin.guard";
+import { plainToClass } from "class-transformer";
+import { validate } from "class-validator";
+import { config } from "../../../utils/Config";
+import { UploadImageDto } from "./dto/UploadImage.dto";
+import UploadImageResponseDto from "./dto/UploadImageResponse.dto";
+import { ClassConstructor } from "class-transformer/types/interfaces";
+import StoredFileDto from "../../shared/files/dto/StoredFile.dto";
 
 @Controller("admin/images")
 @ApiTags("images")
@@ -20,44 +25,77 @@ export class ImagesController {
   constructor(private readonly imageService: ImagesService) {}
 
   @Post("/upload")
-  @ApiOperation({ summary: "Upload an image to Cloudinary" })
+  @ApiOperation({ summary: "Upload an image" })
   @ApiConsumes("multipart/form-data")
   @ApiImplicitFormData({ name: "name", required: true, type: String })
-  @ApiImplicitFormData({
-    name: "tags",
-    required: true,
-    description: "Comma separated",
-    type: String,
-  })
-  @ApiImplicitFormData({ name: "folder", required: false, type: String })
+  @ApiImplicitFormData({ name: "path", required: true, type: String })
   @ApiImplicitFormData({ name: "image", required: true, type: "file" })
-  @ApiResponse({ status: 201, type: CloudinaryInfoDto })
-  async upload(@Req() req): Promise<CloudinaryInfoDto> {
-    const imageFile = req.raw.files.image;
-    const dto: UploadImageDto = req.body;
+  @ApiResponse({ status: 201, type: UploadImageResponseDto })
+  async upload(@Req() req): Promise<UploadImageResponseDto> {
+    const dto = await this.parseFileBody<UploadImageDto>(req);
 
-    const result = await this.imageService.upload(imageFile, dto);
+    await this.validateOrThrow(UploadImageDto, dto);
 
-    return {
-      url: result.secure_url,
-      publicId: result.public_id,
-      tags: result.tags,
-    };
+    const publicUrl = await this.imageService.upload(dto);
+
+    return { publicUrl };
   }
 
   @Get("/")
-  @ApiOperation({ summary: "Get all images on Cloudinary" })
-  @ApiResponse({ status: 201, type: CloudinaryInfoDto, isArray: true })
-  async getAllResource(): Promise<CloudinaryInfoDto[]> {
+  @ApiOperation({ summary: "Get all images uploaded" })
+  @ApiResponse({ status: 201, type: StoredFileDto, isArray: true })
+  async getAllResource(): Promise<StoredFileDto[]> {
     return this.imageService.getAllResources();
   }
 
-  @Get("/:publicId")
-  @ApiOperation({ summary: "Get a specific image on Cloudinary" })
-  @ApiResponse({ status: 201, type: CloudinaryInfoDto })
-  async getResourceByPublicId(
-    @Param("publicId") publicId: string,
-  ): Promise<CloudinaryInfoDto> {
-    return this.imageService.getResourceByPublicId(publicId);
+  async parseFileBody<T>(req): Promise<T> {
+    const body = {};
+    for (const key of Object.keys(req.body)) {
+      const field = req.body[key];
+
+      if (field.mimetype) {
+        delete field.fields;
+        if (field.mimetype) {
+          const buffer = await field.toBuffer();
+
+          body[key] = {
+            filename: field.filename,
+            mimetype: field.mimetype,
+            size: buffer.length,
+            buffer,
+          };
+        }
+      } else {
+        body[key] = field.value;
+      }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return body;
+  }
+
+  async validateOrThrow<T>(cls: ClassConstructor<T>, dto) {
+    const object = plainToClass(cls, dto);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const validationErrors = await validate(object, {
+      forbidUnknownValues: config.validatorForbidUnknown,
+      whitelist: config.validatorForbidUnknown,
+      forbidNonWhitelisted: config.validatorForbidUnknown,
+    });
+
+    const errors = validationErrors.map(error => ({
+      property: error.property,
+      constraints: Object.values(error.constraints),
+    }));
+
+    if (errors.length > 0) {
+      const errorProperties = errors.map(e => e.property).join(",");
+      throw new BadRequestException({
+        message: `Validation errors with properties [${errorProperties}]`,
+        meta: errors,
+      });
+    }
   }
 }
