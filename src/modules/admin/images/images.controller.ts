@@ -18,7 +18,7 @@ import { ClassConstructor } from "class-transformer/types/interfaces";
 import StoredFileDto from "../../shared/files/dto/StoredFile.dto";
 
 @Controller("admin/images")
-@ApiTags("images")
+@ApiTags("admin/images")
 @UseGuards(AdminGuard)
 @ApiSecurity("admin-key")
 export class ImagesController {

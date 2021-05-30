@@ -11,7 +11,7 @@ import { CreateProductDto } from "../../shared/products/dto/CreateProduct.dto";
 import { ProductsService } from "../../shared/products/products.service";
 
 @Controller("admin/products")
-@ApiTags("products")
+@ApiTags("admin/products")
 @UseGuards(AdminGuard)
 @ApiSecurity("admin-key")
 export class ProductsController {

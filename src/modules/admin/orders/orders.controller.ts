@@ -24,7 +24,7 @@ import { AdminGuard } from "../../../guards/admin.guard";
 import { ApiResponseDto } from "../../shared/dto/ApiResponse.dto";
 
 @Controller("admin/orders")
-@ApiTags("orders")
+@ApiTags("admin/orders")
 @UseGuards(AdminGuard)
 @ApiSecurity("admin-key")
 export class OrdersController {
