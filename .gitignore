@@ -195,3 +195,4 @@ $RECYCLE.BIN/
 config/local.json
 dist
 documentation
+service-account-key.json

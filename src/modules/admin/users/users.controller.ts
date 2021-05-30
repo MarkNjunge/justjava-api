@@ -11,7 +11,7 @@ import { ApiResponseDto } from "../../shared/dto/ApiResponse.dto";
 import { UsersService } from "../../shared/users/users.service";
 
 @Controller("admin/users")
-@ApiTags("users")
+@ApiTags("admin/users")
 @UseGuards(AdminGuard)
 @ApiSecurity("admin-key")
 export class UsersController {

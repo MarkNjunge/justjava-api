@@ -9,10 +9,14 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: executing remote ssh
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: ~/apps/update-justjava-prod.sh
+      - uses: actions/checkout@master
+      - name: unshallow # Prevents 'shallow update not allowed'
+        run: git fetch --unshallow origin
+      - name: pre-deploy actions
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.PROD_SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H '${{ secrets.PROD_DEPLOY_HOST }}' >> ~/.ssh/known_hosts
+      - name: Deploy
+        run: git push dokku@${{ secrets.PROD_DEPLOY_HOST }}:${{ secrets.PROD_APP_NAME }} master
