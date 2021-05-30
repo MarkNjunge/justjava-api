@@ -25,7 +25,8 @@ export class NotificationsService {
     try {
       const serviceAccountKeyPath = path.resolve("./service-account-key.json");
       if (!fs.existsSync(serviceAccountKeyPath)) {
-        throw new Error(`Service account file was expected at '${serviceAccountKeyPath} but was not found`);
+        throw new Error(
+          `Service account file was expected at '${serviceAccountKeyPath} but was not found`);
       }
 
       const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountKeyPath).toString());

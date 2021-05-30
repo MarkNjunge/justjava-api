@@ -1,4 +1,4 @@
-import { registerDecorator, ValidationOptions, ValidationArguments } from "class-validator";
+import { registerDecorator, ValidationOptions } from "class-validator";
 
 export function IsImageFile(validationOptions?: ValidationOptions) {
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -9,7 +9,7 @@ export function IsImageFile(validationOptions?: ValidationOptions) {
       propertyName,
       options: validationOptions,
       validator: {
-        validate(value: any, args: ValidationArguments) {
+        validate(value: any) {
           return value.mimetype.startsWith("image/");
         },
         defaultMessage(): string {
