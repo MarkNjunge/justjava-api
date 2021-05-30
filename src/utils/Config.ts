@@ -13,7 +13,6 @@ export interface Config {
   validatorForbidUnknown: boolean;
   logging: Logging;
   adminKey: string;
-  cloudinary: CloudinaryConfig;
   db: DbConfig;
   google: Google;
   redis: Redis;
@@ -34,12 +33,6 @@ interface Logging {
   timestampFormat: string;
   sensitiveParams: string[];
   replacementString: string;
-}
-
-interface CloudinaryConfig {
-  cloudName: string;
-  apiKey: string;
-  apiSecret: string;
 }
 
 interface DbConfig {

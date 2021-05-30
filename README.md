@@ -38,11 +38,13 @@ Used for notifications.
 
 ### GCP Project (optional)
 
-Used for Google Sign In.
+Used for Google Sign In and uploading product images.
 
-1. Create an project on [GCP](https://console.cloud.google.com/projectcreate).
+1. Create a project on [GCP](https://console.cloud.google.com/projectcreate).
+2. Take note of the project id.
 2. Create [OAuth client ID credentials](https://console.cloud.google.com/apis/credentials) with "Web Application" as the application type.
 3. Take note of the client ID.
+4. Create [a bucket on Cloud Storage](https://console.cloud.google.com/storage/create-bucket)
 
 ### Safaricom Developer Account (optional)
 
@@ -65,13 +67,6 @@ Used for logs
 
 1. Create an account on [Datadog](https://app.datadoghq.com/)
 2. Create an [API key](https://docs.datadoghq.com/account_management/api-app-keys/)
-
-### Cloudinary (optional)
-
-Used for image upload.
-
-1. Create a [Cloudinary Account](https://cloudinary.com/users/register/free).
-2. Get the "Cloud name", "API Key" and "API Secret" from the [console](https://cloudinary.com/console).
 
 ### Ravepay Sandbox Account (optional)
 
