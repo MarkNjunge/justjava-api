@@ -1,3 +1,7 @@
+# 1.5.0
+
+- Upload images to Google Cloud instead of Cloudinary
+
 # 1.4.0
 
 - Add [helmet](https://helmetjs.github.io/).
