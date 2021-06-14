@@ -1,3 +1,7 @@
+# 1.5.1
+
+- No changes
+
 # 1.5.0
 
 - Upload images to Google Cloud instead of Cloudinary
