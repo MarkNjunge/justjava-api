@@ -29,6 +29,8 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
+      - name: Log latest commit
+        run: echo "$(git log -n 1)"
       - name: Setup SSH key
         run: |
           mkdir -p ~/.ssh
