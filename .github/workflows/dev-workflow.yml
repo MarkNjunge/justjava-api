@@ -1,0 +1,39 @@
+name: dev-workflow
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - README.MD
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14.15.3"
+      - name: Install dependencies
+        run: yarn install
+      - name: Run linter
+        run: yarn lint
+#      - name: Run tests
+#        env:
+#          CI: true
+#        run: yarn test
+  deploy:
+    name: Deploy
+    needs: test
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEV_SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H '${{ secrets.DEV_DEPLOY_HOST }}' >> ~/.ssh/known_hosts
+      - name: Deploy
+        run: git push dokku@${{ secrets.DEV_DEPLOY_HOST }}:${{ secrets.DEV_APP_NAME }} master

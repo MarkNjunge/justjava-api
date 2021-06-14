@@ -1,18 +1,15 @@
-name: deploy-prod-workflow
+name: release-workflow
 on:
-  push:
-    branches:
-      - master
+  release:
+    types: [published]
 
 jobs:
   deploy:
     name: Deploy
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@master
-      - name: unshallow # Prevents 'shallow update not allowed'
-        run: git fetch --unshallow origin
-      - name: pre-deploy actions
+      - uses: actions/checkout@v2
+      - name: Setup SSH key
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.PROD_SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
