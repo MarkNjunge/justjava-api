@@ -1,3 +1,7 @@
+# 1.5.2
+
+- No changes
+
 # 1.5.1
 
 - No changes
