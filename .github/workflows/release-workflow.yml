@@ -16,4 +16,4 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H '${{ secrets.PROD_DEPLOY_HOST }}' >> ~/.ssh/known_hosts
       - name: Deploy
-        run: git push dokku@${{ secrets.PROD_DEPLOY_HOST }}:${{ secrets.PROD_APP_NAME }} master
+        run: git push dokku@${{ secrets.PROD_DEPLOY_HOST }}:${{ secrets.PROD_APP_NAME }} master --force
