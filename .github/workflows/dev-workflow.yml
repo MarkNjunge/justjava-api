@@ -29,6 +29,8 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Prevent "shallow update not allowed"
       - name: Log latest commit
         run: echo "$(git log -n 1)"
       - name: Setup SSH key
@@ -38,4 +40,4 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H '${{ secrets.DEV_DEPLOY_HOST }}' >> ~/.ssh/known_hosts
       - name: Deploy
-        run: git push dokku@${{ secrets.DEV_DEPLOY_HOST }}:${{ secrets.DEV_APP_NAME }} master --force
+        run: git push dokku@${{ secrets.DEV_DEPLOY_HOST }}:${{ secrets.DEV_APP_NAME }} master

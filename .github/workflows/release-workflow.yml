@@ -9,6 +9,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: 'master' # Checkout the branch instead of tag
+          fetch-depth: 0 # Prevent "shallow update not allowed"
       - name: Setup SSH key
         run: |
           mkdir -p ~/.ssh
@@ -16,4 +19,4 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H '${{ secrets.PROD_DEPLOY_HOST }}' >> ~/.ssh/known_hosts
       - name: Deploy
-        run: git push dokku@${{ secrets.PROD_DEPLOY_HOST }}:${{ secrets.PROD_APP_NAME }} master --force
+        run: git push dokku@${{ secrets.PROD_DEPLOY_HOST }}:${{ secrets.PROD_APP_NAME }} master
