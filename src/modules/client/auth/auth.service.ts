@@ -266,7 +266,7 @@ export class AuthService {
       token,
     });
 
-    if (Boolean(config.mailgun.enabled) === true) {
+    if (this.parseBool(config.mailgun.enabled) === true) {
       await this.emailService.sendPasswordResetEmail(
         user.email,
         user.firstName,
@@ -312,5 +312,9 @@ export class AuthService {
 
   private generateSession(): string {
     return crypto.randomBytes(24).toString("hex");
+  }
+
+  private parseBool(v: string | boolean): boolean {
+    return v === "true" || v === true;
   }
 }

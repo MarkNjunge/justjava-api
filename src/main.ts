@@ -101,7 +101,7 @@ async function enablePlugins(app: NestFastifyApplication) {
     allowedHeaders: config.corsHeaders,
   });
 
-  if (Boolean(config.rateLimit.enabled) === true) {
+  if (parseBool(config.rateLimit.enabled) === true) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     app.register(fastifyRateLimit, {
@@ -134,4 +134,8 @@ function initializeSwagger(app: NestFastifyApplication) {
 
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup("docs", app, document);
+}
+
+function parseBool(v: string | boolean): boolean {
+  return v === "true" || v === true;
 }

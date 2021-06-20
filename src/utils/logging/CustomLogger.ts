@@ -103,7 +103,11 @@ export function initializeWinston() {
     ],
   });
 
-  if (Boolean(config.datadog.enabled) === true) {
+  if (parseBool(config.datadog.enabled) === true) {
     winston.add(new DatadogTransport({}));
   }
+}
+
+function parseBool(v: string | boolean): boolean {
+  return v === "true" || v === true;
 }
