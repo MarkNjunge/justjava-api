@@ -10,7 +10,7 @@ import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify
 import * as fastifyRateLimit from "fastify-rate-limit";
 import { RedisService } from "./modules/shared/redis/redis.service";
 import { NotificationsService } from "./modules/shared/notifications/notifications.service";
-import { requestTimeMiddleware } from "./middleware/request-time.middleware";
+import { requestHeadersMiddleware } from "./middleware/request-headers.middleware";
 import { SetCookiesInterceptor } from "./interceptors/set-cookies.interceptor";
 import { default as helmet } from "fastify-helmet";
 import * as axios from "axios";
@@ -51,7 +51,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new LoggingInterceptor());
   app.useGlobalInterceptors(new SetCookiesInterceptor());
   app.useGlobalPipes(new ValidationPipe());
-  app.use(requestTimeMiddleware);
+  app.use(requestHeadersMiddleware);
 
   const redis = await app.get<RedisService>(RedisService);
   redis.connect();

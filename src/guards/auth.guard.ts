@@ -7,10 +7,11 @@ import {
 import { Observable } from "rxjs";
 import { FastifyRequest } from "fastify";
 import { RedisService } from "../modules/shared/redis/redis.service";
+import { Reflector } from "@nestjs/core";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly redisService: RedisService) {}
+  constructor(private readonly redisService: RedisService, private reflector: Reflector) {}
 
   canActivate(
     context: ExecutionContext,
@@ -18,37 +19,32 @@ export class AuthGuard implements CanActivate {
     const request: FastifyRequest = context
       .switchToHttp()
       .getRequest();
+    const allowNoAuth = this.reflector.get<boolean>("allowNoAuth", context.getHandler());
 
-    return this.validateRequest(request);
+    return this.validateRequest(request, allowNoAuth);
   }
 
-  async validateRequest(
-    request: FastifyRequest,
-  ): Promise<boolean> {
-    // Skip authentication on certain urls
-    // Prevents needing to specify the guard on all other endpoints in the controller
-    const ignoredUrls = ["/orders/verify"];
-    if (ignoredUrls.includes(request.req.url)) {
-      return true;
-    }
-
+  async validateRequest(request: FastifyRequest, allowNoAuth: boolean): Promise<boolean> {
     const sessionId = request.headers["session-id"] as string;
 
-    if (!sessionId) {
+    if (!sessionId && !allowNoAuth) {
       throw new UnauthorizedException({
         message: "session-id header is required",
       });
     }
 
     const session = await this.redisService.getSession(sessionId);
-    if (!session) {
+    if (!session && !allowNoAuth) {
       throw new UnauthorizedException({ message: "Invalid session-id" });
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    request.params.session = session;
-    await this.redisService.updateLastUseDate(session);
+    if (session) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      request.params.session = session;
+      request.headers["x-user-id"] = session.userId.toString();
+      await this.redisService.updateLastUseDate(session);
+    }
 
     return true;
   }

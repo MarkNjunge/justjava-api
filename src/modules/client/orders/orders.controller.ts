@@ -24,6 +24,7 @@ import { PlaceOrderDto } from "../../shared/orders/dto/PlaceOrder.dto";
 import { OrderDto } from "../../shared/orders/dto/Order.dto";
 import { ChangePaymentMethodDto } from "../../shared/orders/dto/ChangePaymentMethod.dto";
 import { ApiResponseDto } from "../../shared/dto/ApiResponse.dto";
+import { AllowNoAuth } from "../../../decorators/AllowNoAuth.decorator";
 
 @Controller("orders")
 @ApiTags("orders")
@@ -40,10 +41,10 @@ export class OrdersController {
   }
 
   @Post("/verify")
-  // Authentication is ignored in auth.guard
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: "Verify an order's items and choices are valid" })
   @ApiOkResponse({ type: OrderValidationError, isArray: true })
+  @AllowNoAuth()
   async verify(@Body() dto: VerifyOrderDto): Promise<OrderValidationError[]> {
     return this.ordersService.verifyOrderItems(dto);
   }
