@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import * as IoRedis from "ioredis";
 import { config } from "../../../utils/Config";
 import { SessionDto } from "../../client/auth/dto/Session.dto";
-import { CustomLogger } from "../../../utils/logging/CustomLogger";
+import { Logger } from "../../../utils/logging/Logger";
 import { MpesaAccessTokenDto } from "../payments/mpesa/dto/MpesaAccessToken.dto";
 import * as dayjs from "dayjs";
 import { ResetPasswordTokenDto } from "../../client/auth/dto/ResetPasswordToken.dto";
@@ -11,10 +11,10 @@ import { ResetPasswordTokenDto } from "../../client/auth/dto/ResetPasswordToken.
 export class RedisService {
   private isConnected = false;
   private redis: IoRedis.Redis;
-  private logger: CustomLogger;
+  private logger: Logger;
 
   constructor() {
-    this.logger = new CustomLogger("RedisService");
+    this.logger = new Logger("RedisService");
   }
 
   async connect() {
@@ -27,7 +27,7 @@ export class RedisService {
     });
 
     this.redis.on("connect", () => {
-      this.logger.log("Connected to redis");
+      this.logger.info("Connected to redis");
       this.isConnected = true;
     });
 
@@ -35,13 +35,13 @@ export class RedisService {
       if (err.code === "ECONNREFUSED") {
         this.logger.error(
           "Unable to connect to Redis instance. Authentication will not work.",
-          "RedisService.connect",
+          { context: "connect" }
         );
         this.isConnected = false;
       } else if (err.code === "ETIMEDOUT") {
         // Error still happens when connection is valid
       } else {
-        this.logger.error(err.message, "RedisService.connect");
+        this.logger.error(err.message, { context: "connect" });
       }
     });
   }

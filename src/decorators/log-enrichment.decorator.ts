@@ -6,7 +6,6 @@ export const LogEnrichment = createParamDecorator(
 
     return {
       correlationId: request.headers["x-correlation-id"],
-      requestTime: request.headers["x-request-time"],
       userId: request.headers["x-user-id"],
     };
   },
@@ -14,6 +13,5 @@ export const LogEnrichment = createParamDecorator(
 
 export interface LogEnrichment {
   correlationId: string;
-  requestTime: number;
   userId: string;
 }

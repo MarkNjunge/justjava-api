@@ -26,6 +26,7 @@ module.exports = {
     "new-cap": "off",
     "no-empty-function": ["error", { allow: ["constructors"] }],
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "no-unused-vars": "off"
+    "no-unused-vars": "off",
+    "multiline-ternary": "off"
   },
 };

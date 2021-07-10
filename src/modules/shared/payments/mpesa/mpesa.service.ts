@@ -19,7 +19,7 @@ import { OrderEntity } from "../../orders/entities/Order.entity";
 import { PaymentMethod } from "../models/PaymentMethod";
 import { PaymentStatus } from "../models/PaymentStatus";
 import { StkCallbackDto } from "./dto/StkCallback.dto";
-import { CustomLogger } from "../../../../utils/logging/CustomLogger";
+import { Logger } from "../../../../utils/logging/Logger";
 import { UserEntity } from "../../users/entities/User.entity";
 import { NotificationsService } from "../../notifications/notifications.service";
 import { ApiResponseDto } from "../../dto/ApiResponse.dto";
@@ -32,7 +32,7 @@ import { QueryRequestResponseDto } from "./dto/QueryRequestResponse.dto";
 @Injectable()
 export class MpesaService {
   private safaricomBaseUrl = "https://sandbox.safaricom.co.ke";
-  private logger = new CustomLogger("MpesaService");
+  private logger = new Logger("MpesaService");
 
   // eslint-disable-next-line max-params
   constructor(

@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { config } from "../../../utils/Config";
 import * as admin from "firebase-admin";
-import { CustomLogger } from "../../../utils/logging/CustomLogger";
+import { Logger } from "../../../utils/logging/Logger";
 import { NotificationReason } from "./model/NotificationReason";
 import { UserEntity } from "../users/entities/User.entity";
 import { NotificationEntity } from "./entity/Notification.entity";
@@ -12,13 +12,13 @@ import * as fs from "fs";
 
 @Injectable()
 export class NotificationsService {
-  private logger: CustomLogger;
+  private logger: Logger;
 
   constructor(
     @InjectRepository(NotificationEntity)
     private readonly notificationssRepository: Repository<NotificationEntity>,
   ) {
-    this.logger = new CustomLogger("NotificationsService");
+    this.logger = new Logger("NotificationsService");
   }
 
   async connect() {
@@ -66,7 +66,7 @@ export class NotificationsService {
       await this.notificationssRepository.save(entity);
       this.logger.debug("Notification saved to db");
     } catch (error) {
-      this.logger.error(`Error sending message: ${error.message}`, "send");
+      this.logger.error(`Error sending message: ${error.message}`, { context: "send" });
     }
   }
 }

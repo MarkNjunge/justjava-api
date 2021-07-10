@@ -6,15 +6,16 @@ import {
   HttpStatus,
 } from "@nestjs/common";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { CustomLogger } from "../utils/logging/CustomLogger";
+import { Logger } from "../utils/logging/Logger";
 import { ApiResponseDto } from "../modules/shared/dto/ApiResponse.dto";
+import { LogEnrichment } from "../decorators/log-enrichment.decorator";
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  logger: CustomLogger;
+  logger: Logger;
 
   constructor() {
-    this.logger = new CustomLogger("AllExceptionsFilter");
+    this.logger = new Logger("AllExceptionsFilter");
   }
 
   catch(e: HttpException | Error, host: ArgumentsHost) {
@@ -41,7 +42,12 @@ export class AllExceptionsFilter implements ExceptionFilter {
       logMessage.meta = (e.getResponse() as any).meta;
     }
 
-    this.logger.error(message, stackTop, { stacktrace: e.stack });
+    const meta = { stacktrace: e.stack };
+    const enrichment: LogEnrichment = {
+      correlationId: request.headers["x-correlation-id"].toString(),
+      userId: request.headers["x-user-id"]?.toString(),
+    };
+    this.logger.error(message, { context: stackTop, enrichment, meta });
     this.logger.logRoute(request, response, { ...logMessage });
 
     response.status(status).send({

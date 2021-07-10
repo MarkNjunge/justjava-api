@@ -1,35 +1,45 @@
-import { LoggerService } from "@nestjs/common";
 import * as winston from "winston";
 import * as dayjs from "dayjs";
 import { config } from "../Config";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { DatadogTransport } from "./DatadogTransport";
+import { LogEnrichment } from "../../decorators/log-enrichment.decorator";
 
-export class CustomLogger implements LoggerService {
-  constructor(private readonly name: string = "Application") {}
+export class Logger {
+  constructor(private readonly name: string) {}
 
-  log(message: string, name?: string, data?: any) {
-    const tag = name || this.name;
+  info(message: string, extras?: LoggerExtras) {
+    const tag = extras?.context ? `${this.name}.${extras.context}` : this.name;
+    const data = { tag, ...extras?.enrichment, meta: extras?.meta };
+
     winston.info({ message: `[${tag}] ${message}`, data });
   }
 
-  error(message: string, name?: string, data?: any) {
-    const tag = name || this.name;
+  error(message: string, extras?: LoggerExtras) {
+    const tag = extras?.context ? `${this.name}.${extras.context}` : this.name;
+    const data = { tag, ...extras?.enrichment, meta: extras?.meta };
+
     winston.error({ message: `[${tag}] ${message}`, data });
   }
 
-  warn(message: string, name?: string, data?: any) {
-    const tag = name || this.name;
+  warn(message: string, extras?: LoggerExtras) {
+    const tag = extras?.context ? `${this.name}.${extras.context}` : this.name;
+    const data = { tag, ...extras?.enrichment, meta: extras?.meta };
+
     winston.warn({ message: `[${tag}] ${message}`, data });
   }
 
-  debug(message: string, name?: string, data?: any) {
-    const tag = name || this.name;
+  debug(message: string, extras?: LoggerExtras) {
+    const tag = extras?.context ? `${this.name}.${extras.context}` : this.name;
+    const data = { tag, ...extras?.enrichment, meta: extras?.meta };
+
     winston.debug({ message: `[${tag}] ${message}`, data });
   }
 
-  verbose(message: string, name?: string, data?: any) {
-    const tag = name || this.name;
+  verbose(message: string, extras?: LoggerExtras) {
+    const tag = extras?.context ? `${this.name}.${extras.context}` : this.name;
+    const data = { tag, ...extras?.enrichment, meta: extras?.meta };
+
     winston.verbose({ message: `[${tag}] ${message}`, data });
   }
 
@@ -112,4 +122,10 @@ export function initializeWinston() {
 
 function parseBool(v: string | boolean): boolean {
   return v === "true" || v === true;
+}
+
+export interface LoggerExtras {
+  context?: string,
+  enrichment?: LogEnrichment,
+  meta?: any
 }

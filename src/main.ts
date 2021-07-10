@@ -1,5 +1,5 @@
 import { NestFactory } from "@nestjs/core";
-import { CustomLogger, initializeWinston } from "./utils/logging/CustomLogger";
+import { Logger, initializeWinston } from "./utils/logging/Logger";
 import { AppModule } from "./modules/app/app.module";
 import { AllExceptionsFilter } from "./filters/all-exceptions-filter";
 import { LoggingInterceptor } from "./interceptors/logging.interceptor";
@@ -18,6 +18,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { FilesService } from "./modules/shared/files/files.service";
 import * as fastifyMultipart from "fastify-multipart";
+import { ApplicationLogger } from "./utils/logging/ApplicationLogger";
 
 // eslint-disable-next-line no-console
 bootstrap().catch(e => console.error(e));
@@ -26,8 +27,8 @@ bootstrap().catch(e => console.error(e));
 // eslint-disable-next-line max-lines-per-function
 async function bootstrap() {
   initializeWinston();
-  const logger = new CustomLogger("Application");
-  logger.log("****** Starting API ******");
+  const logger = new Logger("Application");
+  logger.info("****** Starting API ******");
 
   await downloadServiceAccountKey(logger);
 
@@ -39,7 +40,7 @@ async function bootstrap() {
     {
       logger: process.env.NODE_ENV === "production" ?
         false :
-        logger,
+        new ApplicationLogger(),
     },
   );
   await app.register(fastifyMultipart.default, { attachFieldsToBody: true });
@@ -65,21 +66,21 @@ async function bootstrap() {
   await filesService.connect();
 
   await app.listen(config.port, "0.0.0.0").then(() => {
-    logger.log(`App running at http://127.0.0.1:${config.port}`);
+    logger.info(`App running at http://127.0.0.1:${config.port}`);
   });
 }
 
-async function downloadServiceAccountKey(logger: CustomLogger) {
+async function downloadServiceAccountKey(logger: Logger) {
   const serviceAccountKeyPath = path.resolve("./service-account-key.json");
   if (fs.existsSync(serviceAccountKeyPath)) {
-    logger.log("Service account key already downloaded");
+    logger.info("Service account key already downloaded");
 
     return;
   }
-  logger.log("Downloading service account key");
+  logger.info("Downloading service account key");
   const res = await axios.default.get(config.google.serviceAccountKeyUrl);
   fs.writeFileSync(serviceAccountKeyPath, JSON.stringify(res.data));
-  logger.log(`Downloaded service account key to '${serviceAccountKeyPath}'`);
+  logger.info(`Downloaded service account key to '${serviceAccountKeyPath}'`);
 }
 
 async function enablePlugins(app: NestFastifyApplication) {

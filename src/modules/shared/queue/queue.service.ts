@@ -2,7 +2,7 @@ import { Injectable, Inject, forwardRef } from "@nestjs/common";
 import * as Bull from "bull";
 import { InjectRepository } from "@nestjs/typeorm";
 import { config } from "../../../utils/Config";
-import { CustomLogger } from "../../../utils/logging/CustomLogger";
+import { Logger } from "../../../utils/logging/Logger";
 import { PaymentEntity } from "../payments/entities/Payment.entity";
 import { Repository } from "typeorm";
 import { PaymentStatus } from "../payments/models/PaymentStatus";
@@ -12,7 +12,7 @@ import { MpesaService } from "../payments/mpesa/mpesa.service";
 export class QueueService {
   private orderQueue: Bull.Queue;
   private mpesaPaymentsQueue: Bull.Queue;
-  private logger = new CustomLogger("QueueService");
+  private logger = new Logger("QueueService");
 
   constructor(
     @InjectRepository(PaymentEntity)

@@ -26,15 +26,15 @@ export class DatadogTransport extends Transport {
       level: info.level,
     };
 
-    if (info.data && info.data.stacktrace) {
+    if (info?.data?.meta?.stacktrace) {
       body = {
         ...body,
         error: {
-          stack: info.data.stacktrace,
+          stack: info.data.meta.stacktrace,
         },
       };
 
-      delete body.stacktrace;
+      delete body.meta.stacktrace;
     }
     body = removeSensitiveParams(body);
 

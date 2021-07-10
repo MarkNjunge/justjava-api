@@ -25,13 +25,14 @@ import { ChangePasswordDto } from "./dto/ChangePassword.dto";
 import { ApiResponseDto } from "../../shared/dto/ApiResponse.dto";
 import { EmailService } from "../../shared/email/email.service";
 import { RequestResetPasswordDto } from "./dto/RequestResetPassword.dto";
-import { CustomLogger } from "../../../utils/logging/CustomLogger";
+import { Logger } from "../../../utils/logging/Logger";
 import { ResetPasswordDto } from "./dto/ResetPassword.dto";
+import { LogEnrichment } from "../../../decorators/log-enrichment.decorator";
 
 @Injectable()
 export class AuthService {
   private client: OAuth2Client;
-  private logger = new CustomLogger("AuthService");
+  private logger = new Logger("AuthService");
 
   constructor(
     @InjectRepository(UserEntity)

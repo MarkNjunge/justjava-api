@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { config } from "../../../utils/Config";
-import { CustomLogger } from "../../../utils/logging/CustomLogger";
+import { Logger } from "../../../utils/logging/Logger";
 import { Bucket, Storage } from "@google-cloud/storage";
 import * as path from "path";
 import * as fs from "fs";
@@ -9,7 +9,7 @@ import * as fileSize from "filesize";
 
 @Injectable()
 export class FilesService {
-  private logger = new CustomLogger("FilesService");
+  private logger = new Logger("FilesService");
   private imagesBucket: Bucket;
 
   async connect() {

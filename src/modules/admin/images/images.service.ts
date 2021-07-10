@@ -2,11 +2,11 @@ import { Injectable } from "@nestjs/common";
 import { UploadImageDto } from "./dto/UploadImage.dto";
 import { FilesService } from "../../shared/files/files.service";
 import StoredFileDto from "../../shared/files/dto/StoredFile.dto";
-import { CustomLogger } from "../../../utils/logging/CustomLogger";
+import { Logger } from "../../../utils/logging/Logger";
 
 @Injectable()
 export class ImagesService {
-  private logger = new CustomLogger("ImagesService")
+  private logger = new Logger("ImagesService")
 
   constructor(private readonly filesService: FilesService) {
   }

@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import * as axios from "axios";
 import { config } from "../../../utils/Config";
-import { CustomLogger } from "../../../utils/logging/CustomLogger";
+import { Logger } from "../../../utils/logging/Logger";
 
 @Injectable()
 export class EmailService {
-  private logger = new CustomLogger("EmailService");
+  private logger = new Logger("EmailService");
 
   async sendPasswordResetEmail(email: string, name: string, token: string) {
     const params = new URLSearchParams();

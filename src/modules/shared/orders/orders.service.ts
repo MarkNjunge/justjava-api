@@ -21,13 +21,13 @@ import { ChangePaymentMethodDto } from "./dto/ChangePaymentMethod.dto";
 import { OrderPaymentStatus } from "./models/OrderPaymentStatus";
 import { ApiResponseDto } from "../dto/ApiResponse.dto";
 import { UpdateOrderStatusDto } from "./dto/UpdateOrderStatus.dto";
-import { CustomLogger } from "../../../utils/logging/CustomLogger";
+import { Logger } from "../../../utils/logging/Logger";
 import { NotificationsService } from "../notifications/notifications.service";
 import { NotificationReason } from "../notifications/model/NotificationReason";
 
 @Injectable()
 export class OrdersService {
-  private logger = new CustomLogger("OrdersService");
+  private logger = new Logger("OrdersService");
 
   constructor(
     @InjectRepository(OrderEntity)

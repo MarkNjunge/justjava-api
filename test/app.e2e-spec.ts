@@ -7,7 +7,7 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from "@nestjs/platform-fastify";
-import { initializeWinston } from "../src/utils/logging/CustomLogger";
+import { initializeWinston } from "../src/utils/logging/Logger";
 
 // eslint-disable-next-line max-lines-per-function
 describe("AppController (e2e)", () => {

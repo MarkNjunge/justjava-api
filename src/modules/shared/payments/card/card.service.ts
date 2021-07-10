@@ -12,7 +12,7 @@ import { PaymentMethod } from "../models/PaymentMethod";
 import { PaymentStatus } from "../models/PaymentStatus";
 import { ApiResponseDto } from "../../dto/ApiResponse.dto";
 import { OrderPaymentStatus } from "../../orders/models/OrderPaymentStatus";
-import { CustomLogger } from "../../../../utils/logging/CustomLogger";
+import { Logger } from "../../../../utils/logging/Logger";
 import { NotificationsService } from "../../notifications/notifications.service";
 import { NotificationReason } from "../../notifications/model/NotificationReason";
 import { CheckCardDto } from "./dto/CheckCard.dto";
@@ -21,7 +21,7 @@ import { QueueService } from "../../queue/queue.service";
 
 @Injectable()
 export class CardService {
-  private logger: CustomLogger;
+  private logger: Logger;
 
   // eslint-disable-next-line max-params
   constructor(
@@ -35,7 +35,7 @@ export class CardService {
     private readonly notificationService: NotificationsService,
     private readonly queueService: QueueService,
   ) {
-    this.logger = new CustomLogger("CardService");
+    this.logger = new Logger("CardService");
   }
 
   async checkCard(
